@@ -12,8 +12,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{DF31EA45-10E1-4D13-8A9F-48B020B7CDE5}</ProjectGuid>
-    <RootNamespace>PixBase</RootNamespace>
+    <ProjectGuid>{9D43CFC3-0FF4-41B5-B9D5-EBD3DD47D045}</ProjectGuid>
+    <RootNamespace>PixEngine</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -66,29 +66,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Color3.h" />
-    <ClInclude Include="Color3T.h" />
-    <ClInclude Include="Color4.h" />
-    <ClInclude Include="Color4T.h" />
-    <ClInclude Include="Constants.h" />
-    <ClInclude Include="Geometry.h" />
-    <ClInclude Include="IntersectionData.h" />
-    <ClInclude Include="Matrix.h" />
-    <ClInclude Include="MatrixT.h" />
-    <ClInclude Include="Ray.h" />
-    <ClInclude Include="Sphere.h" />
-    <ClInclude Include="Vector2.h" />
-    <ClInclude Include="Vector2T.h" />
-    <ClInclude Include="Vector3.h" />
-    <ClInclude Include="Vector3T.h" />
-    <ClInclude Include="Vector4.h" />
-    <ClInclude Include="Vector4T.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="IntersectionData.cpp" />
-    <ClCompile Include="Ray.cpp" />
-    <ClCompile Include="Sphere.cpp" />
-    <ClCompile Include="Test.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

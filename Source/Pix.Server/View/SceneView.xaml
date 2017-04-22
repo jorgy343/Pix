@@ -1,0 +1,19 @@
+﻿<UserControl x:Class="Pix.Server.View.SceneView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        d:DesignWidth="800" d:DesignHeight="600">
+    <Grid SnapsToDevicePixels="True">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+
+        <ScrollViewer Grid.Row="0" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible">
+            <Image Source="{Binding Path=Bitmap}" Width="{Binding Path=Scene.Width}" Height="{Binding Path=Scene.Height}" />
+        </ScrollViewer>
+        <Button Grid.Row="1" Command="{Binding Path=CreateSceneCommand}">Save</Button>
+    </Grid>
+</UserControl>

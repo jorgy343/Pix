@@ -1,0 +1,29 @@
+﻿<Window x:Class="Pix.Server.View.ShellView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:view="clr-namespace:Pix.Server.View"
+        xmlns:viewmodel="clr-namespace:Pix.Server.ViewModel"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Pix Server" Width="800" Height="600">
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type viewmodel:SceneViewModel}">
+            <view:SceneView />
+        </DataTemplate>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        <TabControl Grid.Row="0" ItemsSource="{Binding Path=SceneViewModels}">
+            <TabControl.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Path=Name}" />
+                </DataTemplate>
+            </TabControl.ItemTemplate>
+        </TabControl>
+        <Button Grid.Row="1" Command="{Binding Path=CreateSceneCommand}">Create Scene</Button>
+    </Grid>
+</Window>
