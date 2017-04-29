@@ -2,7 +2,6 @@
 
 #include <math.h>
 
-#include "General.h"
 #include "Vector3.h"
 #include "IntersectionData.h"
 #include "Ray.h"
@@ -10,14 +9,15 @@
 
 namespace Pix::Base::Geometries
 {
-    class __declspec(align(16)) Sphere : public Geometry
+    class __declspec(align(16)) Plane : public Geometry
     {
     public:
-        Vector3 Position;
-        float Radius;
+        Vector3 Normal;
+        float D;
 
-        Sphere() = default;
-        Sphere(Vector3 position, float radius);
+        Plane() = default;
+        Plane(Vector3 normal, float d);
+        Plane(Vector3 normal, Vector3 point);
 
         virtual float IntersectRay(const Ray& ray, IntersectionData* intersectionData) const override;
     };

@@ -9,6 +9,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Pix.Engine", "Pix.Engine\Pi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pix.Server", "Pix.Server\Pix.Server.csproj", "{D2667215-2098-4CA7-ABAD-4EABD01A948C}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Pix.Client", "Pix.Client\Pix.Client.vcxproj", "{7D30F589-4043-49FA-8692-A5FF294DA8AD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -27,6 +29,10 @@ Global
 		{D2667215-2098-4CA7-ABAD-4EABD01A948C}.Debug|x64.Build.0 = Debug|Any CPU
 		{D2667215-2098-4CA7-ABAD-4EABD01A948C}.Release|x64.ActiveCfg = Release|Any CPU
 		{D2667215-2098-4CA7-ABAD-4EABD01A948C}.Release|x64.Build.0 = Release|Any CPU
+		{7D30F589-4043-49FA-8692-A5FF294DA8AD}.Debug|x64.ActiveCfg = Debug|x64
+		{7D30F589-4043-49FA-8692-A5FF294DA8AD}.Debug|x64.Build.0 = Debug|x64
+		{7D30F589-4043-49FA-8692-A5FF294DA8AD}.Release|x64.ActiveCfg = Release|x64
+		{7D30F589-4043-49FA-8692-A5FF294DA8AD}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

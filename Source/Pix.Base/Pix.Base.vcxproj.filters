@@ -72,14 +72,17 @@
     <ClInclude Include="Sphere.h">
       <Filter>Header Files\Geometries</Filter>
     </ClInclude>
-    <ClInclude Include="Constants.h">
+    <ClInclude Include="General.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeometryGroup.h">
+      <Filter>Header Files\Geometries</Filter>
+    </ClInclude>
+    <ClInclude Include="Plane.h">
+      <Filter>Header Files\Geometries</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Test.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="IntersectionData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -87,7 +90,13 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Sphere.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Geometries</Filter>
+    </ClCompile>
+    <ClCompile Include="GeometryGroup.cpp">
+      <Filter>Source Files\Geometries</Filter>
+    </ClCompile>
+    <ClCompile Include="Plane.cpp">
+      <Filter>Source Files\Geometries</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

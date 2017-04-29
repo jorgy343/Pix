@@ -1,13 +1,17 @@
 #pragma once
 
 #include "Ray.h"
-#include "IntersectionData.h"
+
+namespace Pix::Base
+{
+    class IntersectionData;
+}
 
 namespace Pix::Base::Geometries
 {
     class Geometry
     {
     public:
-        virtual const Geometry* IntersectRay(const Ray& ray, IntersectionData* intersectionData) const = 0;
+        virtual float IntersectRay(const Ray& ray, IntersectionData* intersectionData) const = 0;
     };
 }

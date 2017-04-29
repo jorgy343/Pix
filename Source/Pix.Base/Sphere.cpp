@@ -1,4 +1,4 @@
-#include "Sphere.h"
+﻿#include "Sphere.h"
 
 using namespace Pix::Base;
 using namespace Pix::Base::Geometries;
@@ -6,11 +6,35 @@ using namespace Pix::Base::Geometries;
 Sphere::Sphere(Vector3 position, float radius)
     : Position(position), Radius(radius)
 {
-
+    
 }
 
-const Geometry* Sphere::IntersectRay(const Ray& ray, IntersectionData* intersectionData) const
+float Sphere::IntersectRay(const Ray& ray, IntersectionData* intersectionData) const
 {
+    // ‖x − c‖² = r²                    Equation of sphere
+    // x = s + td                       Equation of ray
+    // 
+    // ‖s + td - c‖² = r²               Substitute equation of ray into equation of sphere.
+    // v ≝ s − c
+    // ‖v + td‖² = r²
+    // v² + 2t(v⋅d) + t²d² = r²         Expand binomial.
+    // t²d² + 2t(v⋅d) + v² - r² = 0
+    // 
+    // a = d², b = 2(v⋅d), c = v² - r²
+    // (-b ± √(b² - 4ac)) / (2a)        Quadratic equation.
+    // 
+    // t = (-2(v⋅d) ± √((2(v⋅d))² - 4d²(v² - r²))) / (2d²)
+    // t = (-(v⋅d) ± √((v⋅d)² - d²(v² - r²))) / d²
+    // 
+    // Discriminant is
+    // (v⋅d)² - d²(v² - r²)
+    // 
+    // Entrance of intersection
+    // (-(v⋅d) + √((v⋅d)² - d²(v² - r²))) / d²
+    // 
+    // Exit of intersection
+    // (-(v⋅d) - √((v⋅d)² - d²(v² - r²))) / d²
+
     Vector3 v = ray.Position - Position;
     float vDotd = Vector3::Dot(v, ray.Direction);
     float vDotdSquared = vDotd * vDotd;
@@ -21,20 +45,23 @@ const Geometry* Sphere::IntersectRay(const Ray& ray, IntersectionData* intersect
 
     float discriminant = vDotdSquared - dSquared * (vSquared - rSquared);
     if (discriminant < Epsilon)
-        return nullptr;
+        return NAN;
 
     float discriminantSquareRoot = sqrt(discriminant);
     float vDotdNegative = -vDotd;
 
     float exitDistance = (vDotdNegative + discriminantSquareRoot) / dSquared;
     if (exitDistance < Epsilon)
-        return nullptr;
+        return NAN;
 
     float entranceDistance = fmax((vDotdNegative - discriminantSquareRoot) / dSquared, 0.0f);
+    if (intersectionData != nullptr)
+    {
+        Vector3 point = ray.Position + entranceDistance * ray.Direction;
+        Vector3 normal = (point - Position).Normalize();
 
-    Vector3 point = ray.Position + entranceDistance * ray.Direction;
-    Vector3 normal = (point - Position).Normalize();
-
-    *intersectionData = IntersectionData(entranceDistance, point, normal);
-    return this;
+        *intersectionData = IntersectionData{this, entranceDistance, point, normal};
+    }
+    
+    return entranceDistance;
 }

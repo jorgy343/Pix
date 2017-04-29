@@ -1,9 +1,10 @@
 #include "IntersectionData.h"
 
 using namespace Pix::Base;
+using namespace Pix::Base::Geometries;
 
-IntersectionData::IntersectionData(float distance, const Vector3& point, const Vector3& normal)
-    : _distance(distance), _point(point), _normal(normal)
+Pix::Base::IntersectionData::IntersectionData(const Geometry* intersectedGeometry, float distance, const Vector3& point, const Vector3& normal)
+    : _intersectedGeometry(intersectedGeometry), _distance(distance), _point(point), _normal(normal)
 {
 
 }
