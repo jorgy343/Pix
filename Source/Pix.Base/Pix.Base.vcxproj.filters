@@ -22,6 +22,12 @@
     <Filter Include="Source Files\Geometries">
       <UniqueIdentifier>{d31f6689-e9e5-45fd-934d-150060e30927}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Cameras">
+      <UniqueIdentifier>{e8dbafb2-ee7b-413c-842c-1156a36063bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Cameras">
+      <UniqueIdentifier>{d60bbe8e-c38c-4d1b-ac19-2774a5c42e56}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Color3T.h">
@@ -81,6 +87,21 @@
     <ClInclude Include="Plane.h">
       <Filter>Header Files\Geometries</Filter>
     </ClInclude>
+    <ClInclude Include="Quadric.h">
+      <Filter>Header Files\Geometries</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Header Files\Cameras</Filter>
+    </ClInclude>
+    <ClInclude Include="OrthographicCamera.h">
+      <Filter>Header Files\Cameras</Filter>
+    </ClInclude>
+    <ClInclude Include="PerspectiveCamera.h">
+      <Filter>Header Files\Cameras</Filter>
+    </ClInclude>
+    <ClInclude Include="Random.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="IntersectionData.cpp">
@@ -97,6 +118,18 @@
     </ClCompile>
     <ClCompile Include="Plane.cpp">
       <Filter>Source Files\Geometries</Filter>
+    </ClCompile>
+    <ClCompile Include="Quadric.cpp">
+      <Filter>Source Files\Geometries</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Source Files\Cameras</Filter>
+    </ClCompile>
+    <ClCompile Include="OrthographicCamera.cpp">
+      <Filter>Source Files\Cameras</Filter>
+    </ClCompile>
+    <ClCompile Include="PerspectiveCamera.cpp">
+      <Filter>Source Files\Cameras</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -138,5 +138,12 @@ namespace Pix::Client
             _stringBuffer[group * HistoryEntries + HistoryEntries - 1] = "    " + stringStream.str();
             UpdateBuffer();
         }
+
+        template <typename... Ts>
+        void UpdateStatusAndAddHistory(int group, Ts... values)
+        {
+            UpdateStatus(group, values...);
+            AddHistory(group, values...);
+        }
     };
 }

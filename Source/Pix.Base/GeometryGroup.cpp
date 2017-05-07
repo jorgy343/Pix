@@ -20,7 +20,8 @@ float GeometryGroup::IntersectRay(const Ray& ray, IntersectionData* intersection
         if (!isnan(foundDistance) && foundDistance < closestDistance)
         {
             closestDistance = foundDistance;
-            *intersectionData = tempIntersectionData; // TODO: Only set intersectionData at the end instead of every time we find a closer object.
+            if (intersectionData != nullptr)
+                *intersectionData = tempIntersectionData; // TODO: Only set intersectionData at the end instead of every time we find a closer object.
         }
     }
 

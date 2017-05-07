@@ -66,6 +66,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="Color3.h" />
     <ClInclude Include="Color3T.h" />
     <ClInclude Include="Color4.h" />
@@ -76,7 +77,11 @@
     <ClInclude Include="IntersectionData.h" />
     <ClInclude Include="Matrix.h" />
     <ClInclude Include="MatrixT.h" />
+    <ClInclude Include="OrthographicCamera.h" />
+    <ClInclude Include="PerspectiveCamera.h" />
     <ClInclude Include="Plane.h" />
+    <ClInclude Include="Quadric.h" />
+    <ClInclude Include="Random.h" />
     <ClInclude Include="Ray.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="Vector2.h" />
@@ -87,9 +92,13 @@
     <ClInclude Include="Vector4T.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="GeometryGroup.cpp" />
     <ClCompile Include="IntersectionData.cpp" />
+    <ClCompile Include="OrthographicCamera.cpp" />
+    <ClCompile Include="PerspectiveCamera.cpp" />
     <ClCompile Include="Plane.cpp" />
+    <ClCompile Include="Quadric.cpp" />
     <ClCompile Include="Ray.cpp" />
     <ClCompile Include="Sphere.cpp" />
   </ItemGroup>

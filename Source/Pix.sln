@@ -6,10 +6,23 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Pix.Base", "Pix.Base\Pix.Base.vcxproj", "{DF31EA45-10E1-4D13-8A9F-48B020B7CDE5}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Pix.Engine", "Pix.Engine\Pix.Engine.vcxproj", "{9D43CFC3-0FF4-41B5-B9D5-EBD3DD47D045}"
+	ProjectSection(ProjectDependencies) = postProject
+		{DF31EA45-10E1-4D13-8A9F-48B020B7CDE5} = {DF31EA45-10E1-4D13-8A9F-48B020B7CDE5}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pix.Server", "Pix.Server\Pix.Server.csproj", "{D2667215-2098-4CA7-ABAD-4EABD01A948C}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Pix.Client", "Pix.Client\Pix.Client.vcxproj", "{7D30F589-4043-49FA-8692-A5FF294DA8AD}"
+	ProjectSection(ProjectDependencies) = postProject
+		{DF31EA45-10E1-4D13-8A9F-48B020B7CDE5} = {DF31EA45-10E1-4D13-8A9F-48B020B7CDE5}
+		{9D43CFC3-0FF4-41B5-B9D5-EBD3DD47D045} = {9D43CFC3-0FF4-41B5-B9D5-EBD3DD47D045}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CDAF4B17-BB33-4BF7-A07A-4898541172AD}"
+	ProjectSection(SolutionItems) = preProject
+		PixScene.xsd = PixScene.xsd
+		TestScene.xml = TestScene.xml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

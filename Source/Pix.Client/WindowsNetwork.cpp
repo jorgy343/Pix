@@ -8,14 +8,14 @@ WindowsNetwork::WindowsNetwork(const char* ip, const char* port)
     int result = WSAStartup(MAKEWORD(2, 2), &_wsaData);
     if (result != 0)
     {
-        printf("WSAStartup failed: %d\n", result);
+        //printf("WSAStartup failed: %d\n", result);
         return;
     }
 
     result = getaddrinfo(ip, port, nullptr, &_addressInfoResult);
     if (result != 0)
     {
-        printf("getaddrinfo failed: %d\n", result);
+        //printf("getaddrinfo failed: %d\n", result);
         WSACleanup();
 
         return;
@@ -24,7 +24,7 @@ WindowsNetwork::WindowsNetwork(const char* ip, const char* port)
     _connectedSocket = socket(_addressInfoResult->ai_family, _addressInfoResult->ai_socktype, _addressInfoResult->ai_protocol);
     if (_connectedSocket == INVALID_SOCKET)
     {
-        printf("Error at socket(): %ld\n", WSAGetLastError());
+        //printf("Error at socket(): %ld\n", WSAGetLastError());
 
         freeaddrinfo(_addressInfoResult);
         WSACleanup();
@@ -35,7 +35,7 @@ WindowsNetwork::WindowsNetwork(const char* ip, const char* port)
     result = connect(_connectedSocket, _addressInfoResult->ai_addr, (int)_addressInfoResult->ai_addrlen);
     if (result == SOCKET_ERROR)
     {
-        printf("Error at connect(): %ld\n", WSAGetLastError());
+        //printf("Error at connect(): %ld\n", WSAGetLastError());
 
         closesocket(_connectedSocket);
         _connectedSocket = INVALID_SOCKET;
@@ -47,9 +47,9 @@ WindowsNetwork::WindowsNetwork(const char* ip, const char* port)
     freeaddrinfo(_addressInfoResult);
     if (_connectedSocket == INVALID_SOCKET)
     {
-        printf("Error at socket(): %ld\n", WSAGetLastError());
+        //printf("Error at socket(): %ld\n", WSAGetLastError());
 
-        printf("Unable to connect to server!\n");
+        //printf("Unable to connect to server!\n");
         WSACleanup();
 
         return;

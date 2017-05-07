@@ -21,7 +21,7 @@ namespace Pix.Server.ViewModel
 
         public void CreateSceneViewModel(object parameter)
         {
-            var sceneViewModel = new SceneViewModel(@"C:\Code\NovahTracer\Source\Novah.Tracer.Client\Scenes\LensScene.xml", 1920, 1080, 1080 / 10);
+            var sceneViewModel = new SceneViewModel(@"C:\Repos\Pix\Source\TestScene.xml", 640, 480, 480 / 20);
             SceneViewModels.Add(sceneViewModel);
 
             foreach (var chunk in sceneViewModel.Scene.Chunks)
