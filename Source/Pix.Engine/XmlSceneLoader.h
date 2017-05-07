@@ -15,6 +15,7 @@
 #include "Geometry.h"
 #include "GeometryGroup.h"
 #include "Sphere.h"
+#include "Scene.h"
 
 using namespace Pix::Base;
 using namespace Pix::Base::Cameras;
@@ -50,5 +51,8 @@ namespace Pix::Engine
 
     public:
         XmlSceneLoader(const char* xmlContent);
+
+        Scene* CreateScene() const;
+        Camera* CreateCamera() const;
     };
 }

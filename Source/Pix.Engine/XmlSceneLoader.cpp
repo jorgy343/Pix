@@ -248,3 +248,21 @@ XmlSceneLoader::XmlSceneLoader(const char* xmlContent)
 {
     _document.load_string(xmlContent);
 }
+
+Scene* XmlSceneLoader::CreateScene() const
+{
+    auto sceneElement = _document.select_single_node("Scene").node();
+    auto backgroundColor = ParseColor3(sceneElement.attribute("DefaultColor").as_string());
+    auto antiAliasingLevel = sceneElement.attribute("AntialiasingLevel").as_int();
+
+    return new Scene(backgroundColor, ParseRootGeometry());
+}
+
+Camera* XmlSceneLoader::CreateCamera() const
+{
+    auto perspectiveCameraElement = _document.select_single_node("//Camera/PerspectiveCamera").node();
+    if (perspectiveCameraElement != nullptr)
+        return ParsePerspectiveCamera(perspectiveCameraElement);
+
+    return nullptr;
+}
