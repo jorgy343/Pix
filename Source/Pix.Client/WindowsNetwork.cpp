@@ -140,5 +140,6 @@ std::unique_ptr<const char[]> WindowsNetwork::GetMessage()
     while (!IsMessageReady())
         Read();
 
+    _state = NetworkState::ReadingMessageType;
     return std::move(_message);
 }

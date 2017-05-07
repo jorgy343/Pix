@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Scene xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="PixScene.xsd" DefaultColor="0,0,0" AntialiasingLevel="1">
+<Scene xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="PixScene.xsd" DefaultColor="0,0.8,0" AntialiasingLevel="1">
   <Camera>
     <PerspectiveCamera Position="0,0,0" LookAt="1,0,0" Up="0,1,0" ScreenWidth="640" ScreenHeight="480" FieldOfView="1.57079633" />
   </Camera>
