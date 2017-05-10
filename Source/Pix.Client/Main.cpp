@@ -48,8 +48,9 @@ int _tmain(int argc, _TCHAR* argv[])
 
                 XmlSceneLoader sceneLoader(sceneXml);
 
-                auto scene = sceneLoader.CreateScene();
+                auto sceneOptions = sceneLoader.CreateSceneOptions();
                 auto camera = sceneLoader.CreateCamera();
+                auto scene = sceneLoader.CreateScene(sceneOptions, camera);
 
                 // Render the scene.
                 int antiAliasingLevel = 1;//scene->GetAntiAliasingLevel();

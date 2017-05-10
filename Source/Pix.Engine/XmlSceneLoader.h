@@ -40,6 +40,7 @@ namespace Pix::Engine
         Matrix ParseMatrix(const pugi::xml_node& element) const;
         Matrix ParseMatrixStack(const pugi::xml_node& element) const;
 
+        Camera* ParseCamera(const pugi::xml_node& element) const;
         PerspectiveCamera* ParsePerspectiveCamera(const pugi::xml_node& element) const;
         OrthographicCamera* ParseOrthographicCamera(const pugi::xml_node& element) const;
 
@@ -52,7 +53,8 @@ namespace Pix::Engine
     public:
         XmlSceneLoader(const char* xmlContent);
 
-        Scene* CreateScene() const;
+        SceneOptions* CreateSceneOptions() const;
         Camera* CreateCamera() const;
+        Scene* CreateScene(const SceneOptions* sceneOptions, const Camera* camera) const;
     };
 }

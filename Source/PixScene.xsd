@@ -4,107 +4,117 @@
     <xs:complexType>
       <xs:all>
 
+        <xs:element name="Options" type="TypeOptions" minOccurs="1" maxOccurs="1" />
+
         <xs:element name="Camera" minOccurs="1" maxOccurs="1">
           <xs:complexType>
             <xs:choice>
-              <xs:element name="PerspectiveCamera" type="PerspectiveCamera" />
-              <xs:element name="OrthographicCamera" type="OrthographicCamera" />
+              <xs:element name="PerspectiveCamera" type="TypePerspectiveCamera" />
+              <xs:element name="OrthographicCamera" type="TypeOrthographicCamera" />
             </xs:choice>
           </xs:complexType>
         </xs:element>
 
         <xs:element name="RootGeometry" minOccurs="1">
           <xs:complexType>
-            <xs:group ref="GroupOfGeometries" minOccurs="1" maxOccurs="1" />
+            <xs:group ref="GroupGeometries" minOccurs="1" maxOccurs="1" />
           </xs:complexType>
         </xs:element>
         
       </xs:all>
-
-      <xs:attribute name="DefaultColor" type="Color3" use="required" />
-      <xs:attribute name="AntialiasingLevel" type="xs:integer" use="required" />
       
     </xs:complexType>
   </xs:element>
   
-  <xs:simpleType name="Color3">
+  <xs:simpleType name="TypeColor3">
     <xs:restriction base="xs:string">
       <xs:pattern value="\s*([+-]?[0-9]+\.?[0-9]*)\s*,\s*([+-]?[0-9]+\.?[0-9]*)\s*,\s*([+-]?[0-9]+\.?[0-9]*)\s*" />
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="Vector3">
-    <xs:restriction base="xs:string">
-      <xs:pattern value="\s*([+-]?[0-9]+\.?[0-9]*)\s*,\s*([+-]?[0-9]+\.?[0-9]*)\s*,\s*([+-]?[0-9]+\.?[0-9]*)\s*" />
-    </xs:restriction>
-  </xs:simpleType>
-
-  <xs:simpleType name="Vector4">
+  <xs:simpleType name="TypeColor4">
     <xs:restriction base="xs:string">
       <xs:pattern value="\s*([+-]?[0-9]+\.?[0-9]*)\s*,\s*([+-]?[0-9]+\.?[0-9]*)\s*,\s*([+-]?[0-9]+\.?[0-9]*)\s*,\s*([+-]?[0-9]+\.?[0-9]*)\s*" />
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="Name">
+  <xs:simpleType name="TypeVector2">
     <xs:restriction base="xs:string">
-      <xs:pattern value="[a-zA-Z_][a-zA-Z0-9_]*" />
+      <xs:pattern value="\s*([+-]?[0-9]+\.?[0-9]*)\s*,\s*([+-]?[0-9]+\.?[0-9]*)\s*" />
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:complexType name="MatrixStack">
+  <xs:simpleType name="TypeVector3">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\s*([+-]?[0-9]+\.?[0-9]*)\s*,\s*([+-]?[0-9]+\.?[0-9]*)\s*,\s*([+-]?[0-9]+\.?[0-9]*)\s*" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="TypeVector4">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\s*([+-]?[0-9]+\.?[0-9]*)\s*,\s*([+-]?[0-9]+\.?[0-9]*)\s*,\s*([+-]?[0-9]+\.?[0-9]*)\s*,\s*([+-]?[0-9]+\.?[0-9]*)\s*" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="TypeMatrixStack">
     <xs:choice minOccurs="1" maxOccurs="unbounded">
       <xs:element name="ScaleMatrix">
         <xs:complexType>
-          <xs:attribute name="Scale" type="Vector3" use="required" />
+          <xs:attribute name="Scale" type="TypeVector3" use="required" />
         </xs:complexType>
       </xs:element>
       <xs:element name="TranslationMatrix">
         <xs:complexType>
-          <xs:attribute name="Translation" type="Vector3" use="required" />
+          <xs:attribute name="Translation" type="TypeVector3" use="required" />
         </xs:complexType>
       </xs:element>
     </xs:choice>
   </xs:complexType>
 
-  <xs:complexType name="PerspectiveCamera">
-    <xs:attribute name="Position" type="Vector3" use="required" />
-    <xs:attribute name="LookAt" type="Vector3" use="required" />
-    <xs:attribute name="Up" type="Vector3" use="required" />
+  <xs:complexType name="TypeOptions">
+    <xs:all>
+      <xs:element name="DefaultColor" type="TypeColor3" minOccurs="1" maxOccurs="1" />
+      <xs:element name="AntialiasingLevel" type="xs:positiveInteger" minOccurs="1" maxOccurs="1" />
+    </xs:all>
+  </xs:complexType>
+
+  <xs:complexType name="TypePerspectiveCamera">
+    <xs:attribute name="Position" type="TypeVector3" use="required" />
+    <xs:attribute name="LookAt" type="TypeVector3" use="required" />
+    <xs:attribute name="Up" type="TypeVector3" use="required" />
     <xs:attribute name="ScreenWidth" type="xs:int" use="required" />
     <xs:attribute name="ScreenHeight" type="xs:int" use="required" />
     <xs:attribute name="FieldOfView" type="xs:float" use="required" />
   </xs:complexType>
 
-  <xs:complexType name="OrthographicCamera">
-    <xs:attribute name="Position" type="Vector3" use="required" />
-    <xs:attribute name="LookAt" type="Vector3" use="required" />
-    <xs:attribute name="Up" type="Vector3" use="required" />
+  <xs:complexType name="TypeOrthographicCamera">
+    <xs:attribute name="Position" type="TypeVector3" use="required" />
+    <xs:attribute name="LookAt" type="TypeVector3" use="required" />
+    <xs:attribute name="Up" type="TypeVector3" use="required" />
     <xs:attribute name="ScreenWidth" type="xs:int" use="required" />
     <xs:attribute name="ScreenHeight" type="xs:int" use="required" />
     <xs:attribute name="OrthoWidth" type="xs:float" use="required" />
     <xs:attribute name="OrthoHeight" type="xs:float" use="required" />
   </xs:complexType>
 
-  <xs:group name="GroupOfGeometries">
+  <xs:group name="GroupGeometries">
     <xs:choice>
-      <xs:element name="Sphere" type="Sphere" />
+      <xs:element name="Sphere" type="TypeSphere" />
     </xs:choice>
   </xs:group>
 
-  <xs:complexType name="GeometryGroup">
+  <xs:complexType name="TypeGeometryGroup">
     <xs:all>
       <xs:element name="Geometries" minOccurs="1" maxOccurs="1">
         <xs:complexType>
-          <xs:group ref="GroupOfGeometries" minOccurs="1" maxOccurs="unbounded" />
+          <xs:group ref="GroupGeometries" minOccurs="1" maxOccurs="unbounded" />
         </xs:complexType>
       </xs:element>
     </xs:all>
-    <xs:attribute name="Name" type="Name" use="optional" />
   </xs:complexType>
 
-  <xs:complexType name="Sphere">
-    <xs:attribute name="Name" type="Name" use="optional" />
-    <xs:attribute name="Center" type="Vector3" use="required" />
+  <xs:complexType name="TypeSphere">
+    <xs:attribute name="Center" type="TypeVector3" use="required" />
     <xs:attribute name="Radius" type="xs:float" use="required" />
   </xs:complexType>
 </xs:schema>

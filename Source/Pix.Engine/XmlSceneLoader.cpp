@@ -155,7 +155,7 @@ Vector4 XmlSceneLoader::ParseVector4(const char* string) const
 
 Matrix XmlSceneLoader::ParseMatrix(const pugi::xml_node& element) const
 {
-    auto elementName = element.name();
+    std::string elementName = element.name();
     if (elementName == "ScaleMatrix")
     {
         auto scale = ParseVector3(element.attribute("Scale").value());
@@ -173,6 +173,19 @@ Matrix XmlSceneLoader::ParseMatrixStack(const pugi::xml_node& element) const
         matrix = matrix * ParseMatrix(child);
 
     return matrix;
+}
+
+Camera* XmlSceneLoader::ParseCamera(const pugi::xml_node& element) const
+{
+    std::string elementName = element.name();
+    Camera* camera = nullptr;
+
+    if (elementName == "PerspectiveCamera")
+        camera = ParsePerspectiveCamera(element);
+    else if (elementName == "OrthographicCamera")
+        camera = ParseOrthographicCamera(element);
+
+    return camera;
 }
 
 PerspectiveCamera* XmlSceneLoader::ParsePerspectiveCamera(const pugi::xml_node& element) const
@@ -212,7 +225,7 @@ Geometry* XmlSceneLoader::ParseRootGeometry() const
 
 Geometry* XmlSceneLoader::ParseGeometry(const pugi::xml_node& element) const
 {
-    auto elementName = element.name();
+    std::string elementName = element.name();
     Geometry* geometry = nullptr;
 
     if (elementName == "GeometryGroup")
@@ -249,20 +262,27 @@ XmlSceneLoader::XmlSceneLoader(const char* xmlContent)
     _document.load_string(xmlContent);
 }
 
-Scene* XmlSceneLoader::CreateScene() const
+
+SceneOptions* XmlSceneLoader::CreateSceneOptions() const
+{
+    auto optionsElement = _document.select_single_node("//Options").node();
+    auto defaultColor = ParseColor3(optionsElement.select_single_node("DefaultColor").node().first_child().value());
+    auto antialiasingLevel = optionsElement.select_single_node("AntialiasingLevel").node().text().as_int();
+
+    return new SceneOptions(defaultColor, antialiasingLevel);
+}
+
+Camera* XmlSceneLoader::CreateCamera() const
+{
+    auto cameraElement = _document.select_single_node("//Camera/*").node();
+    return ParseCamera(cameraElement);
+}
+
+Scene* XmlSceneLoader::CreateScene(const SceneOptions* sceneOptions, const Camera* camera) const
 {
     auto sceneElement = _document.select_single_node("Scene").node();
     auto backgroundColor = ParseColor3(sceneElement.attribute("DefaultColor").as_string());
     auto antiAliasingLevel = sceneElement.attribute("AntialiasingLevel").as_int();
 
-    return new Scene(backgroundColor, ParseRootGeometry());
-}
-
-Camera* XmlSceneLoader::CreateCamera() const
-{
-    auto perspectiveCameraElement = _document.select_single_node("//Camera/PerspectiveCamera").node();
-    if (perspectiveCameraElement != nullptr)
-        return ParsePerspectiveCamera(perspectiveCameraElement);
-
-    return nullptr;
+    return new Scene(sceneOptions, camera, ParseRootGeometry());
 }

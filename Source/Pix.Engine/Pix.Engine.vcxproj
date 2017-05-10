@@ -76,11 +76,13 @@
     <ClInclude Include="pugiconfig.h" />
     <ClInclude Include="pugixml.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="SceneOptions.h" />
     <ClInclude Include="XmlSceneLoader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pugixml.cpp" />
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="SceneOptions.cpp" />
     <ClCompile Include="XmlSceneLoader.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
