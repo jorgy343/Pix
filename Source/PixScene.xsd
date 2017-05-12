@@ -8,14 +8,17 @@
 
         <xs:element name="Camera" minOccurs="1" maxOccurs="1">
           <xs:complexType>
-            <xs:choice>
-              <xs:element name="PerspectiveCamera" type="TypePerspectiveCamera" />
-              <xs:element name="OrthographicCamera" type="TypeOrthographicCamera" />
-            </xs:choice>
+            <xs:group ref="GroupCameras" minOccurs="1" maxOccurs="1" />
           </xs:complexType>
         </xs:element>
 
-        <xs:element name="RootGeometry" minOccurs="1">
+        <xs:element name="Lights" minOccurs="1" maxOccurs="1">
+          <xs:complexType>
+            <xs:group ref="GroupLights" minOccurs="0" maxOccurs="unbounded" />
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name="RootGeometry" minOccurs="1" maxOccurs="1">
           <xs:complexType>
             <xs:group ref="GroupGeometries" minOccurs="1" maxOccurs="1" />
           </xs:complexType>
@@ -78,6 +81,24 @@
     </xs:all>
   </xs:complexType>
 
+  <xs:group name="GroupLights">
+    <xs:choice>
+      <xs:element name="DirectionalLight" type="TypeDirectionalLight" />
+    </xs:choice>
+  </xs:group>
+
+  <xs:complexType name="TypeDirectionalLight">
+    <xs:attribute name="Color" type="TypeColor3" use="required" />
+    <xs:attribute name="Direction" type="TypeVector3" use="required" />
+  </xs:complexType>
+
+  <xs:group name="GroupCameras">
+    <xs:choice>
+      <xs:element name="PerspectiveCamera" type="TypePerspectiveCamera" />
+      <xs:element name="OrthographicCamera" type="TypeOrthographicCamera" />
+    </xs:choice>
+  </xs:group>
+
   <xs:complexType name="TypePerspectiveCamera">
     <xs:attribute name="Position" type="TypeVector3" use="required" />
     <xs:attribute name="LookAt" type="TypeVector3" use="required" />
@@ -99,6 +120,7 @@
 
   <xs:group name="GroupGeometries">
     <xs:choice>
+      <xs:element name="GeometryGroup" type="TypeGeometryGroup" />
       <xs:element name="Sphere" type="TypeSphere" />
     </xs:choice>
   </xs:group>

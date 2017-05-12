@@ -53,7 +53,7 @@ int _tmain(int argc, _TCHAR* argv[])
                 auto scene = sceneLoader.CreateScene(sceneOptions, camera);
 
                 // Render the scene.
-                int antiAliasingLevel = 1;//scene->GetAntiAliasingLevel();
+                int antiAliasingLevel = sceneOptions->GetAntialiasingLevel();
                 int* sendBuffer = new int[width * chunkHeight + 4];
 
                 Ray* rays = new Ray[antiAliasingLevel * antiAliasingLevel];

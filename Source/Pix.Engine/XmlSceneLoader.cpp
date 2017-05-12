@@ -284,5 +284,5 @@ Scene* XmlSceneLoader::CreateScene(const SceneOptions* sceneOptions, const Camer
     auto backgroundColor = ParseColor3(sceneElement.attribute("DefaultColor").as_string());
     auto antiAliasingLevel = sceneElement.attribute("AntialiasingLevel").as_int();
 
-    return new Scene(sceneOptions, camera, ParseRootGeometry());
+    return new Scene(sceneOptions, camera, nullptr, ParseRootGeometry()); // TODO: Don't pass in nulltpr!
 }

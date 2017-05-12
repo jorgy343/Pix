@@ -2,8 +2,8 @@
 
 using namespace Pix::Engine;
 
-Scene::Scene(const SceneOptions* options, const Camera* camera, const Geometry* rootGeometry)
-    : _options(options), _camera(camera), _rootGeometry(rootGeometry)
+Scene::Scene(const SceneOptions* options, const Camera* camera, const std::vector<const Light*>* lights, const Geometry* rootGeometry)
+    : _options(options), _camera(camera), _lights(lights), _rootGeometry(rootGeometry)
 {
 
 }

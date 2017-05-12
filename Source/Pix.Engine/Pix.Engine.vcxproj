@@ -73,6 +73,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="DiffuseMaterial.h" />
+    <ClInclude Include="DirectionalLight.h" />
+    <ClInclude Include="Light.h" />
+    <ClInclude Include="Material.h" />
+    <ClInclude Include="MaterialType.h" />
     <ClInclude Include="pugiconfig.h" />
     <ClInclude Include="pugixml.h" />
     <ClInclude Include="Scene.h" />
@@ -80,6 +85,8 @@
     <ClInclude Include="XmlSceneLoader.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DirectionalLight.cpp" />
+    <ClCompile Include="Light.cpp" />
     <ClCompile Include="pugixml.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneOptions.cpp" />

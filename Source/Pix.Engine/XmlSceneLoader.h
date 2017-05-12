@@ -16,10 +16,13 @@
 #include "GeometryGroup.h"
 #include "Sphere.h"
 #include "Scene.h"
+#include "Light.h"
+#include "DirectionalLight.h"
 
 using namespace Pix::Base;
 using namespace Pix::Base::Cameras;
 using namespace Pix::Base::Geometries;
+using namespace Pix::Engine::Lights;
 
 namespace Pix::Engine
 {
@@ -43,6 +46,9 @@ namespace Pix::Engine
         Camera* ParseCamera(const pugi::xml_node& element) const;
         PerspectiveCamera* ParsePerspectiveCamera(const pugi::xml_node& element) const;
         OrthographicCamera* ParseOrthographicCamera(const pugi::xml_node& element) const;
+
+        std::vector<const Light*>* ParseLights() const;
+        DirectionalLight* ParseDirectionalLight(const pugi::xml_node& element) const;
 
         Geometry* ParseRootGeometry() const;
         Geometry* ParseGeometry(const pugi::xml_node& element) const;
