@@ -84,12 +84,18 @@
   <xs:group name="GroupLights">
     <xs:choice>
       <xs:element name="DirectionalLight" type="TypeDirectionalLight" />
+      <xs:element name="PointLight" type="TypePointLight" />
     </xs:choice>
   </xs:group>
 
   <xs:complexType name="TypeDirectionalLight">
     <xs:attribute name="Color" type="TypeColor3" use="required" />
     <xs:attribute name="Direction" type="TypeVector3" use="required" />
+  </xs:complexType>
+
+  <xs:complexType name="TypePointLight">
+    <xs:attribute name="Color" type="TypeColor3" use="required" />
+    <xs:attribute name="Position" type="TypeVector3" use="required" />
   </xs:complexType>
 
   <xs:group name="GroupCameras">

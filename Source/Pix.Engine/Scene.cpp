@@ -10,6 +10,8 @@ Scene::Scene(const SceneOptions* options, const Camera* camera, const std::vecto
 
 Color3 Scene::CastRay(const Ray& ray, int depth) const
 {
+    IntersectionData dummyIntersectionData;
+
     IntersectionData intersectionData;
     float distance = _rootGeometry->IntersectRay(ray, &intersectionData);
 
@@ -19,7 +21,24 @@ Color3 Scene::CastRay(const Ray& ray, int depth) const
     Color3 lightPower(0.0f);
     for (const auto& light : *_lights)
     {
-        lightPower += light->CalculateIntensity(intersectionData.GetPoint(), intersectionData.GetNormal());
+        bool inShadow = false;
+        LightType lightType = light->GetType();
+
+        if (lightType == LightType::Directional)
+        {
+            Ray shadowRay(intersectionData.GetPoint() + intersectionData.GetNormal() * Epsilon, ((DirectionalLight*)light)->GetReversedDirection());
+            float shadowDistance = _rootGeometry->IntersectRay(shadowRay, &dummyIntersectionData);
+
+            if (shadowDistance != INFINITY)
+                inShadow = true;
+        }
+        else if (lightType == LightType::Point)
+        {
+
+        }
+
+        if (!inShadow)
+            lightPower += light->CalculateIntensity(intersectionData.GetPoint(), intersectionData.GetNormal());
     }
 
     return lightPower;

@@ -17,5 +17,8 @@ namespace Pix::Engine::Lights
         DirectionalLight(const Color3& color, const Vector3& direction);
 
         Color3 CalculateIntensity(const Vector3& point, const Vector3& normal) const override;
+
+        Vector3 GetDirection() const;
+        Vector3 GetReversedDirection() const;
     };
 }

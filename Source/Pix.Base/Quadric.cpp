@@ -29,11 +29,11 @@ float Quadric::IntersectRay(const Ray& ray, IntersectionData* intersectionData) 
 
     float discriminant = b * b - 4.0f * a * c;
     if (discriminant < 0.0f)
-        return NAN;
+        return INFINITY;
 
     float distance = (-b - sqrt(discriminant)) / (2.0f * a);
     if (distance < 0.0f)
-        return NAN;
+        return INFINITY;
 
     if (intersectionData != nullptr)
     {

@@ -17,7 +17,7 @@ float GeometryGroup::IntersectRay(const Ray& ray, IntersectionData* intersection
     for (const auto& surface : *_geometries)
     {
         auto foundDistance = surface->IntersectRay(ray, &tempIntersectionData);
-        if (!isnan(foundDistance) && foundDistance < closestDistance)
+        if (foundDistance != INFINITY && foundDistance < closestDistance)
         {
             closestDistance = foundDistance;
             if (intersectionData != nullptr)
@@ -25,5 +25,5 @@ float GeometryGroup::IntersectRay(const Ray& ray, IntersectionData* intersection
         }
     }
 
-    return closestDistance == FLT_MAX ? NAN : closestDistance;
+    return closestDistance == FLT_MAX ? INFINITY : closestDistance;
 }

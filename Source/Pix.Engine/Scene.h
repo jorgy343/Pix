@@ -2,11 +2,14 @@
 
 #include <vector>
 
+#include "General.h"
 #include "Color3.h"
 #include "Geometry.h"
 #include "Camera.h"
 #include "SceneOptions.h"
 #include "Light.h"
+#include "DirectionalLight.h"
+#include "PointLight.h"
 #include "IntersectionData.h"
 
 using namespace Pix::Base;

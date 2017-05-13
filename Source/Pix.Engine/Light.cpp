@@ -2,8 +2,18 @@
 
 using namespace Pix::Engine::Lights;
 
-Light::Light(const Color3& color)
-    : _color(color)
+Light::Light(LightType type, const Color3& color)
+    : _type(type), _color(color)
 {
 
+}
+
+LightType Light::GetType() const
+{
+    return _type;
+}
+
+Color3 Light::GetColor() const
+{
+    return _color;
 }

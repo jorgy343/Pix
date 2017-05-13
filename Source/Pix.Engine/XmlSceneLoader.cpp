@@ -257,7 +257,7 @@ Geometry* XmlSceneLoader::ParseGeometry(const pugi::xml_node& element) const
 Geometry* XmlSceneLoader::ParseGeometryGroup(const pugi::xml_node& element) const
 {
     auto geometries = new std::vector<const Geometry*>();
-    for (auto& child : element.select_single_node("./Surfaces").node().children())
+    for (auto& child : element.select_single_node("./Geometries").node().children())
     {
         auto geometry = ParseGeometry(child);
         if (geometry != nullptr)
