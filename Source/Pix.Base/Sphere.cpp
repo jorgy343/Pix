@@ -45,14 +45,14 @@ float Sphere::IntersectRay(const Ray& ray, IntersectionData* intersectionData) c
 
     float discriminant = vDotdSquared - dSquared * (vSquared - rSquared);
     if (discriminant < Epsilon)
-        return NAN;
+        return INFINITY;
 
     float discriminantSquareRoot = sqrt(discriminant);
     float vDotdNegative = -vDotd;
 
     float exitDistance = (vDotdNegative + discriminantSquareRoot) / dSquared;
     if (exitDistance < Epsilon)
-        return NAN;
+        return INFINITY;
 
     float entranceDistance = fmax((vDotdNegative - discriminantSquareRoot) / dSquared, 0.0f);
     if (intersectionData != nullptr)

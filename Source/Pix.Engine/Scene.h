@@ -7,6 +7,7 @@
 #include "Camera.h"
 #include "SceneOptions.h"
 #include "Light.h"
+#include "IntersectionData.h"
 
 using namespace Pix::Base;
 using namespace Pix::Base::Geometries;
@@ -29,5 +30,8 @@ namespace Pix::Engine
         Scene(const SceneOptions* options, const Camera* camera, const std::vector<const Light*>* lights, const Geometry* rootGeometry);
 
         Color3 CastRay(const Ray& ray) const;
+
+        const SceneOptions* GetOptions() const;
+        const Camera* GetCamera() const;
     };
 }

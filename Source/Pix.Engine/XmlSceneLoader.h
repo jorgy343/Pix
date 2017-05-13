@@ -48,7 +48,6 @@ namespace Pix::Engine
         OrthographicCamera* ParseOrthographicCamera(const pugi::xml_node& element) const;
 
         std::vector<const Light*>* ParseLights() const;
-        DirectionalLight* ParseDirectionalLight(const pugi::xml_node& element) const;
 
         Geometry* ParseRootGeometry() const;
         Geometry* ParseGeometry(const pugi::xml_node& element) const;
@@ -61,6 +60,6 @@ namespace Pix::Engine
 
         SceneOptions* CreateSceneOptions() const;
         Camera* CreateCamera() const;
-        Scene* CreateScene(const SceneOptions* sceneOptions, const Camera* camera) const;
+        Scene* CreateScene() const;
     };
 }

@@ -217,6 +217,24 @@ OrthographicCamera* XmlSceneLoader::ParseOrthographicCamera(const pugi::xml_node
     return new OrthographicCamera(position, lookAt, up, windowWidth, windowHeight, orthoWidth, orthoHeight);
 }
 
+std::vector<const Light*>* XmlSceneLoader::ParseLights() const
+{
+    auto lights = new std::vector<const Light*>();
+    for (auto node : _document.select_nodes("//Lights/*"))
+    {
+        std::string elementName = node.node().name();
+        if (elementName == "DirectionalLight")
+        {
+            auto color = ParseColor3(node.node().attribute("Color").value());
+            auto direction = ParseVector3(node.node().attribute("Direction").value());
+
+            lights->push_back(new DirectionalLight(color, direction));
+        }
+    }
+
+    return lights;
+}
+
 Geometry* XmlSceneLoader::ParseRootGeometry() const
 {
     auto rootGeometryElement = _document.select_single_node("//RootGeometry/*").node();
@@ -278,11 +296,11 @@ Camera* XmlSceneLoader::CreateCamera() const
     return ParseCamera(cameraElement);
 }
 
-Scene* XmlSceneLoader::CreateScene(const SceneOptions* sceneOptions, const Camera* camera) const
+Scene* XmlSceneLoader::CreateScene() const
 {
     auto sceneElement = _document.select_single_node("Scene").node();
     auto backgroundColor = ParseColor3(sceneElement.attribute("DefaultColor").as_string());
     auto antiAliasingLevel = sceneElement.attribute("AntialiasingLevel").as_int();
 
-    return new Scene(sceneOptions, camera, nullptr, ParseRootGeometry()); // TODO: Don't pass in nulltpr!
+    return new Scene(CreateSceneOptions(), CreateCamera(), ParseLights(), ParseRootGeometry());
 }

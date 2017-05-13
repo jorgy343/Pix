@@ -47,13 +47,10 @@ int _tmain(int argc, _TCHAR* argv[])
                 console->UpdateStatusAndAddHistory(i, "Received chunk. Scene ID: ", sceneId, " Chunk ID: ", chunkId, ". Processing...");
 
                 XmlSceneLoader sceneLoader(sceneXml);
-
-                auto sceneOptions = sceneLoader.CreateSceneOptions();
-                auto camera = sceneLoader.CreateCamera();
-                auto scene = sceneLoader.CreateScene(sceneOptions, camera);
+                auto scene = sceneLoader.CreateScene();
 
                 // Render the scene.
-                int antiAliasingLevel = sceneOptions->GetAntialiasingLevel();
+                int antiAliasingLevel = scene->GetOptions()->GetAntialiasingLevel();
                 int* sendBuffer = new int[width * chunkHeight + 4];
 
                 Ray* rays = new Ray[antiAliasingLevel * antiAliasingLevel];
@@ -61,7 +58,7 @@ int _tmain(int argc, _TCHAR* argv[])
                 {
                     for (int x = 0; x < width; ++x)
                     {
-                        camera->CalculateRays(x, y, antiAliasingLevel, rays);
+                        scene->GetCamera()->CalculateRays(x, y, antiAliasingLevel, rays);
 
                         Color3 color(0.0f);
                         for (int i = 0; i < antiAliasingLevel * antiAliasingLevel; ++i)
@@ -77,10 +74,6 @@ int _tmain(int argc, _TCHAR* argv[])
                 }
 
                 //console.UpdateStatus(threadIndex + 1, "Thread ", threadIndex, ": Chunk received. Processing: 100%");
-
-                // Cleanup resources.
-                delete scene;
-                delete camera;
 
                 // Send the result.
                 sendBuffer[0] = 3;

@@ -15,7 +15,7 @@
   </Camera>
 
   <Lights>
-    <DirectionalLight Color="1,1,1" Direction="1,0,0" />
+    <DirectionalLight Color="1,1,1" Direction="0.980581, 0.196116,0" />
   </Lights>
   
   <RootGeometry>
