@@ -230,6 +230,13 @@ std::vector<const Light*>* XmlSceneLoader::ParseLights() const
 
             lights->push_back(new DirectionalLight(color, direction));
         }
+        else if (elementName == "PointLight")
+        {
+            auto color = ParseColor3(node.node().attribute("Color").value());
+            auto position = ParseVector3(node.node().attribute("Position").value());
+
+            lights->push_back(new PointLight(color, position));
+        }
     }
 
     return lights;

@@ -29,6 +29,8 @@ namespace Pix::Engine
 
         Color3 CastRay(const Ray& ray, int depth) const;
 
+        Color3 CalculateLightPower(const IntersectionData* intersectionData) const;
+
     public:
         Scene(const SceneOptions* options, const Camera* camera, const std::vector<const Light*>* lights, const Geometry* rootGeometry);
 

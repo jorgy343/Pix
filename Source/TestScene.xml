@@ -15,14 +15,13 @@
   </Camera>
 
   <Lights>
-    <DirectionalLight Color="1,1,1" Direction="1,0,0" />
+    <PointLight Color="1,1,1" Position="-10,10,0" />
   </Lights>
   
   <RootGeometry>
     <GeometryGroup>
       <Geometries>
         <Sphere Center="10,0,0" Radius="2" />
-        <Sphere Center="-10,2,0" Radius="2" />
       </Geometries>
     </GeometryGroup>
   </RootGeometry>
