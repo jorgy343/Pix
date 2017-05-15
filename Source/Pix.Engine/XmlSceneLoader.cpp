@@ -175,6 +175,36 @@ Matrix XmlSceneLoader::ParseMatrixStack(const pugi::xml_node& element) const
     return matrix;
 }
 
+MaterialNameMap* XmlSceneLoader::ParseMaterials() const
+{
+    auto materialNameMap = new MaterialNameMap();
+    for (auto node : _document.select_nodes("//Materials/*"))
+    {
+        Material* material = ParseMaterial(node.node());
+        std::string materialName = node.node().attribute("Name").value();
+
+        if (material != nullptr)
+            materialNameMap->insert_or_assign(materialName, material);
+    }
+
+    return materialNameMap;
+}
+
+Material* XmlSceneLoader::ParseMaterial(const pugi::xml_node& element) const
+{
+    std::string elementName = element.name();
+    if (elementName == "DiffuseMaterial")
+    {
+        auto color = ParseColor3(element.attribute("Color").value());
+        auto diffuseWeight = element.attribute("DiffuseWeight").as_float();
+        auto specularWeight = element.attribute("SpecularWeight").as_float();
+
+        return new DiffuseMaterial(color, diffuseWeight, specularWeight);
+    }
+
+    return nullptr;
+}
+
 Camera* XmlSceneLoader::ParseCamera(const pugi::xml_node& element) const
 {
     std::string elementName = element.name();
@@ -242,31 +272,50 @@ std::vector<const Light*>* XmlSceneLoader::ParseLights() const
     return lights;
 }
 
-Geometry* XmlSceneLoader::ParseRootGeometry() const
+Geometry* XmlSceneLoader::ParseRootGeometry(const MaterialNameMap* materialNameMap, MaterialGeometryMap* materialGeometryMap) const
 {
     auto rootGeometryElement = _document.select_single_node("//RootGeometry/*").node();
-    return ParseGeometry(rootGeometryElement);
+    return ParseGeometry(rootGeometryElement, materialNameMap, materialGeometryMap);
 }
 
-Geometry* XmlSceneLoader::ParseGeometry(const pugi::xml_node& element) const
+Geometry* XmlSceneLoader::ParseGeometry(const pugi::xml_node& element, const MaterialNameMap* materialNameMap, MaterialGeometryMap* materialGeometryMap) const
 {
     std::string elementName = element.name();
     Geometry* geometry = nullptr;
 
     if (elementName == "GeometryGroup")
-        geometry = ParseGeometryGroup(element);
+        geometry = ParseGeometryGroup(element, materialNameMap, materialGeometryMap);
     else if (elementName == "Sphere")
         geometry = ParseSphere(element);
+
+    if (geometry != nullptr)
+    {
+        std::string materialName = element.attribute("MaterialName").as_string();
+        if (materialNameMap->count(materialName) == 1)
+        {
+            const Material* material = materialNameMap->at(materialName);
+            materialGeometryMap->insert_or_assign(geometry, material);
+        }
+
+        // Parse a local materia if present.
+        auto materialElement = element.select_single_node("./Material/*");
+        if (materialElement)
+        {
+            auto material = ParseMaterial(materialElement.node());
+            if (material != nullptr)
+                materialGeometryMap->insert_or_assign(geometry, material);
+        }
+    }
 
     return geometry;
 }
 
-Geometry* XmlSceneLoader::ParseGeometryGroup(const pugi::xml_node& element) const
+GeometryGroup* XmlSceneLoader::ParseGeometryGroup(const pugi::xml_node& element, const MaterialNameMap* materialNameMap, MaterialGeometryMap* materialGeometryMap) const
 {
     auto geometries = new std::vector<const Geometry*>();
     for (auto& child : element.select_single_node("./Geometries").node().children())
     {
-        auto geometry = ParseGeometry(child);
+        auto geometry = ParseGeometry(child, materialNameMap, materialGeometryMap);
         if (geometry != nullptr)
             geometries->push_back(geometry);
     }
@@ -274,7 +323,7 @@ Geometry* XmlSceneLoader::ParseGeometryGroup(const pugi::xml_node& element) cons
     return new GeometryGroup(geometries);
 }
 
-Geometry* XmlSceneLoader::ParseSphere(const pugi::xml_node& element) const
+Sphere* XmlSceneLoader::ParseSphere(const pugi::xml_node& element) const
 {
     auto center = ParseVector3(element.attribute("Center").value());
     auto radius = element.attribute("Radius").as_float();
@@ -303,11 +352,12 @@ Camera* XmlSceneLoader::CreateCamera() const
     return ParseCamera(cameraElement);
 }
 
-Scene* XmlSceneLoader::CreateScene() const
+Scene* XmlSceneLoader::CreateScene(MaterialGeometryMap* materialGeometryMap) const
 {
     auto sceneElement = _document.select_single_node("Scene").node();
     auto backgroundColor = ParseColor3(sceneElement.attribute("DefaultColor").as_string());
     auto antiAliasingLevel = sceneElement.attribute("AntialiasingLevel").as_int();
 
-    return new Scene(CreateSceneOptions(), CreateCamera(), ParseLights(), ParseRootGeometry());
+    auto materialNameMap = ParseMaterials();
+    return new Scene(CreateSceneOptions(), CreateCamera(), ParseLights(), ParseRootGeometry(materialNameMap, materialGeometryMap));
 }

@@ -12,6 +12,12 @@
           </xs:complexType>
         </xs:element>
 
+        <xs:element name="Materials" minOccurs="1" maxOccurs="1">
+          <xs:complexType>
+            <xs:group ref="GroupMaterials" minOccurs="0" maxOccurs="unbounded" />
+          </xs:complexType>
+        </xs:element>
+
         <xs:element name="Lights" minOccurs="1" maxOccurs="1">
           <xs:complexType>
             <xs:group ref="GroupLights" minOccurs="0" maxOccurs="unbounded" />
@@ -28,6 +34,12 @@
       
     </xs:complexType>
   </xs:element>
+
+  <xs:simpleType name="TypeName">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[a-zA-Z_][a-zA-Z0-9_]*" />
+    </xs:restriction>
+  </xs:simpleType>
   
   <xs:simpleType name="TypeColor3">
     <xs:restriction base="xs:string">
@@ -74,28 +86,38 @@
     </xs:choice>
   </xs:complexType>
 
+  <xs:group name="GroupMaterials">
+    <xs:choice>
+      <xs:element name="DiffuseMaterial" type="TypeDiffuseMaterial" />
+    </xs:choice>
+  </xs:group>
+  
+  <xs:complexType name="TypeDiffuseMaterial">
+    <xs:attribute name="Name" type="TypeName" use="optional" />
+    <xs:attribute name="Color" type="TypeColor3" use="required" />
+    <xs:attribute name="DiffuseWeight" use="required">
+      <xs:simpleType>
+        <xs:restriction base="xs:float">
+          <xs:minInclusive value="0" />
+          <xs:maxInclusive value="1" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="SpecularWeight" use="required">
+      <xs:simpleType>
+        <xs:restriction base="xs:float">
+          <xs:minInclusive value="0" />
+          <xs:maxInclusive value="1" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:complexType>
+
   <xs:complexType name="TypeOptions">
     <xs:all>
       <xs:element name="DefaultColor" type="TypeColor3" minOccurs="1" maxOccurs="1" />
       <xs:element name="AntialiasingLevel" type="xs:positiveInteger" minOccurs="1" maxOccurs="1" />
     </xs:all>
-  </xs:complexType>
-
-  <xs:group name="GroupLights">
-    <xs:choice>
-      <xs:element name="DirectionalLight" type="TypeDirectionalLight" />
-      <xs:element name="PointLight" type="TypePointLight" />
-    </xs:choice>
-  </xs:group>
-
-  <xs:complexType name="TypeDirectionalLight">
-    <xs:attribute name="Color" type="TypeColor3" use="required" />
-    <xs:attribute name="Direction" type="TypeVector3" use="required" />
-  </xs:complexType>
-
-  <xs:complexType name="TypePointLight">
-    <xs:attribute name="Color" type="TypeColor3" use="required" />
-    <xs:attribute name="Position" type="TypeVector3" use="required" />
   </xs:complexType>
 
   <xs:group name="GroupCameras">
@@ -124,6 +146,23 @@
     <xs:attribute name="OrthoHeight" type="xs:float" use="required" />
   </xs:complexType>
 
+  <xs:group name="GroupLights">
+    <xs:choice>
+      <xs:element name="DirectionalLight" type="TypeDirectionalLight" />
+      <xs:element name="PointLight" type="TypePointLight" />
+    </xs:choice>
+  </xs:group>
+
+  <xs:complexType name="TypeDirectionalLight">
+    <xs:attribute name="Color" type="TypeColor3" use="required" />
+    <xs:attribute name="Direction" type="TypeVector3" use="required" />
+  </xs:complexType>
+
+  <xs:complexType name="TypePointLight">
+    <xs:attribute name="Color" type="TypeColor3" use="required" />
+    <xs:attribute name="Position" type="TypeVector3" use="required" />
+  </xs:complexType>
+
   <xs:group name="GroupGeometries">
     <xs:choice>
       <xs:element name="GeometryGroup" type="TypeGeometryGroup" />
@@ -142,6 +181,14 @@
   </xs:complexType>
 
   <xs:complexType name="TypeSphere">
+    <xs:all>
+      <xs:element name="Material" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:group ref="GroupMaterials" minOccurs="1" maxOccurs="1" />
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+    <xs:attribute name="MaterialName" type="TypeName" use="optional" />
     <xs:attribute name="Center" type="TypeVector3" use="required" />
     <xs:attribute name="Radius" type="xs:float" use="required" />
   </xs:complexType>

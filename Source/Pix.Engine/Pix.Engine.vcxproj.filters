@@ -22,6 +22,9 @@
     <Filter Include="Source Files\Lights">
       <UniqueIdentifier>{ff5920d6-0b32-44b9-ad1a-a6f524ddac36}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Materials">
+      <UniqueIdentifier>{5b0207f9-7417-4880-98b3-737808af0462}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scene.h">
@@ -60,6 +63,9 @@
     <ClInclude Include="LightType.h">
       <Filter>Header Files\Lights</Filter>
     </ClInclude>
+    <ClInclude Include="MaterialAliases.h">
+      <Filter>Header Files\Materials</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Scene.cpp">
@@ -82,6 +88,12 @@
     </ClCompile>
     <ClCompile Include="PointLight.cpp">
       <Filter>Source Files\Lights</Filter>
+    </ClCompile>
+    <ClCompile Include="Material.cpp">
+      <Filter>Source Files\Materials</Filter>
+    </ClCompile>
+    <ClCompile Include="DiffuseMaterial.cpp">
+      <Filter>Source Files\Materials</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

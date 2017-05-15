@@ -14,6 +14,9 @@
     <PerspectiveCamera Position="0,0,0" LookAt="1,0,0" Up="0,1,0" ScreenWidth="640" ScreenHeight="480" FieldOfView="1.57079633" />
   </Camera>
 
+  <Materials>
+  </Materials>
+
   <Lights>
     <PointLight Color="1,1,1" Position="-10,10,0" />
   </Lights>
@@ -21,7 +24,11 @@
   <RootGeometry>
     <GeometryGroup>
       <Geometries>
-        <Sphere Center="10,0,0" Radius="2" />
+        <Sphere Center="10,0,0" Radius="2">
+          <Material>
+            <DiffuseMaterial Color="1,0.7,0.7" DiffuseWeight="1" SpecularWeight="0" />
+          </Material>
+        </Sphere>
       </Geometries>
     </GeometryGroup>
   </RootGeometry>

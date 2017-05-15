@@ -19,13 +19,9 @@ namespace Pix::Base
         IntersectionData() = default;
         IntersectionData(const Geometry* intersectedGeometry, float distance, const Vector3& point, const Vector3& normal);
 
+        const Geometry* GetIntersectedGeometry() const;
         float GetDistance() const;
-        void SetDistance(float distance);
-
         Vector3 GetPoint() const;
-        void SetPoint(const Vector3& point);
-
         Vector3 GetNormal() const;
-        void SetNormal(const Vector3& normal);
     };
 }

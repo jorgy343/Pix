@@ -49,7 +49,9 @@ int _tmain(int argc, _TCHAR* argv[])
                 console->UpdateStatusAndAddHistory(i, "Received chunk. Scene ID: ", sceneId, " Chunk ID: ", chunkId, ". Processing...");
 
                 XmlSceneLoader sceneLoader(sceneXml);
-                auto scene = sceneLoader.CreateScene();
+
+                auto materialGeometryMap = new MaterialGeometryMap();
+                auto scene = sceneLoader.CreateScene(materialGeometryMap);
 
                 // Render the scene.
                 int antiAliasingLevel = scene->GetOptions()->GetAntialiasingLevel();
@@ -64,7 +66,12 @@ int _tmain(int argc, _TCHAR* argv[])
 
                         Color3 color(0.0f);
                         for (int i = 0; i < antiAliasingLevel * antiAliasingLevel; ++i)
-                            color += scene->CastRay(rays[i]);
+                        {
+                            color += scene->CastRay(rays[i], [&](auto intersectionData)
+                            {
+                                return ((DiffuseMaterial*)materialGeometryMap->at(intersectionData->GetIntersectedGeometry()))->Color;
+                            });
+                        }
 
                         color = color / (float)(antiAliasingLevel * antiAliasingLevel);
 

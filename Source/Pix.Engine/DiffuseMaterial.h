@@ -11,5 +11,9 @@ namespace Pix::Engine::Materials
     {
     public:
         Color3 Color;
+        float DiffuseWeight;
+        float SpecularWeight;
+
+        DiffuseMaterial(const Color3& color, float diffuseWeight, float specularWeight);
     };
 }

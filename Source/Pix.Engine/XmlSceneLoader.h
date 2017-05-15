@@ -18,11 +18,16 @@
 #include "Scene.h"
 #include "Light.h"
 #include "DirectionalLight.h"
+#include "Material.h"
+#include "MaterialType.h"
+#include "DiffuseMaterial.h"
+#include "MaterialAliases.h"
 
 using namespace Pix::Base;
 using namespace Pix::Base::Cameras;
 using namespace Pix::Base::Geometries;
 using namespace Pix::Engine::Lights;
+using namespace Pix::Engine::Materials;
 
 namespace Pix::Engine
 {
@@ -43,23 +48,26 @@ namespace Pix::Engine
         Matrix ParseMatrix(const pugi::xml_node& element) const;
         Matrix ParseMatrixStack(const pugi::xml_node& element) const;
 
+        MaterialNameMap* ParseMaterials() const;
+        Material* ParseMaterial(const pugi::xml_node& element) const;
+
         Camera* ParseCamera(const pugi::xml_node& element) const;
         PerspectiveCamera* ParsePerspectiveCamera(const pugi::xml_node& element) const;
         OrthographicCamera* ParseOrthographicCamera(const pugi::xml_node& element) const;
 
         std::vector<const Light*>* ParseLights() const;
 
-        Geometry* ParseRootGeometry() const;
-        Geometry* ParseGeometry(const pugi::xml_node& element) const;
+        Geometry* ParseRootGeometry(const MaterialNameMap* materialNameMap, MaterialGeometryMap* materialGeometryMap) const;
+        Geometry* ParseGeometry(const pugi::xml_node& element, const MaterialNameMap* materialNameMap, MaterialGeometryMap* materialGeometryMap) const;
 
-        Geometry* ParseGeometryGroup(const pugi::xml_node& element) const;
-        Geometry* ParseSphere(const pugi::xml_node& element) const;
-
-    public:
-        XmlSceneLoader(const char* xmlContent);
+        GeometryGroup* ParseGeometryGroup(const pugi::xml_node& element, const MaterialNameMap* materialNameMap, MaterialGeometryMap* materialGeometryMap) const;
+        Sphere* ParseSphere(const pugi::xml_node& element) const;
 
         SceneOptions* CreateSceneOptions() const;
         Camera* CreateCamera() const;
-        Scene* CreateScene() const;
+
+    public:
+        XmlSceneLoader(const char* xmlContent);
+        Scene* CreateScene(MaterialGeometryMap* materialGeometryMap) const;
     };
 }

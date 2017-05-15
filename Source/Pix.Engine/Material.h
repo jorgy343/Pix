@@ -7,6 +7,8 @@ namespace Pix::Engine::Materials
     class Material
     {
     public:
-        MaterialType _materialType;
+        MaterialType Type;
+
+        explicit Material(MaterialType type);
     };
 }

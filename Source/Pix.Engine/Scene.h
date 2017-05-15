@@ -27,14 +27,14 @@ namespace Pix::Engine
         const std::vector<const Light*>* _lights;
         const Geometry* _rootGeometry;
 
-        Color3 CastRay(const Ray& ray, int depth) const;
+        Color3 CastRay(const Ray& ray, IntersectionCallback intersectionCallback, int depth) const;
 
         Color3 CalculateLightPower(const IntersectionData* intersectionData) const;
 
     public:
         Scene(const SceneOptions* options, const Camera* camera, const std::vector<const Light*>* lights, const Geometry* rootGeometry);
 
-        Color3 CastRay(const Ray& ray) const;
+        Color3 CastRay(const Ray& ray, IntersectionCallback intersectionCallback) const;
 
         const SceneOptions* GetOptions() const;
         const Camera* GetCamera() const;

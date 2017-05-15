@@ -8,9 +8,9 @@ Scene::Scene(const SceneOptions* options, const Camera* camera, const std::vecto
 
 }
 
-Color3 Scene::CastRay(const Ray& ray) const
+Color3 Scene::CastRay(const Ray& ray, IntersectionCallback intersectionCallback) const
 {
-    return CastRay(ray, 1);
+    return CastRay(ray, intersectionCallback, 1);
 }
 
 Color3 Scene::CalculateLightPower(const IntersectionData* intersectionData) const
@@ -53,7 +53,7 @@ Color3 Scene::CalculateLightPower(const IntersectionData* intersectionData) cons
     return lightPower;
 }
 
-Color3 Scene::CastRay(const Ray& ray, int depth) const
+Color3 Scene::CastRay(const Ray& ray, IntersectionCallback intersectionCallback, int depth) const
 {
     IntersectionData intersectionData;
     float distance = _rootGeometry->IntersectRay(ray, &intersectionData);
@@ -61,8 +61,7 @@ Color3 Scene::CastRay(const Ray& ray, int depth) const
     if (distance == INFINITY)
         return _options->GetDefaultColor();
 
-    Color3 lightPower = CalculateLightPower(&intersectionData);
-    return lightPower;
+    return CalculateLightPower(&intersectionData) * intersectionCallback(&intersectionData);
 }
 
 const SceneOptions* Scene::GetOptions() const
