@@ -66,12 +66,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
                         Color3 color(0.0f);
                         for (int i = 0; i < antiAliasingLevel * antiAliasingLevel; ++i)
-                        {
-                            color += scene->CastRay(rays[i], [&](auto intersectionData)
-                            {
-                                return ((DiffuseMaterial*)materialGeometryMap->at(intersectionData->GetIntersectedGeometry()))->Color;
-                            });
-                        }
+                            color += scene->CastRay(rays[i]);
 
                         color = color / (float)(antiAliasingLevel * antiAliasingLevel);
 

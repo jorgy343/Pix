@@ -22,6 +22,7 @@
 #include "MaterialType.h"
 #include "DiffuseMaterial.h"
 #include "MaterialAliases.h"
+#include "MaterialManager.h"
 
 using namespace Pix::Base;
 using namespace Pix::Base::Cameras;

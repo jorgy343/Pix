@@ -66,6 +66,9 @@
     <ClInclude Include="MaterialAliases.h">
       <Filter>Header Files\Materials</Filter>
     </ClInclude>
+    <ClInclude Include="MaterialManager.h">
+      <Filter>Header Files\Materials</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Scene.cpp">
@@ -93,6 +96,9 @@
       <Filter>Source Files\Materials</Filter>
     </ClCompile>
     <ClCompile Include="DiffuseMaterial.cpp">
+      <Filter>Source Files\Materials</Filter>
+    </ClCompile>
+    <ClCompile Include="MaterialManager.cpp">
       <Filter>Source Files\Materials</Filter>
     </ClCompile>
   </ItemGroup>

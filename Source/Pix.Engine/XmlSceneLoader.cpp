@@ -359,5 +359,5 @@ Scene* XmlSceneLoader::CreateScene(MaterialGeometryMap* materialGeometryMap) con
     auto antiAliasingLevel = sceneElement.attribute("AntialiasingLevel").as_int();
 
     auto materialNameMap = ParseMaterials();
-    return new Scene(CreateSceneOptions(), CreateCamera(), ParseLights(), ParseRootGeometry(materialNameMap, materialGeometryMap));
+    return new Scene(CreateSceneOptions(), CreateCamera(), ParseLights(), ParseRootGeometry(materialNameMap, materialGeometryMap), new MaterialManager(materialGeometryMap));
 }

@@ -2,15 +2,15 @@
 
 using namespace Pix::Engine;
 
-Scene::Scene(const SceneOptions* options, const Camera* camera, const std::vector<const Light*>* lights, const Geometry* rootGeometry)
-    : _options(options), _camera(camera), _lights(lights), _rootGeometry(rootGeometry)
+Scene::Scene(const SceneOptions* options, const Camera* camera, const std::vector<const Light*>* lights, const Geometry* rootGeometry, const MaterialManager* materialManager)
+    : _options(options), _camera(camera), _lights(lights), _rootGeometry(rootGeometry), _materialManager(materialManager)
 {
 
 }
 
-Color3 Scene::CastRay(const Ray& ray, IntersectionCallback intersectionCallback) const
+Color3 Scene::CastRay(const Ray& ray) const
 {
-    return CastRay(ray, intersectionCallback, 1);
+    return CastRay(ray, 1);
 }
 
 Color3 Scene::CalculateLightPower(const IntersectionData* intersectionData) const
@@ -53,7 +53,7 @@ Color3 Scene::CalculateLightPower(const IntersectionData* intersectionData) cons
     return lightPower;
 }
 
-Color3 Scene::CastRay(const Ray& ray, IntersectionCallback intersectionCallback, int depth) const
+Color3 Scene::CastRay(const Ray& ray, int depth) const
 {
     IntersectionData intersectionData;
     float distance = _rootGeometry->IntersectRay(ray, &intersectionData);
@@ -61,7 +61,14 @@ Color3 Scene::CastRay(const Ray& ray, IntersectionCallback intersectionCallback,
     if (distance == INFINITY)
         return _options->GetDefaultColor();
 
-    return CalculateLightPower(&intersectionData) * intersectionCallback(&intersectionData);
+    const Material* material = _materialManager->GetMaterialForGeometry(intersectionData.GetIntersectedGeometry());
+    if (material->Type == MaterialType::Diffuse)
+    {
+        const DiffuseMaterial* diffuseMaterial = (const DiffuseMaterial*)material;
+        return CalculateLightPower(&intersectionData) * diffuseMaterial->Color;
+    }
+
+    return _options->GetDefaultColor();
 }
 
 const SceneOptions* Scene::GetOptions() const
