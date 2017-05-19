@@ -71,14 +71,14 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:complexType name="TypeMatrixStack">
+  <xs:complexType name="TypeMatrix44Stack">
     <xs:choice minOccurs="1" maxOccurs="unbounded">
-      <xs:element name="ScaleMatrix">
+      <xs:element name="ScaleMatrix44">
         <xs:complexType>
           <xs:attribute name="Scale" type="TypeVector3" use="required" />
         </xs:complexType>
       </xs:element>
-      <xs:element name="TranslationMatrix">
+      <xs:element name="TranslationMatrix44">
         <xs:complexType>
           <xs:attribute name="Translation" type="TypeVector3" use="required" />
         </xs:complexType>

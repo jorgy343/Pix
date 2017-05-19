@@ -10,7 +10,7 @@ namespace Pix::Base
     template <typename T> class Vector4T;
 
     template <typename T>
-    class MatrixT
+    class Matrix44T
     {
     public:
         T
@@ -19,10 +19,10 @@ namespace Pix::Base
             M31, M32, M33, M34,
             M41, M42, M43, M44;
 
-        MatrixT() = default;
+        Matrix44T() = default;
 
-        MatrixT(const Vector4T<T>& row1, const Vector4T<T>& row2, const Vector4T<T>& row3, const Vector4T<T>& row4)
-            : MatrixT(
+        Matrix44T(const Vector4T<T>& row1, const Vector4T<T>& row2, const Vector4T<T>& row3, const Vector4T<T>& row4)
+            : Matrix44T(
                 row1.X, row1.Y, row1.Z, row1.W,
                 row2.X, row2.Y, row2.Z, row2.W,
                 row3.X, row3.Y, row3.Z, row3.W,
@@ -31,8 +31,8 @@ namespace Pix::Base
 
         }
 
-        explicit MatrixT(T scalar)
-            : MatrixT(
+        explicit Matrix44T(T scalar)
+            : Matrix44T(
                 scalar, scalar, scalar, scalar,
                 scalar, scalar, scalar, scalar,
                 scalar, scalar, scalar, scalar,
@@ -41,7 +41,7 @@ namespace Pix::Base
 
         }
 
-        MatrixT(
+        Matrix44T(
             T m11, T m12, T m13, T m14,
             T m21, T m22, T m23, T m24,
             T m31, T m32, T m33, T m34,
@@ -70,28 +70,28 @@ namespace Pix::Base
                 (M14 * (((M21 * temp3) - (M22 * temp5)) + (M23 * temp6))));
         }
 
-        MatrixT& Invert()
+        Matrix44T& Invert()
         {
             Invert(*this);
             return *this;
         }
 
-        MatrixT& Negate()
+        Matrix44T& Negate()
         {
             Negate(*this);
             return *this;
         }
 
-        MatrixT& Transpose()
+        Matrix44T& Transpose()
         {
             Transpose(*this);
             return *this;
         }
 
         // Static members.
-        static MatrixT Add(const MatrixT& left, const MatrixT& right)
+        static Matrix44T Add(const Matrix44T& left, const Matrix44T& right)
         {
-            MatrixT result;
+            Matrix44T result;
 
             result.M11 = left.M11 + right.M11;
             result.M11 = left.M12 + right.M12;
@@ -116,19 +116,19 @@ namespace Pix::Base
             return result;
         }
 
-        static MatrixT CreateScale(T scalar)
+        static Matrix44T CreateScale(T scalar)
         {
             return CreateScale(scalar, scalar, scalar);
         }
 
-        static MatrixT CreateScale(Vector3T<T> vector)
+        static Matrix44T CreateScale(Vector3T<T> vector)
         {
             return CreateScale(vector.X, vector.Y, vector.Z);
         }
 
-        static MatrixT CreateScale(T x, T y, T z)
+        static Matrix44T CreateScale(T x, T y, T z)
         {
-            MatrixT result = CreateIdentity();
+            Matrix44T result = CreateIdentity();
 
             result.M11 = x;
             result.M22 = y;
@@ -137,9 +137,9 @@ namespace Pix::Base
             return result;
         }
 
-        static MatrixT CreateIdentity()
+        static Matrix44T CreateIdentity()
         {
-            MatrixT result;
+            Matrix44T result;
 
             result.M12 = result.M13 = result.M14 =
                 result.M21 = result.M23 = result.M24 =
@@ -150,19 +150,19 @@ namespace Pix::Base
             return result;
         }
 
-        static MatrixT CreateTranslation(T scalar)
+        static Matrix44T CreateTranslation(T scalar)
         {
             return CreateTranslation(scalar, scalar, scalar);
         }
 
-        static MatrixT CreateTranslation(Vector3T<T> vector)
+        static Matrix44T CreateTranslation(Vector3T<T> vector)
         {
             return CreateTranslation(vector.X, vector.Y, vector.Z);
         }
 
-        static MatrixT CreateTranslation(T x, T y, T z)
+        static Matrix44T CreateTranslation(T x, T y, T z)
         {
-            MatrixT result = CreateIdentity();
+            Matrix44T result = CreateIdentity();
 
             result.M14 = x;
             result.M24 = y;
@@ -171,9 +171,9 @@ namespace Pix::Base
             return result;
         }
 
-        static MatrixT CreateZero()
+        static Matrix44T CreateZero()
         {
-            MatrixT result;
+            Matrix44T result;
 
             result.M11 = result.M12 = result.M13 = result.M14 =
                 result.M21 = result.M22 = result.M23 = result.M24 =
@@ -183,9 +183,9 @@ namespace Pix::Base
             return result;
         }
 
-        static MatrixT EntrywiseProduct(const MatrixT& left, const MatrixT& right)
+        static Matrix44T EntrywiseProduct(const Matrix44T& left, const Matrix44T& right)
         {
-            MatrixT result;
+            Matrix44T result;
 
             result.M11 = left.M11 * right.M11;
             result.M12 = left.M12 * right.M12;
@@ -208,7 +208,7 @@ namespace Pix::Base
             result.M44 = left.M44 * right.M44;
         }
 
-        static bool Equals(const MatrixT& left, const MatrixT& right)
+        static bool Equals(const Matrix44T& left, const Matrix44T& right)
         {
             return
                 left.M11 == right.M11 &&
@@ -232,9 +232,9 @@ namespace Pix::Base
                 left.M44 == right.M44;
         }
 
-        static MatrixT Invert(const MatrixT& matrix)
+        static Matrix44T Invert(const Matrix44T& matrix)
         {
-            MatrixT result;
+            Matrix44T result;
 
             T b0 = (matrix.M31 * matrix.M42) - (matrix.M32 * matrix.M41);
             T b1 = (matrix.M31 * matrix.M43) - (matrix.M33 * matrix.M41);
@@ -250,7 +250,7 @@ namespace Pix::Base
 
             T det = matrix.M11 * d11 - matrix.M12 * d12 + matrix.M13 * d13 - matrix.M14 * d14;
             if (abs(det) <= Epsilon)
-                return MatrixT((T)0);
+                return Matrix44T((T)0);
 
             det = (T)1 / det;
 
@@ -299,9 +299,9 @@ namespace Pix::Base
             return result;
         }
 
-        static MatrixT Lerp(const MatrixT& start, const MatrixT& end, T amount)
+        static Matrix44T Lerp(const Matrix44T& start, const Matrix44T& end, T amount)
         {
-            MatrixT result;
+            Matrix44T result;
 
             result.M11 = start.M11 + (end.M11 - start.M11) * amount;
             result.M12 = start.M12 + (end.M12 - start.M12) * amount;
@@ -323,9 +323,9 @@ namespace Pix::Base
             return result;
         }
 
-        static MatrixT Multiply(T left, const MatrixT& right)
+        static Matrix44T Multiply(T left, const Matrix44T& right)
         {
-            MatrixT result;
+            Matrix44T result;
 
             result.M11 = left * right.M11;
             result.M12 = left * right.M12;
@@ -350,9 +350,9 @@ namespace Pix::Base
             return result;
         }
 
-        static MatrixT Multiply(const MatrixT& left, T right)
+        static Matrix44T Multiply(const Matrix44T& left, T right)
         {
-            MatrixT result;
+            Matrix44T result;
 
             result.M11 = left.M11 * right;
             result.M12 = left.M12 * right;
@@ -377,9 +377,9 @@ namespace Pix::Base
             return result;
         }
 
-        static MatrixT Multiply(const MatrixT& left, const MatrixT& right)
+        static Matrix44T Multiply(const Matrix44T& left, const Matrix44T& right)
         {
-            MatrixT result;
+            Matrix44T result;
 
             result.M11 = left.M11 * right.M11 + left.M12 * right.M21 + left.M13 * right.M31 + left.M14 * right.M41;
             result.M12 = left.M11 * right.M12 + left.M12 * right.M22 + left.M13 * right.M32 + left.M14 * right.M42;
@@ -404,22 +404,22 @@ namespace Pix::Base
             return result;
         }
 
-        static Vector4T<T> Multiply(const MatrixT& matrix, T x, T y, T z, T w)
+        static Vector4T<T> Multiply(const Matrix44T& matrix, T x, T y, T z, T w)
         {
             return Multiply(matrix, Vector4T<T>(x, y, z, w));
         }
 
-        static Vector4T<T> Multiply(const MatrixT& matrix, const Vector2T<T>& vector, T z, T w)
+        static Vector4T<T> Multiply(const Matrix44T& matrix, const Vector2T<T>& vector, T z, T w)
         {
             return Multiply(matrix, Vector4T<T>(vector, z, w));
         }
 
-        static Vector4T<T> Multiply(const MatrixT& matrix, const Vector3T<T>& vector, T w)
+        static Vector4T<T> Multiply(const Matrix44T& matrix, const Vector3T<T>& vector, T w)
         {
             return Multiply(matrix, Vector4T<T>(vector, w));
         }
 
-        static Vector4T<T> Multiply(const MatrixT& matrix, const Vector4T<T>& vector)
+        static Vector4T<T> Multiply(const Matrix44T& matrix, const Vector4T<T>& vector)
         {
             Vector4T<T> result;
 
@@ -431,9 +431,9 @@ namespace Pix::Base
             return result;
         }
 
-        static MatrixT Negate(const MatrixT& matrix)
+        static Matrix44T Negate(const Matrix44T& matrix)
         {
-            MatrixT result;
+            Matrix44T result;
 
             result.M11 = -matrix.M11;
             result.M12 = -matrix.M12;
@@ -458,7 +458,7 @@ namespace Pix::Base
             return result;
         }
 
-        static bool NotEquals(const MatrixT& left, const MatrixT& right)
+        static bool NotEquals(const Matrix44T& left, const Matrix44T& right)
         {
             return
                 left.M11 != right.M11 ||
@@ -482,9 +482,9 @@ namespace Pix::Base
                 left.M44 != right.M44;
         }
 
-        static MatrixT Posit(const MatrixT& matrix)
+        static Matrix44T Posit(const Matrix44T& matrix)
         {
-            MatrixT result;
+            Matrix44T result;
 
             result.M11 = +matrix.M11;
             result.M12 = +matrix.M12;
@@ -509,9 +509,9 @@ namespace Pix::Base
             return result;
         }
 
-        static MatrixT SmoothStep(const MatrixT& start, const MatrixT& end, T amount)
+        static Matrix44T SmoothStep(const Matrix44T& start, const Matrix44T& end, T amount)
         {
-            MatrixT result;
+            Matrix44T result;
 
             amount = (amount > (T)1) ? (T)1 : ((amount < (T)0) ? (T)0 : amount);
             amount = (amount * amount) * ((T)3 - ((T)2 * amount));
@@ -536,9 +536,9 @@ namespace Pix::Base
             return result;
         }
 
-        static MatrixT Subtract(const MatrixT& left, const MatrixT& right)
+        static Matrix44T Subtract(const Matrix44T& left, const Matrix44T& right)
         {
-            MatrixT result;
+            Matrix44T result;
 
             result.M11 = left.M11 - right.M11;
             result.M11 = left.M12 - right.M12;
@@ -563,9 +563,9 @@ namespace Pix::Base
             return result;
         }
 
-        static MatrixT Transpose(const MatrixT& matrix)
+        static Matrix44T Transpose(const Matrix44T& matrix)
         {
-            MatrixT result;
+            Matrix44T result;
 
             result.M11 = matrix.M11;
             result.M12 = matrix.M21;
@@ -591,42 +591,42 @@ namespace Pix::Base
         }
 
         // Operator members.
-        bool operator==(const MatrixT& right) const
+        bool operator==(const Matrix44T& right) const
         {
             return Equals(*this, right);
         }
 
-        bool operator!=(const MatrixT& right) const
+        bool operator!=(const Matrix44T& right) const
         {
             return NotEquals(*this, right);
         }
 
-        MatrixT operator+() const
+        Matrix44T operator+() const
         {
             return Posit(*this);
         }
 
-        MatrixT operator-() const
+        Matrix44T operator-() const
         {
             return Negate(*this);
         }
 
-        MatrixT operator+(const MatrixT& right) const
+        Matrix44T operator+(const Matrix44T& right) const
         {
             return Add(*this, right);
         }
 
-        MatrixT operator-(const MatrixT& right) const
+        Matrix44T operator-(const Matrix44T& right) const
         {
             return Subtract(*this, right);
         }
 
-        MatrixT operator*(T right) const
+        Matrix44T operator*(T right) const
         {
             return Multiply(*this, right);
         }
 
-        MatrixT operator*(const MatrixT& right) const
+        Matrix44T operator*(const Matrix44T& right) const
         {
             return Multiply(*this, right);
         }
@@ -636,19 +636,19 @@ namespace Pix::Base
             return Multiply(*this, right);
         }
 
-        MatrixT& operator+=(const MatrixT& right)
+        Matrix44T& operator+=(const Matrix44T& right)
         {
             *this = Add(*this, right);
             return *this;
         }
 
-        MatrixT& operator-=(const MatrixT& right)
+        Matrix44T& operator-=(const Matrix44T& right)
         {
             *this = Subtract(*this, right);
             return *this;
         }
 
-        MatrixT& operator*=(T right)
+        Matrix44T& operator*=(T right)
         {
             *this = Multiply(*this, right);
             return *this;
@@ -656,7 +656,7 @@ namespace Pix::Base
     };
 
     template <typename T>
-    MatrixT<T> operator*(T left, const MatrixT<T>& right)
+    Matrix44T<T> operator*(T left, const Matrix44T<T>& right)
     {
         return right.Multiply(left, right);
     }

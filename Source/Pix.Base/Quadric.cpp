@@ -11,7 +11,7 @@ Quadric::Quadric(float a, float b, float c, float d, float e, float f, float g, 
 
 float Quadric::IntersectRay(const Ray& ray, IntersectionData* intersectionData) const
 {
-    Matrix Q(
+    Matrix44 Q(
         A, B, C, D,
         B, E, F, G,
         C, F, H, I,

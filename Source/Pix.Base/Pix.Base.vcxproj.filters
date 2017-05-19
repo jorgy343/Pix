@@ -36,9 +36,6 @@
     <ClInclude Include="Color4T.h">
       <Filter>Header Files\Templates</Filter>
     </ClInclude>
-    <ClInclude Include="MatrixT.h">
-      <Filter>Header Files\Templates</Filter>
-    </ClInclude>
     <ClInclude Include="Vector2T.h">
       <Filter>Header Files\Templates</Filter>
     </ClInclude>
@@ -52,9 +49,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Color4.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Matrix.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Vector2.h">
@@ -100,6 +94,15 @@
       <Filter>Header Files\Cameras</Filter>
     </ClInclude>
     <ClInclude Include="Random.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MonteCarlo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix44T.h">
+      <Filter>Header Files\Templates</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix44.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -153,24 +153,24 @@ Vector4 XmlSceneLoader::ParseVector4(const char* string) const
     return result;
 }
 
-Matrix XmlSceneLoader::ParseMatrix(const pugi::xml_node& element) const
+Matrix44 XmlSceneLoader::ParseMatrix44(const pugi::xml_node& element) const
 {
     std::string elementName = element.name();
-    if (elementName == "ScaleMatrix")
+    if (elementName == "ScaleMatrix44")
     {
         auto scale = ParseVector3(element.attribute("Scale").value());
-        return Matrix::CreateScale(scale);
+        return Matrix44::CreateScale(scale);
     }
 
     auto translation = ParseVector3(element.attribute("Translation").value());
-    return Matrix::CreateTranslation(translation);
+    return Matrix44::CreateTranslation(translation);
 }
 
-Matrix XmlSceneLoader::ParseMatrixStack(const pugi::xml_node& element) const
+Matrix44 XmlSceneLoader::ParseMatrix44Stack(const pugi::xml_node& element) const
 {
-    Matrix matrix = Matrix::CreateIdentity();
+    Matrix44 matrix = Matrix44::CreateIdentity();
     for (auto& child : element.children())
-        matrix = matrix * ParseMatrix(child);
+        matrix = matrix * ParseMatrix44(child);
 
     return matrix;
 }
