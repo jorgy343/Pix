@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26403.7
+VisualStudioVersion = 15.0.26430.6
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Pix.Base", "Pix.Base\Pix.Base.vcxproj", "{DF31EA45-10E1-4D13-8A9F-48B020B7CDE5}"
 EndProject
@@ -22,6 +22,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		PixScene.xsd = PixScene.xsd
 		TestScene.xml = TestScene.xml
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Pix.Base.Tests", "Pix.Base.Tests\Pix.Base.Tests.vcxproj", "{73F4B0DF-E897-4DEF-9079-6E26E0511C5C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{DF31EA45-10E1-4D13-8A9F-48B020B7CDE5} = {DF31EA45-10E1-4D13-8A9F-48B020B7CDE5}
 	EndProjectSection
 EndProject
 Global
@@ -46,6 +51,10 @@ Global
 		{7D30F589-4043-49FA-8692-A5FF294DA8AD}.Debug|x64.Build.0 = Debug|x64
 		{7D30F589-4043-49FA-8692-A5FF294DA8AD}.Release|x64.ActiveCfg = Release|x64
 		{7D30F589-4043-49FA-8692-A5FF294DA8AD}.Release|x64.Build.0 = Release|x64
+		{73F4B0DF-E897-4DEF-9079-6E26E0511C5C}.Debug|x64.ActiveCfg = Debug|x64
+		{73F4B0DF-E897-4DEF-9079-6E26E0511C5C}.Debug|x64.Build.0 = Debug|x64
+		{73F4B0DF-E897-4DEF-9079-6E26E0511C5C}.Release|x64.ActiveCfg = Release|x64
+		{73F4B0DF-E897-4DEF-9079-6E26E0511C5C}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

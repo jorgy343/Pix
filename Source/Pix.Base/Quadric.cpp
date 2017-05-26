@@ -20,8 +20,8 @@ float Quadric::IntersectRay(const Ray& ray, IntersectionData* intersectionData) 
     Vector4 s(ray.Position.X, ray.Position.Y, ray.Position.Z, 1.0f);
     Vector4 d(ray.Direction.X, ray.Direction.Y, ray.Direction.Z, 0.0f);
 
-    Vector4 qs = Q * s;
-    Vector4 qd = Q * d;
+    Vector4 qs = s * Q;
+    Vector4 qd = d * Q;
 
     float a = Vector4::Dot(d, qd);
     float b = Vector4::Dot(s, qd) + Vector4::Dot(d, qs);
@@ -40,7 +40,7 @@ float Quadric::IntersectRay(const Ray& ray, IntersectionData* intersectionData) 
         Vector3 point = ray.Position + distance * ray.Direction;
         Vector4 point4(point.X, point.Y, point.Z, 1.0f);
 
-        Vector4 normal4 = Q * point4;
+        Vector4 normal4 = point4 * Q;
         Vector3 normal = Vector3(normal4.X, normal4.Y, normal4.Z).Normalize();
 
         *intersectionData = IntersectionData{this, distance, point, normal};

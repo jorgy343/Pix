@@ -105,6 +105,9 @@
     <ClInclude Include="Matrix44.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Matrix33T.h">
+      <Filter>Header Files\Templates</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="IntersectionData.cpp">

@@ -58,16 +58,13 @@ namespace Pix::Base
         // Instance members.
         T GetDeterminant() const
         {
-            T temp1 = (M33 * M44) - (M34 * M43);
-            T temp2 = (M32 * M44) - (M34 * M42);
-            T temp3 = (M32 * M43) - (M33 * M42);
-            T temp4 = (M31 * M44) - (M34 * M41);
-            T temp5 = (M31 * M43) - (M33 * M41);
-            T temp6 = (M31 * M42) - (M32 * M41);
-
-            return ((((M11 * (((M22 * temp1) - (M23 * temp2)) + (M24 * temp3))) - (M12 * (((M21 * temp1) -
-                (M23 * temp4)) + (M24 * temp5)))) + (M13 * (((M21 * temp2) - (M22 * temp4)) + (M24 * temp6)))) -
-                (M14 * (((M21 * temp3) - (M22 * temp5)) + (M23 * temp6))));
+            return
+                M14 * M23 * M32 * M41 - M13 * M24 * M32 * M41 - M14 * M22 * M33 * M41 + M12 * M24 * M33 * M41 +
+                M13 * M22 * M34 * M41 - M12 * M23 * M34 * M41 - M14 * M23 * M31 * M42 + M13 * M24 * M31 * M42 +
+                M14 * M21 * M33 * M42 - M11 * M24 * M33 * M42 - M13 * M21 * M34 * M42 + M11 * M23 * M34 * M42 +
+                M14 * M22 * M31 * M43 - M12 * M24 * M31 * M43 - M14 * M21 * M32 * M43 + M11 * M24 * M32 * M43 +
+                M12 * M21 * M34 * M43 - M11 * M22 * M34 * M43 - M13 * M22 * M31 * M44 + M12 * M23 * M31 * M44 +
+                M13 * M21 * M32 * M44 - M11 * M23 * M32 * M44 - M12 * M21 * M33 * M44 + M11 * M22 * M33 * M44;
         }
 
         Matrix44T& Invert()
@@ -121,33 +118,32 @@ namespace Pix::Base
             return CreateScale(scalar, scalar, scalar);
         }
 
-        static Matrix44T CreateScale(Vector3T<T> vector)
+        static Matrix44T CreateScale(const Vector3T<T>& vector)
         {
-            return CreateScale(vector.X, vector.Y, vector.Z);
+            return CreateScale(vector.X, vector.Y, vector.Z, 1);
         }
 
-        static Matrix44T CreateScale(T x, T y, T z)
+        static Matrix44T CreateScale(const Vector4T<T>& vector)
         {
-            Matrix44T result = CreateIdentity();
+            return CreateScale(vector.X, vector.Y, vector.Z, vector.W);
+        }
 
-            result.M11 = x;
-            result.M22 = y;
-            result.M33 = z;
-
-            return result;
+        static Matrix44T CreateScale(T x, T y, T z, T w)
+        {
+            return Matrix44T(
+                x, 0, 0, 0,
+                0, y, 0, 0,
+                0, 0, z, 0,
+                0, 0, 0, w);
         }
 
         static Matrix44T CreateIdentity()
         {
-            Matrix44T result;
-
-            result.M12 = result.M13 = result.M14 =
-                result.M21 = result.M23 = result.M24 =
-                result.M31 = result.M32 = result.M34 =
-                result.M41 = result.M42 = result.M43 = (T)0;
-
-            result.M11 = result.M22 = result.M33 = result.M44 = (T)1;
-            return result;
+            return Matrix44T(
+                1, 0, 0, 0,
+                0, 1, 0, 0,
+                0, 0, 1, 0,
+                0, 0, 0, 1);
         }
 
         static Matrix44T CreateTranslation(T scalar)
@@ -155,32 +151,18 @@ namespace Pix::Base
             return CreateTranslation(scalar, scalar, scalar);
         }
 
-        static Matrix44T CreateTranslation(Vector3T<T> vector)
+        static Matrix44T CreateTranslation(const Vector3T<T>& vector)
         {
             return CreateTranslation(vector.X, vector.Y, vector.Z);
         }
 
         static Matrix44T CreateTranslation(T x, T y, T z)
         {
-            Matrix44T result = CreateIdentity();
-
-            result.M14 = x;
-            result.M24 = y;
-            result.M34 = z;
-
-            return result;
-        }
-
-        static Matrix44T CreateZero()
-        {
-            Matrix44T result;
-
-            result.M11 = result.M12 = result.M13 = result.M14 =
-                result.M21 = result.M22 = result.M23 = result.M24 =
-                result.M31 = result.M32 = result.M33 = result.M34 =
-                result.M41 = result.M42 = result.M43 = result.M44 = (T)0;
-
-            return result;
+            return Matrix44T(
+                1, 0, 0, 0,
+                0, 1, 0, 0,
+                0, 0, 1, 0,
+                x, y, z, 1);
         }
 
         static Matrix44T EntrywiseProduct(const Matrix44T& left, const Matrix44T& right)
@@ -206,6 +188,8 @@ namespace Pix::Base
             result.M42 = left.M42 * right.M42;
             result.M43 = left.M43 * right.M43;
             result.M44 = left.M44 * right.M44;
+
+            return result;
         }
 
         static bool Equals(const Matrix44T& left, const Matrix44T& right)
@@ -250,9 +234,9 @@ namespace Pix::Base
 
             T det = matrix.M11 * d11 - matrix.M12 * d12 + matrix.M13 * d13 - matrix.M14 * d14;
             if (abs(det) <= Epsilon)
-                return Matrix44T((T)0);
+                return Matrix44T(0);
 
-            det = (T)1 / det;
+            det = 1 / det;
 
             T a0 = (matrix.M11 * matrix.M22) - (matrix.M12 * matrix.M21);
             T a1 = (matrix.M11 * matrix.M23) - (matrix.M13 * matrix.M21);
@@ -307,14 +291,17 @@ namespace Pix::Base
             result.M12 = start.M12 + (end.M12 - start.M12) * amount;
             result.M13 = start.M13 + (end.M13 - start.M13) * amount;
             result.M14 = start.M14 + (end.M14 - start.M14) * amount;
+
             result.M21 = start.M21 + (end.M21 - start.M21) * amount;
             result.M22 = start.M22 + (end.M22 - start.M22) * amount;
             result.M23 = start.M23 + (end.M23 - start.M23) * amount;
             result.M24 = start.M24 + (end.M24 - start.M24) * amount;
+
             result.M31 = start.M31 + (end.M31 - start.M31) * amount;
             result.M32 = start.M32 + (end.M32 - start.M32) * amount;
             result.M33 = start.M33 + (end.M33 - start.M33) * amount;
             result.M34 = start.M34 + (end.M34 - start.M34) * amount;
+
             result.M41 = start.M41 + (end.M41 - start.M41) * amount;
             result.M42 = start.M42 + (end.M42 - start.M42) * amount;
             result.M43 = start.M43 + (end.M43 - start.M43) * amount;
@@ -404,29 +391,29 @@ namespace Pix::Base
             return result;
         }
 
-        static Vector4T<T> Multiply(const Matrix44T& matrix, T x, T y, T z, T w)
+        static Vector4T<T> Multiply(T x, T y, T z, T w, const Matrix44T& matrix)
         {
-            return Multiply(matrix, Vector4T<T>(x, y, z, w));
+            return Multiply(Vector4T<T>(x, y, z, w), matrix);
         }
 
-        static Vector4T<T> Multiply(const Matrix44T& matrix, const Vector2T<T>& vector, T z, T w)
+        static Vector4T<T> Multiply(const Vector3T<T>& vector, const Matrix44T& matrix)
         {
-            return Multiply(matrix, Vector4T<T>(vector, z, w));
+            return Multiply(Vector4T<T>(vector, 1), matrix);
         }
 
-        static Vector4T<T> Multiply(const Matrix44T& matrix, const Vector3T<T>& vector, T w)
+        static Vector4T<T> Multiply(const Vector3T<T>& vector, T w, const Matrix44T& matrix)
         {
-            return Multiply(matrix, Vector4T<T>(vector, w));
+            return Multiply(Vector4T<T>(vector, w), matrix);
         }
 
-        static Vector4T<T> Multiply(const Matrix44T& matrix, const Vector4T<T>& vector)
+        static Vector4T<T> Multiply(const Vector4T<T>& vector, const Matrix44T& matrix)
         {
             Vector4T<T> result;
 
-            result.X = matrix.M11 * vector.X + matrix.M12 * vector.Y + matrix.M13 * vector.Z + matrix.M14 * vector.W;
-            result.Y = matrix.M21 * vector.X + matrix.M22 * vector.Y + matrix.M23 * vector.Z + matrix.M24 * vector.W;
-            result.Z = matrix.M31 * vector.X + matrix.M32 * vector.Y + matrix.M33 * vector.Z + matrix.M34 * vector.W;
-            result.W = matrix.M41 * vector.X + matrix.M42 * vector.Y + matrix.M43 * vector.Z + matrix.M44 * vector.W;
+            result.X = vector.X * matrix.M11 + vector.Y * matrix.M21 + vector.Z * matrix.M31 + vector.W * matrix.M41;
+            result.Y = vector.X * matrix.M12 + vector.Y * matrix.M22 + vector.Z * matrix.M32 + vector.W * matrix.M42;
+            result.Z = vector.X * matrix.M13 + vector.Y * matrix.M23 + vector.Z * matrix.M33 + vector.W * matrix.M43;
+            result.W = vector.X * matrix.M14 + vector.Y * matrix.M24 + vector.Z * matrix.M34 + vector.W * matrix.M44;
 
             return result;
         }
@@ -513,21 +500,24 @@ namespace Pix::Base
         {
             Matrix44T result;
 
-            amount = (amount > (T)1) ? (T)1 : ((amount < (T)0) ? (T)0 : amount);
-            amount = (amount * amount) * ((T)3 - ((T)2 * amount));
+            amount = (amount > 1) ? 1 : ((amount < 0) ? 0 : amount);
+            amount = (amount * amount) * (3 - (2 * amount));
 
             result.M11 = start.M11 + (end.M11 - start.M11) * amount;
             result.M12 = start.M12 + (end.M12 - start.M12) * amount;
             result.M13 = start.M13 + (end.M13 - start.M13) * amount;
             result.M14 = start.M14 + (end.M14 - start.M14) * amount;
+
             result.M21 = start.M21 + (end.M21 - start.M21) * amount;
             result.M22 = start.M22 + (end.M22 - start.M22) * amount;
             result.M23 = start.M23 + (end.M23 - start.M23) * amount;
             result.M24 = start.M24 + (end.M24 - start.M24) * amount;
+
             result.M31 = start.M31 + (end.M31 - start.M31) * amount;
             result.M32 = start.M32 + (end.M32 - start.M32) * amount;
             result.M33 = start.M33 + (end.M33 - start.M33) * amount;
             result.M34 = start.M34 + (end.M34 - start.M34) * amount;
+
             result.M41 = start.M41 + (end.M41 - start.M41) * amount;
             result.M42 = start.M42 + (end.M42 - start.M42) * amount;
             result.M43 = start.M43 + (end.M43 - start.M43) * amount;
@@ -631,11 +621,6 @@ namespace Pix::Base
             return Multiply(*this, right);
         }
 
-        Vector4T<T> operator*(const Vector4T<T>& right) const
-        {
-            return Multiply(*this, right);
-        }
-
         Matrix44T& operator+=(const Matrix44T& right)
         {
             *this = Add(*this, right);
@@ -657,6 +642,12 @@ namespace Pix::Base
 
     template <typename T>
     Matrix44T<T> operator*(T left, const Matrix44T<T>& right)
+    {
+        return right.Multiply(left, right);
+    }
+
+    template <typename T>
+    Vector4T<T> operator*(const Vector4T<T>& left, const Matrix44T<T>& right)
     {
         return right.Multiply(left, right);
     }
