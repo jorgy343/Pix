@@ -5,10 +5,9 @@
 
 namespace Pix::Base
 {
-    template <typename T> class Color4T;
+    template <typename T> class Color3T;
     template <typename T> class Vector2T;
     template <typename T> class Vector3T;
-    template <typename T> class Vector4T;
 
     template <typename T>
     class Color3T
@@ -34,26 +33,14 @@ namespace Pix::Base
 
         Color3T() = default;
 
-        explicit Color3T(const Color4T<T>& color4)
-            : Color3T(color4.Red, color4.Green, color4.Blue)
+        Color3T(const Color3T<T>& color3)
+            : Color3T(color3.Red, color3.Green, color3.Blue)
         {
 
         }
 
         Color3T(const Vector2T<T>& vector2, T blue)
             : Color3T(vector2.X, vector2.Y, blue)
-        {
-
-        }
-
-        explicit Color3T(const Vector3T<T>& vector3)
-            : Color3T(vector3.X, vector3.Y, vector3.Z)
-        {
-
-        }
-
-        explicit Color3T(const Vector4T<T>& vector4)
-            : Color3T(vector4.X, vector4.Y, vector4.Z)
         {
 
         }
@@ -73,37 +60,37 @@ namespace Pix::Base
         // Instance members.
         Color3T& Abs()
         {
-            Red = abs(Red);
-            Green = abs(Green);
-            Blue = abs(Blue);
+            R = abs(R);
+            G = abs(G);
+            B = abs(B);
 
             return *this;
         }
 
         Color3T& Clamp(const Color3T& min, const Color3T& max)
         {
-            Red = std::min(std::max(Red, min.Red), max.Red);
-            Green = std::min(std::max(Green, min.Green), max.Green);
-            Blue = std::min(std::max(Blue, min.Blue), max.Blue);
+            R = std::min(std::max(R, min.R), max.R);
+            G = std::min(std::max(G, min.G), max.G);
+            B = std::min(std::max(B, min.B), max.B);
 
             return *this;
         }
 
         T GetLength() const
         {
-            return sqrt(GetLengthSquared());
+            return sqrt(R * R + G * G + B * B);
         }
 
         T GetLengthSquared() const
         {
-            return Red * Red + Green * Green + Blue * Blue;
+            return R * R + G * G + B * B;
         }
 
         Color3T& Negate()
         {
-            Red = -Red;
-            Green = -Green;
-            Blue = -Blue;
+            R = -R;
+            G = -G;
+            B = -B;
 
             return *this;
         }
@@ -112,223 +99,242 @@ namespace Pix::Base
         static Color3T Abs(const Color3T& color)
         {
             return Color3T(
-                abs(color.Red),
-                abs(color.Green),
-                abs(color.Blue));
+                abs(color.R),
+                abs(color.G),
+                abs(color.B));
         }
 
         static Color3T Add(const Color3T& left, const Color3T& right)
         {
-            return left + right;
+            return Color3T(
+                left.R + right.R,
+                left.G + right.G,
+                left.B + right.B);
         }
 
         static Color3T Clamp(const Color3T& color, const Color3T& min, const Color3T& max)
         {
             return Color3T(
-                std::min(std::max(color.Red, min.Red), max.Red),
-                std::min(std::max(color.Green, min.Green), max.Green),
-                std::min(std::max(color.Blue, min.Blue), max.Blue));
+                std::min(std::max(color.R, min.R), max.R),
+                std::min(std::max(color.G, min.G), max.G),
+                std::min(std::max(color.B, min.B), max.B));
         }
 
         static Color3T Divide(const Color3T& left, T right)
         {
-            return left / right;
+            return Color3T(
+                left.R / right,
+                left.G / right,
+                left.B / right);
         }
 
-        static Color3T Divide(T left, const Color3T& right)
+        static Color3T Divide(const Color3T& left, const Color3T& right)
         {
-            return left / right;
+            return Color3T(
+                left.R / right.R,
+                left.G / right.G,
+                left.B / right.B);
+        }
+
+        static bool Equals(const Color3T& left, const Color3T& right)
+        {
+            return R == value.R && G == value.G && B == value.B;
         }
 
         static Color3T Lerp(const Color3T& start, const Color3T& end, T amount)
         {
-            return start + (end - start) * amount;
+            return Color3T(
+                start.R + (end.R - start.R) * amount,
+                start.G + (end.G - start.G) * amount,
+                start.B + (end.B - start.B) * amount);
         }
 
         static Color3T Max(const Color3T& color1, const Color3T& color2)
         {
             return Color3T(
-                std::max(color1.Red, color2.Red),
-                std::max(color1.Green, color2.Green),
-                std::max(color1.Blue, color2.Blue));
+                std::max(color1.R, color2.R),
+                std::max(color1.G, color2.G),
+                std::max(color1.B, color2.B));
         }
 
         static Color3T Min(const Color3T& color1, const Color3T& color2)
         {
             return Color3T(
-                std::min(color1.Red, color2.Red),
-                std::min(color1.Green, color2.Green),
-                std::min(color1.Blue, color2.Blue));
-        }
-
-        static Color3T Modulate(const Color3T& left, const Color3T& right)
-        {
-            return Color3T(
-                left.Red * right.Red,
-                left.Green * right.Green,
-                left.Blue * right.Blue);
+                std::min(color1.R, color2.R),
+                std::min(color1.G, color2.G),
+                std::min(color1.B, color2.B));
         }
 
         static Color3T Multiply(const Color3T& left, T right)
         {
-            return left * right;
+            return Color3T(
+                left.R * right,
+                left.G * right,
+                left.B * right);
         }
 
         static Color3T Multiply(T left, const Color3T& right)
         {
-            return left * right;
+            return Color3T(
+                left * right.R,
+                left * right.G,
+                left * right.B);
+        }
+
+        static Color3T Multiply(const Color3T& left, const Color3T& right)
+        {
+            return Color3T(
+                left.R * right.R,
+                left.G * right.G,
+                left.B * right.B);
         }
 
         static Color3T Negate(const Color3T& color)
         {
             return Color3T(
-                -color.Red,
-                -color.Green,
-                -color.Blue);
+                -color.R,
+                -color.G,
+                -color.B);
+        }
+
+        static bool NotEquals(const Color3T& left, const Color3T& right)
+        {
+            return R != value.R || G != value.G || B != value.B;
         }
 
         static Color3T Posit(const Color3T& color)
         {
             return Color3T(
-                +color.Red,
-                +color.Green,
-                +color.Blue);
+                +color.R,
+                +color.G,
+                +color.B);
         }
 
         static Color3T SmoothStep(const Color3T& start, const Color3T& end, T amount)
         {
-            T calculatedAmount = (amount > (T)1) ? (T)1 : ((amount < (T)0) ? (T)0 : amount);
-            calculatedAmount = (calculatedAmount * calculatedAmount) * ((T)3 - ((T)2 * calculatedAmount));
+            T calculatedAmount = (amount > 1) ? 1 : ((amount < 0) ? 0 : amount);
+            calculatedAmount = (calculatedAmount * calculatedAmount) * (3 - (2 * calculatedAmount));
 
-            return start + (end - start) * amount;
+            return Color3T(
+                start.R + (end.R - start.R) * amount,
+                start.G + (end.G - start.G) * amount,
+                start.B + (end.B - start.B) * amount);
         }
 
         static Color3T Subtract(const Color3T& left, const Color3T& right)
         {
-            return left - right;
+            return Color3T(
+                left.R - right.R,
+                left.G - right.G,
+                left.B - right.B);
         }
 
         // Operator members.
         bool operator==(const Color3T& value) const
         {
-            return Red == value.Red && Green == value.Green && Blue == value.Blue;
+            return Equals(*this, value);
         }
 
         bool operator!=(const Color3T& value) const
         {
-            return Red != value.Red || Green != value.Green || Blue != value.Blue;
+            return NotEquals(*this, value);
         }
 
         Color3T operator+() const
         {
-            Color3T result;
-
-            result.Red = +Red;
-            result.Green = +Green;
-            result.Blue = +Blue;
-
-            return result;
+            return Posit(*this);
         }
 
         Color3T operator-() const
         {
-            Color3T result;
-
-            result.Red = -Red;
-            result.Green = -Green;
-            result.Blue = -Blue;
-
-            return result;
+            return Negate(*this);
         }
 
-        Color3T operator+(const Color3T& color) const
+        Color3T operator+(T right) const
         {
-            Color3T result;
-
-            result.Red = Red + color.Red;
-            result.Green = Green + color.Green;
-            result.Blue = Blue + color.Blue;
-
-            return result;
+            return Add(*this, right);
         }
 
-        Color3T operator-(const Color3T& color) const
+        Color3T operator+(const Color3T& right) const
         {
-            Color3T result;
-
-            result.Red = Red - color.Red;
-            result.Green = Green - color.Green;
-            result.Blue = Blue - color.Blue;
-
-            return result;
+            return Add(*this, right);
         }
 
-        Color3T operator*(T scalar) const
+        Color3T operator-(T right) const
         {
-            Color3T result;
-
-            result.Red = Red * scalar;
-            result.Green = Green * scalar;
-            result.Blue = Blue * scalar;
-
-            return result;
+            return Subtract(*this, right);
         }
 
-        Color3T operator*(const Color3T& color) const
+        Color3T operator-(const Color3T& right) const
         {
-            Color3T result;
-
-            result.Red = Red * color.Red;
-            result.Green = Green * color.Green;
-            result.Blue = Blue * color.Blue;
-
-            return result;
+            return Subtract(*this, right);
         }
 
-        Color3T operator/(T scalar) const
+        Color3T operator*(T right) const
         {
-            Color3T result;
-
-            result.Red = Red / scalar;
-            result.Green = Green / scalar;
-            result.Blue = Blue / scalar;
-
-            return result;
+            return Multiply(*this, right);
         }
 
-        Color3T& operator+=(const Color3T& color)
+        Color3T operator*(const Color3T& right) const
         {
-            Red += color.Red;
-            Green += color.Green;
-            Blue += color.Blue;
+            return Multiply(*this, right);
+        }
 
+        Color3T operator/(T right) const
+        {
+            return Divide(*this, right);
+        }
+
+        Color3T operator/(const Color3T& right) const
+        {
+            return Divide(*this, right);
+        }
+
+        Color3T& operator+=(T right)
+        {
+            *this = Add(*this, right);
             return *this;
         }
 
-        Color3T& operator-=(const Color3T& color)
+        Color3T& operator+=(const Color3T& right)
         {
-            Red -= color.Red;
-            Green -= color.Green;
-            Blue -= color.Blue;
-
+            *this = Add(*this, right);
             return *this;
         }
 
-        Color3T& operator*=(T scalar)
+        Color3T& operator-=(T right)
         {
-            Red *= scalar;
-            Green *= scalar;
-            Blue *= scalar;
-
+            *this = Subtract(*this, right);
             return *this;
         }
 
-        Color3T& operator+=(T scalar)
+        Color3T& operator-=(const Color3T& right)
         {
-            Red += scalar;
-            Green += scalar;
-            Blue += scalar;
+            *this = Subtract(*this, right);
+            return *this;
+        }
 
+        Color3T& operator*=(T right)
+        {
+            *this = Multiply(*this, right);
+            return *this;
+        }
+
+        Color3T& operator*=(const Color3T& right)
+        {
+            *this = Multiply(*this, right);
+            return *this;
+        }
+
+        Color3T& operator/=(T right)
+        {
+            *this = Divide(*this, right);
+            return *this;
+        }
+
+        Color3T& operator/=(const Color3T& right)
+        {
+            *this = Divide(*this, right);
             return *this;
         }
     };
@@ -336,18 +342,6 @@ namespace Pix::Base
     template <typename T>
     Color3T<T> operator*(T left, const Color3T<T>& right)
     {
-        return Color3T<T>(
-            left * right.Red,
-            left * right.Green,
-            left * right.Blue);
-    }
-
-    template <typename T>
-    Color3T<T> operator/(T left, const Color3T<T>& right)
-    {
-        return Color3T<T>(
-            left / right.Red,
-            left / right.Green,
-            left / right.Blue);
+        return right.Multiply(left, right);
     }
 }

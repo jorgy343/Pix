@@ -79,40 +79,40 @@ namespace Pix::Base
         // Instance members.
         Color4T& Abs()
         {
-            Red = abs(Red);
-            Green = abs(Green);
-            Blue = abs(Blue);
-            Alpha = abs(Alpha);
+            R = abs(R);
+            G = abs(G);
+            B = abs(B);
+            A = abs(A);
 
             return *this;
         }
 
         Color4T& Clamp(const Color4T& min, const Color4T& max)
         {
-            Red = std::min(std::max(Red, min.Red), max.Red);
-            Green = std::min(std::max(Green, min.Green), max.Green);
-            Blue = std::min(std::max(Blue, min.Blue), max.Blue);
-            Alpha = std::min(std::max(Alpha, min.Alpha), max.Alpha);
+            R = std::min(std::max(R, min.R), max.R);
+            G = std::min(std::max(G, min.G), max.G);
+            B = std::min(std::max(B, min.B), max.B);
+            A = std::min(std::max(A, min.A), max.A);
 
             return *this;
         }
 
         T GetLength() const
         {
-            return sqrt(GetLengthSquared());
+            return sqrt(R * R + G * G + B * B + A * A);
         }
 
         T GetLengthSquared() const
         {
-            return Red * Red + Green * Green + Blue * Blue + Alpha * Alpha;
+            return R * R + G * G + B * B + A * A;
         }
 
         Color4T& Negate()
         {
-            Red = -Red;
-            Green = -Green;
-            Blue = -Blue;
-            Alpha = -Alpha;
+            R = -R;
+            G = -G;
+            B = -B;
+            A = -A;
 
             return *this;
         }
@@ -121,229 +121,257 @@ namespace Pix::Base
         static Color4T Abs(const Color4T& color)
         {
             return Color4T(
-                abs(color.Red),
-                abs(color.Green),
-                abs(color.Blue),
-                abs(color.Alpha));
+                abs(color.R),
+                abs(color.G),
+                abs(color.B),
+                abs(color.A));
         }
 
         static Color4T Add(const Color4T& left, const Color4T& right)
         {
-            return left + right;
+            return Color4T(
+                left.R + right.R,
+                left.G + right.G,
+                left.B + right.B,
+                left.A + right.A);
         }
 
         static Color4T Clamp(const Color4T& color, const Color4T& min, const Color4T& max)
         {
             return Color4T(
-                std::min(std::max(color.Red, min.Red), max.Red),
-                std::min(std::max(color.Green, min.Green), max.Green),
-                std::min(std::max(color.Blue, min.Blue), max.Blue),
-                std::min(std::max(color.Alpha, min.Alpha), max.Alpha));
+                std::min(std::max(color.R, min.R), max.R),
+                std::min(std::max(color.G, min.G), max.G),
+                std::min(std::max(color.B, min.B), max.B),
+                std::min(std::max(color.A, min.A), max.A));
         }
 
         static Color4T Divide(const Color4T& left, T right)
         {
-            return left / right;
+            return Color4T(
+                left.R / right,
+                left.G / right,
+                left.B / right,
+                left.A / right);
         }
 
-        static Color4T Divide(T left, const Color4T& right)
+        static Color4T Divide(const Color4T& left, const Color4T& right)
         {
-            return left / right;
+            return Color4T(
+                left.R / right.R,
+                left.G / right.G,
+                left.B / right.B,
+                left.A / right.A);
+        }
+
+        static bool Equals(const Color4T& left, const Color4T& right)
+        {
+            return R == value.R && G == value.G && B == value.B && A == value.A;
         }
 
         static Color4T Lerp(const Color4T& start, const Color4T& end, T amount)
         {
-            return start + (end - start) * amount;
+            return Color4T(
+                start.R + (end.R - start.R) * amount,
+                start.G + (end.G - start.G) * amount,
+                start.B + (end.B - start.B) * amount,
+                start.A + (end.A - start.A) * amount);
         }
 
         static Color4T Max(const Color4T& color1, const Color4T& color2)
         {
             return Color4T(
-                std::max(color1.Red, color2.Red),
-                std::max(color1.Green, color2.Green),
-                std::max(color1.Blue, color2.Blue),
-                std::max(color1.Alpha, color2.Alpha));
+                std::max(color1.R, color2.R),
+                std::max(color1.G, color2.G),
+                std::max(color1.B, color2.B),
+                std::max(color1.A, color2.A));
         }
 
         static Color4T Min(const Color4T& color1, const Color4T& color2)
         {
             return Color4T(
-                std::min(color1.Red, color2.Red),
-                std::min(color1.Green, color2.Green),
-                std::min(color1.Blue, color2.Blue),
-                std::min(color1.Alpha, color2.Alpha));
-        }
-
-        static Color4T Modulate(const Color4T& left, const Color4T& right)
-        {
-            return Color4T(
-                left.Red * right.Red,
-                left.Green * right.Green,
-                left.Blue * right.Blue,
-                left.Alpha * right.Alpha);
+                std::min(color1.R, color2.R),
+                std::min(color1.G, color2.G),
+                std::min(color1.B, color2.B),
+                std::min(color1.A, color2.A));
         }
 
         static Color4T Multiply(const Color4T& left, T right)
         {
-            return left * right;
+            return Color4T(
+                left.R * right,
+                left.G * right,
+                left.B * right,
+                left.A * right);
         }
 
         static Color4T Multiply(T left, const Color4T& right)
         {
-            return left * right;
+            return Color4T(
+                left * right.R,
+                left * right.G,
+                left * right.B,
+                left * right.A);
+        }
+
+        static Color4T Multiply(const Color4T& left, const Color4T& right)
+        {
+            return Color4T(
+                left.R * right.R,
+                left.G * right.G,
+                left.B * right.B,
+                left.A * right.A);
         }
 
         static Color4T Negate(const Color4T& color)
         {
             return Color4T(
-                -color.Red,
-                -color.Green,
-                -color.Blue,
-                -color.Alpha);
+                -color.R,
+                -color.G,
+                -color.B,
+                -color.A);
+        }
+
+        static bool NotEquals(const Color4T& left, const Color4T& right)
+        {
+            return R != value.R || G != value.G || B != value.B || A != value.A;
         }
 
         static Color4T Posit(const Color4T& color)
         {
             return Color4T(
-                +color.Red,
-                +color.Green,
-                +color.Blue,
-                +color.Alpha);
+                +color.R,
+                +color.G,
+                +color.B,
+                +color.A);
         }
 
         static Color4T SmoothStep(const Color4T& start, const Color4T& end, T amount)
         {
-            T calculatedAmount = (amount > (T)1) ? (T)1 : ((amount < (T)0) ? (T)0 : amount);
-            calculatedAmount = (calculatedAmount * calculatedAmount) * ((T)3 - ((T)2 * calculatedAmount));
+            T calculatedAmount = (amount > 1) ? 1 : ((amount < 0) ? 0 : amount);
+            calculatedAmount = (calculatedAmount * calculatedAmount) * (3 - (2 * calculatedAmount));
 
-            return start + (end - start) * amount;
+            return Color4T(
+                start.R + (end.R - start.R) * amount,
+                start.G + (end.G - start.G) * amount,
+                start.B + (end.B - start.B) * amount,
+                start.A + (end.A - start.A) * amount);
         }
 
         static Color4T Subtract(const Color4T& left, const Color4T& right)
         {
-            return left - right;
+            return Color4T(
+                left.R - right.R,
+                left.G - right.G,
+                left.B - right.B,
+                left.A - right.A);
         }
 
         // Operator members.
         bool operator==(const Color4T& value) const
         {
-            return Red == value.Red && Green == value.Green && Blue == value.Blue && Alpha == value.Alpha;
+            return Equals(*this, value);
         }
 
         bool operator!=(const Color4T& value) const
         {
-            return Red != value.Red || Green != value.Green || Blue != value.Blue || Alpha != value.Alpha;
+            return NotEquals(*this, value);
         }
 
         Color4T operator+() const
         {
-            Color4T result;
-
-            result.Red = +Red;
-            result.Green = +Green;
-            result.Blue = +Blue;
-            result.Alpha = +Alpha;
-
-            return result;
+            return Posit(*this);
         }
 
         Color4T operator-() const
         {
-            Color4T result;
-
-            result.Red = -Red;
-            result.Green = -Green;
-            result.Blue = -Blue;
-            result.Alpha = -Alpha;
-
-            return result;
+            return Negate(*this);
         }
 
-        Color4T operator+(const Color4T& color) const
+        Color4T operator+(T right) const
         {
-            Color4T result;
-
-            result.Red = Red + color.Red;
-            result.Green = Green + color.Green;
-            result.Blue = Blue + color.Blue;
-            result.Alpha = Alpha + color.Alpha;
-
-            return result;
+            return Add(*this, right);
         }
 
-        Color4T operator-(const Color4T& color) const
+        Color4T operator+(const Color4T& right) const
         {
-            Color4T result;
-
-            result.Red = Red - color.Red;
-            result.Green = Green - color.Green;
-            result.Blue = Blue - color.Blue;
-            result.Alpha = Alpha - color.Alpha;
-
-            return result;
+            return Add(*this, right);
         }
 
-        Color4T operator*(T scalar) const
+        Color4T operator-(T right) const
         {
-            Color4T result;
-
-            result.Red = Red * scalar;
-            result.Green = Green * scalar;
-            result.Blue = Blue * scalar;
-            result.Alpha = Alpha * scalar;
-
-            return result;
+            return Subtract(*this, right);
         }
 
-        Color4T operator/(T scalar) const
+        Color4T operator-(const Color4T& right) const
         {
-            Color4T result;
-
-            result.Red = Red / scalar;
-            result.Green = Green / scalar;
-            result.Blue = Blue / scalar;
-            result.Alpha = Alpha / scalar;
-
-            return result;
+            return Subtract(*this, right);
         }
 
-        Color4T& operator+=(const Color4T& color)
+        Color4T operator*(T right) const
         {
-            Red += color.Red;
-            Green += color.Green;
-            Blue += color.Blue;
-            Alpha += color.Alpha;
+            return Multiply(*this, right);
+        }
 
+        Color4T operator*(const Color4T& right) const
+        {
+            return Multiply(*this, right);
+        }
+
+        Color4T operator/(T right) const
+        {
+            return Divide(*this, right);
+        }
+
+        Color4T operator/(const Color4T& right) const
+        {
+            return Divide(*this, right);
+        }
+
+        Color4T& operator+=(T right)
+        {
+            *this = Add(*this, right);
             return *this;
         }
 
-        Color4T& operator-=(const Color4T& color)
+        Color4T& operator+=(const Color4T& right)
         {
-            Red -= color.Red;
-            Green -= color.Green;
-            Blue -= color.Blue;
-            Alpha -= color.Alpha;
-
+            *this = Add(*this, right);
             return *this;
         }
 
-        Color4T& operator*=(T scalar)
+        Color4T& operator-=(T right)
         {
-            Red *= scalar;
-            Green *= scalar;
-            Blue *= scalar;
-            Alpha *= scalar;
-
+            *this = Subtract(*this, right);
             return *this;
         }
 
-        Color4T& operator+=(T scalar)
+        Color4T& operator-=(const Color4T& right)
         {
-            Red += scalar;
-            Green += scalar;
-            Blue += scalar;
-            Alpha += scalar;
+            *this = Subtract(*this, right);
+            return *this;
+        }
 
+        Color4T& operator*=(T right)
+        {
+            *this = Multiply(*this, right);
+            return *this;
+        }
+
+        Color4T& operator*=(const Color4T& right)
+        {
+            *this = Multiply(*this, right);
+            return *this;
+        }
+
+        Color4T& operator/=(T right)
+        {
+            *this = Divide(*this, right);
+            return *this;
+        }
+
+        Color4T& operator/=(const Color4T& right)
+        {
+            *this = Divide(*this, right);
             return *this;
         }
     };
@@ -351,20 +379,6 @@ namespace Pix::Base
     template <typename T>
     Color4T<T> operator*(T left, const Color4T<T>& right)
     {
-        return Color4T<T>(
-            left * right.Red,
-            left * right.Green,
-            left * right.Blue,
-            left * right.Alpha);
-    }
-
-    template <typename T>
-    Color4T<T> operator/(T left, const Color4T<T>& right)
-    {
-        return Color4T<T>(
-            left / right.Red,
-            left / right.Green,
-            left / right.Blue,
-            left / right.Alpha);
+        return right.Multiply(left, right);
     }
 }
