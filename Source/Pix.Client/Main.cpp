@@ -69,6 +69,7 @@ int _tmain(int argc, _TCHAR* argv[])
                             color += scene->CastRay(rays[i]);
 
                         color = color / (float)(antiAliasingLevel * antiAliasingLevel);
+                        color.Clamp(Color3(0.0f), Color3(1.0f));
 
                         sendBuffer[(y - startY) * width + x + 4] = (int)(color.Blue * 255.0f) | ((int)(color.Green * 255.0f) << 8) | ((int)(color.Red * 255.0f) << 16);
                     }

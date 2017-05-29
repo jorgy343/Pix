@@ -53,8 +53,14 @@ Color3 Scene::CalculateLightPower(const IntersectionData* intersectionData) cons
     return lightPower;
 }
 
+std::default_random_engine generator;
+std::uniform_real_distribution<float> distribution(0, 1);
+
 Color3 Scene::CastRay(const Ray& ray, int depth) const
 {
+    if (depth > 4)
+        return Color3(0);
+
     IntersectionData intersectionData;
     float distance = _rootGeometry->IntersectRay(ray, &intersectionData);
 
@@ -65,7 +71,29 @@ Color3 Scene::CastRay(const Ray& ray, int depth) const
     if (material->Type == MaterialType::Diffuse)
     {
         const DiffuseMaterial* diffuseMaterial = (const DiffuseMaterial*)material;
-        return CalculateLightPower(&intersectionData) * diffuseMaterial->Color;
+
+        Vector3 tangent;
+        Vector3 bitangent;
+
+        MonteCarlo::CreateTangentCoordinateSystem(intersectionData.GetNormal(), &tangent, &bitangent);
+        Color3 indirectDiffuse(0);
+        Matrix33 tangentSpaceToWorldSpaceTransform(tangent, intersectionData.GetNormal(), bitangent);
+
+        const int sampleCount = 256;
+        for (int i = 0; i < sampleCount; ++i)
+        {
+            float random1 = distribution(generator);
+            float random2 = distribution(generator);
+
+            Vector3 tangentSpaceSample = MonteCarlo::CosineWeightedSampleHemisphere(random1, random2);
+            Vector3 worldSpaceSample = tangentSpaceSample * tangentSpaceToWorldSpaceTransform;
+
+            auto castColor = CastRay(Ray(intersectionData.GetPoint() + intersectionData.GetNormal() * Epsilon, worldSpaceSample), depth + 1);
+            indirectDiffuse += castColor;
+        }
+
+        indirectDiffuse /= (float)sampleCount;
+        return (CalculateLightPower(&intersectionData) / Pi<float> + indirectDiffuse) * diffuseMaterial->Color;
     }
 
     return _options->GetDefaultColor();

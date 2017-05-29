@@ -1,9 +1,12 @@
 #pragma once
 
 #include <vector>
+#include <random>
 
 #include "General.h"
 #include "Color3.h"
+#include "Matrix33.h"
+#include "MonteCarlo.h"
 #include "Geometry.h"
 #include "Camera.h"
 #include "SceneOptions.h"

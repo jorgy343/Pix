@@ -19,13 +19,24 @@ namespace Pix::Base
 
         static Vector3 UniformSampleHemisphere(float random1, float random2)
         {
-            float sinTheta = sqrtf(1 - random1 * random1);
-            float phi = 2 * 3.14159f * random2;
+            float sinTheta = sqrtf(1.0f - random1 * random1);
+            float phi = 2.0f * Pi<float> * random2;
 
             float x = sinTheta * cosf(phi);
             float z = sinTheta * sinf(phi);
         
             return Vector3(x, random1, z);
+        }
+
+        static Vector3 CosineWeightedSampleHemisphere(float random1, float random2)
+        {
+            float r = std::sqrtf(random1);
+            float theta = 2.0f * Pi<float> * random2;
+
+            float x = r * std::cosf(theta);
+            float z = r * std::sinf(theta);
+
+            return Vector3(x, std::sqrtf(std::max<float>(0.0f, 1.0f - random1)), z);
         }
     };
 }

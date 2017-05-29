@@ -69,9 +69,9 @@ namespace Pix::Base
 
         Color3T& Clamp(const Color3T& min, const Color3T& max)
         {
-            R = std::min(std::max(R, min.R), max.R);
-            G = std::min(std::max(G, min.G), max.G);
-            B = std::min(std::max(B, min.B), max.B);
+            R = std::min<T>(std::max<T>(R, min.R), max.R);
+            G = std::min<T>(std::max<T>(G, min.G), max.G);
+            B = std::min<T>(std::max<T>(B, min.B), max.B);
 
             return *this;
         }

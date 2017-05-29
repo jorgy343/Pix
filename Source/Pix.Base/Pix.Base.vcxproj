@@ -75,6 +75,7 @@
     <ClInclude Include="Geometry.h" />
     <ClInclude Include="GeometryGroup.h" />
     <ClInclude Include="IntersectionData.h" />
+    <ClInclude Include="Matrix33.h" />
     <ClInclude Include="Matrix33T.h" />
     <ClInclude Include="Matrix44.h" />
     <ClInclude Include="Matrix44T.h" />
