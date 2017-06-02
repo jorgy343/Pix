@@ -15,6 +15,7 @@
 #include "Geometry.h"
 #include "GeometryGroup.h"
 #include "Sphere.h"
+#include "Plane.h"
 #include "Scene.h"
 #include "Light.h"
 #include "DirectionalLight.h"
@@ -63,6 +64,7 @@ namespace Pix::Engine
 
         GeometryGroup* ParseGeometryGroup(const pugi::xml_node& element, const MaterialNameMap* materialNameMap, MaterialGeometryMap* materialGeometryMap) const;
         Sphere* ParseSphere(const pugi::xml_node& element) const;
+        Plane* ParsePlane(const pugi::xml_node& element) const;
 
         SceneOptions* CreateSceneOptions() const;
         Camera* CreateCamera() const;

@@ -36,6 +36,7 @@
       <UseUnicodeForAssemblerListing>
       </UseUnicodeForAssemblerListing>
       <AssemblerListingLocation>$(IntDir)Asm\</AssemblerListingLocation>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>

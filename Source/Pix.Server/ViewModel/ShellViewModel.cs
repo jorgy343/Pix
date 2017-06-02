@@ -21,7 +21,7 @@ namespace Pix.Server.ViewModel
 
         public void CreateSceneViewModel(object parameter)
         {
-            var sceneViewModel = new SceneViewModel(@"C:\Repos\Pix\Source\TestScene.xml", 640, 480, 480 / 20);
+            var sceneViewModel = new SceneViewModel(@"C:\Repos\Pix\Source\TestScene.xml", 480, 320, 320 / 2);
             SceneViewModels.Add(sceneViewModel);
 
             foreach (var chunk in sceneViewModel.Scene.Chunks)

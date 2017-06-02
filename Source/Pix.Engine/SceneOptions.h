@@ -9,12 +9,14 @@ namespace Pix::Engine
     class SceneOptions
     {
     private:
+        int _maxDepth;
         Color3 _defaultColor;
         int _antialiasingLevel;
 
     public:
-        SceneOptions(const Color3& defaultColor, int antialiasingLevel);
+        SceneOptions(int maxDepth, const Color3& defaultColor, int antialiasingLevel);
 
+        int GetMaxDepth() const;
         Color3 GetDefaultColor() const;
         int GetAntialiasingLevel() const;
     };

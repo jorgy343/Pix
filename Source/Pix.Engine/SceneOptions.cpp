@@ -2,10 +2,15 @@
 
 using namespace Pix::Engine;
 
-SceneOptions::SceneOptions(const Color3& defaultColor, int antialiasingLevel)
-    : _defaultColor(defaultColor), _antialiasingLevel(antialiasingLevel)
+SceneOptions::SceneOptions(int maxDepth, const Color3& defaultColor, int antialiasingLevel)
+    : _maxDepth(maxDepth), _defaultColor(defaultColor), _antialiasingLevel(antialiasingLevel)
 {
 
+}
+
+int SceneOptions::GetMaxDepth() const
+{
+    return _maxDepth;
 }
 
 Color3 SceneOptions::GetDefaultColor() const

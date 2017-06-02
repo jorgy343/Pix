@@ -39,13 +39,13 @@ float Plane::IntersectRay(const Ray& ray, IntersectionData* intersectionData) co
 
     float nDotD = Vector3::Dot(Normal, ray.Direction);
     if (nDotD == 0.0f)
-        return NAN;
+        return INFINITY;
 
     float nDotS = Vector3::Dot(Normal, ray.Position);
     float distance = -(D + nDotS) / nDotD;
 
     if (distance < 0.0f)
-        return NAN;
+        return INFINITY;
 
     if (intersectionData != nullptr)
     {

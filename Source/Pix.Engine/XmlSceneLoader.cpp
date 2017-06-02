@@ -287,6 +287,8 @@ Geometry* XmlSceneLoader::ParseGeometry(const pugi::xml_node& element, const Mat
         geometry = ParseGeometryGroup(element, materialNameMap, materialGeometryMap);
     else if (elementName == "Sphere")
         geometry = ParseSphere(element);
+    else if (elementName == "Plane")
+        geometry = ParsePlane(element);
 
     if (geometry != nullptr)
     {
@@ -331,19 +333,27 @@ Sphere* XmlSceneLoader::ParseSphere(const pugi::xml_node& element) const
     return new Sphere(center, radius);
 }
 
+Plane* XmlSceneLoader::ParsePlane(const pugi::xml_node& element) const
+{
+    auto normal = ParseVector3(element.attribute("Normal").value());
+    auto point = ParseVector3(element.attribute("Point").value());
+
+    return new Plane(normal, point);
+}
+
 XmlSceneLoader::XmlSceneLoader(const char* xmlContent)
 {
     _document.load_string(xmlContent);
 }
 
-
 SceneOptions* XmlSceneLoader::CreateSceneOptions() const
 {
     auto optionsElement = _document.select_single_node("//Options").node();
+    auto maxDepth = optionsElement.select_single_node("MaxDepth").node().text().as_int();
     auto defaultColor = ParseColor3(optionsElement.select_single_node("DefaultColor").node().first_child().value());
     auto antialiasingLevel = optionsElement.select_single_node("AntialiasingLevel").node().text().as_int();
 
-    return new SceneOptions(defaultColor, antialiasingLevel);
+    return new SceneOptions(maxDepth, defaultColor, antialiasingLevel);
 }
 
 Camera* XmlSceneLoader::CreateCamera() const

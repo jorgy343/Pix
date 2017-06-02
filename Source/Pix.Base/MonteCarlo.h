@@ -36,7 +36,35 @@ namespace Pix::Base
             float x = r * std::cosf(theta);
             float z = r * std::sinf(theta);
 
-            return Vector3(x, std::sqrtf(std::max<float>(0.0f, 1.0f - random1)), z);
+            return Vector3(x, std::sqrtf(std::max<float>(0.0f, 1.0f - random1)), z).Normalize();
+        }
+
+        static Ray WeirdThingThatMightWork(const Vector3& position, const Vector3& normal, float random1, float random2)
+        {
+            float theta = 2.0f * Pi<float> * random1;
+            float r = sqrt(random2);
+
+            Vector3 w = normal;
+            Vector3 u = (Vector3::CrossProduct((fabs(Vector3::Dot(w, position)) > 0.1f ? Vector3(0.0f, 1.0f, 0.0f) : Vector3(1.0f)), w)).Normalize();
+            Vector3 v = Vector3::CrossProduct(w, u);
+
+            Vector3 d = (u * cos(theta) * r + v * sin(theta) * r + w * std::sqrtf(1.0f - random2)).Normalize();
+            return Ray(position, d);
+        }
+
+        static Ray WeirdThingThatMightWork2(const Vector3& x, const Vector3& nl, float random1, float random2)
+        {
+            float r1 = 2.0f * Pi<float> * random1;
+            float r2 = random2;
+            float r2s = std::sqrtf(r2);
+
+            Vector3 w = nl;
+            //Vector3 u = (Vector3::CrossProduct(std::fabs(w.X) > 0.1f ? Vector3(0.0f, 1.0f, 0.0f) : Vector3(1.0f)), w)).Normalize();
+            Vector3 u = (Vector3::CrossProduct(std::fabs(w.X) > 0.1f ? Vector3(0.0f, 1.0f, 0.0f) : Vector3(1.0f), w)).Normalize();
+            Vector3 v = Vector3::CrossProduct(w, u);
+            Vector3 d = (u*std::cosf(r1) * r2s + v * std::sinf(r1) * r2s + w * std::sqrtf(1 - r2)).Normalize();
+
+            return Ray(x + d * Epsilon, d);
         }
     };
 }

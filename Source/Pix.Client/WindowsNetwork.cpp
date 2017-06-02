@@ -41,9 +41,6 @@ WindowsNetwork::WindowsNetwork(const char* ip, const char* port)
         _connectedSocket = INVALID_SOCKET;
     }
 
-    u_long mode = 1;
-    ioctlsocket(_connectedSocket, FIONBIO, &mode);
-
     freeaddrinfo(_addressInfoResult);
     if (_connectedSocket == INVALID_SOCKET)
     {

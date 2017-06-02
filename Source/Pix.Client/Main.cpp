@@ -16,7 +16,7 @@ using namespace Pix::Engine;
 int _tmain(int argc, _TCHAR* argv[])
 {
     unsigned int totalThreads = max(std::thread::hardware_concurrency(), 1);
-    totalThreads = 1;
+    //totalThreads = 1;
 
     WindowsConsole* console = new WindowsConsole(totalThreads);
 
@@ -62,6 +62,9 @@ int _tmain(int argc, _TCHAR* argv[])
                 {
                     for (int x = 0; x < width; ++x)
                     {
+                        //if (x != 221 || y != 73)
+                        //    continue;
+
                         scene->GetCamera()->CalculateRays(x, y, antiAliasingLevel, rays);
 
                         Color3 color(0.0f);

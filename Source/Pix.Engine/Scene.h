@@ -29,6 +29,9 @@ namespace Pix::Engine
     class Scene
     {
     private:
+        mutable std::mt19937 _generator;
+        mutable std::uniform_real_distribution<float> _distribution;
+
         const SceneOptions* _options;
         const Camera* _camera;
         const std::vector<const Light*>* _lights;

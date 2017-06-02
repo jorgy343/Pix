@@ -3,7 +3,7 @@
 using namespace Pix::Engine;
 
 Scene::Scene(const SceneOptions* options, const Camera* camera, const std::vector<const Light*>* lights, const Geometry* rootGeometry, const MaterialManager* materialManager)
-    : _options(options), _camera(camera), _lights(lights), _rootGeometry(rootGeometry), _materialManager(materialManager)
+    : _generator{std::random_device{ }()}, _distribution(0.0f, 1.0f), _options(options), _camera(camera), _lights(lights), _rootGeometry(rootGeometry), _materialManager(materialManager)
 {
 
 }
@@ -34,15 +34,12 @@ Color3 Scene::CalculateLightPower(const IntersectionData* intersectionData) cons
         else if (lightType == LightType::Point)
         {
             auto pointLight = (PointLight*)light;
-            auto a = pointLight->GetPosition() - intersectionData->GetPoint();
-
-            auto directionToLight = a.Normalize();
-            auto distanceToLight = a.GetLength();
+            auto directionToLight = (pointLight->GetPosition() - intersectionData->GetPoint()).Normalize();
 
             Ray shadowRay(intersectionData->GetPoint() + directionToLight * Epsilon, directionToLight);
             float shadowDistance = _rootGeometry->IntersectRay(shadowRay, &dummyIntersectionData);
 
-            if (shadowDistance != INFINITY)
+            if (shadowDistance < (pointLight->GetPosition() - intersectionData->GetPoint()).GetLength())
                 inShadow = true;
         }
 
@@ -53,18 +50,15 @@ Color3 Scene::CalculateLightPower(const IntersectionData* intersectionData) cons
     return lightPower;
 }
 
-std::default_random_engine generator;
-std::uniform_real_distribution<float> distribution(0, 1);
-
 Color3 Scene::CastRay(const Ray& ray, int depth) const
 {
-    if (depth > 4)
+    if (depth > _options->GetMaxDepth())
         return Color3(0);
 
     IntersectionData intersectionData;
     float distance = _rootGeometry->IntersectRay(ray, &intersectionData);
 
-    if (distance == INFINITY)
+    if (distance == INFINITY) // Ray missed all geometry.
         return _options->GetDefaultColor();
 
     const Material* material = _materialManager->GetMaterialForGeometry(intersectionData.GetIntersectedGeometry());
@@ -76,26 +70,31 @@ Color3 Scene::CastRay(const Ray& ray, int depth) const
         Vector3 bitangent;
 
         MonteCarlo::CreateTangentCoordinateSystem(intersectionData.GetNormal(), &tangent, &bitangent);
-        Color3 indirectDiffuse(0);
         Matrix33 tangentSpaceToWorldSpaceTransform(tangent, intersectionData.GetNormal(), bitangent);
 
-        const int sampleCount = 256;
+        Color3 indirectLight(0);
+        const int sampleCount = 32 / depth;
+
         for (int i = 0; i < sampleCount; ++i)
         {
-            float random1 = distribution(generator);
-            float random2 = distribution(generator);
+            float random1 = (float)_generator() / 4294967295.0f;
+            float random2 = (float)_generator() / 4294967295.0f;
 
             Vector3 tangentSpaceSample = MonteCarlo::CosineWeightedSampleHemisphere(random1, random2);
             Vector3 worldSpaceSample = tangentSpaceSample * tangentSpaceToWorldSpaceTransform;
 
-            auto castColor = CastRay(Ray(intersectionData.GetPoint() + intersectionData.GetNormal() * Epsilon, worldSpaceSample), depth + 1);
-            indirectDiffuse += castColor;
+            Ray ray(intersectionData.GetPoint() + intersectionData.GetNormal() * Epsilon, worldSpaceSample);
+            indirectLight += CastRay(ray, depth + 1);
+
+            //Ray ray = MonteCarlo::WeirdThingThatMightWork2(intersectionData.GetPoint(), intersectionData.GetNormal(), random1, random2);
+            //indirectLight += CastRay(ray, depth + 1);
         }
 
-        indirectDiffuse /= (float)sampleCount;
-        return (CalculateLightPower(&intersectionData) / Pi<float> + indirectDiffuse) * diffuseMaterial->Color;
+        indirectLight /= (float)sampleCount;
+        return (CalculateLightPower(&intersectionData) * OneOverPi<float> + indirectLight) * diffuseMaterial->Color;
     }
 
+    // Unknown material type.
     return _options->GetDefaultColor();
 }
 

@@ -2,33 +2,35 @@
 <Scene xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="PixScene.xsd">
   
   <Options>
-    <DefaultColor>
-      1.0,1.0,1.0
-    </DefaultColor>
-    <AntialiasingLevel>
-      1
-    </AntialiasingLevel>
+    <MaxDepth>4</MaxDepth>
+    <DefaultColor>0.0,0.0,0.0</DefaultColor>
+    <AntialiasingLevel>1</AntialiasingLevel>
   </Options>
   
   <Camera>
-    <PerspectiveCamera Position="0,0,0" LookAt="1,0,0" Up="0,1,0" ScreenWidth="640" ScreenHeight="480" FieldOfView="1.57079633" />
+    <PerspectiveCamera Position="0,3,-10" LookAt="0,2,1" Up="0,1,0" ScreenWidth="480" ScreenHeight="320" FieldOfView="1.57079633" />
   </Camera>
 
   <Materials>
+    <DiffuseMaterial Name="StandardDiffuse" Color="0.8,0.8,0.8" DiffuseWeight="1" SpecularWeight="0" />
   </Materials>
 
   <Lights>
-    <PointLight Color="1,1,1" Position="-10,10,0" />
+    <PointLight Color="1,1,1" Position="0,8,-10" />
   </Lights>
   
   <RootGeometry>
     <GeometryGroup>
       <Geometries>
-        <Sphere Center="10,0,0" Radius="2">
-          <Material>
-            <DiffuseMaterial Color="0.5,0.5,0.5" DiffuseWeight="1" SpecularWeight="0" />
-          </Material>
-        </Sphere>
+        <Plane MaterialName="StandardDiffuse" Normal="+1,+0,+0" Point="-20,0,0" /> <!-- Left -->
+        <Plane MaterialName="StandardDiffuse" Normal="-1,+0,+0" Point="20,0,0" /> <!-- Right -->
+        <Plane MaterialName="StandardDiffuse" Normal="+0,+0,-1" Point="0,0,0" /> <!-- Forward -->
+        <Plane MaterialName="StandardDiffuse" Normal="+0,+0,+1" Point="0,0,-20" /> <!-- Back -->
+        <Plane MaterialName="StandardDiffuse" Normal="+0,-1,+0" Point="0,20,0" /> <!-- Top -->
+        <Plane MaterialName="StandardDiffuse" Normal="+0,+1,+0" Point="0,0,0" /> <!-- Bottom -->
+        
+        <Sphere MaterialName="StandardDiffuse" Center="-2,+2,-2" Radius="2" />
+        <Sphere MaterialName="StandardDiffuse" Center="+2,+2,-2" Radius="2" />
       </Geometries>
     </GeometryGroup>
   </RootGeometry>
