@@ -111,6 +111,9 @@
     <ClInclude Include="Matrix33.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SseFunctions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="IntersectionData.cpp">
@@ -139,6 +142,9 @@
     </ClCompile>
     <ClCompile Include="PerspectiveCamera.cpp">
       <Filter>Source Files\Cameras</Filter>
+    </ClCompile>
+    <ClCompile Include="MonteCarlo.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

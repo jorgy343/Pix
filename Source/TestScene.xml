@@ -12,7 +12,9 @@
   </Camera>
 
   <Materials>
-    <DiffuseMaterial Name="StandardDiffuse" Color="0.8,0.8,0.8" DiffuseWeight="1" SpecularWeight="0" />
+    <DiffuseMaterial Name="GrayDiffuse" Color="0.8,0.8,0.8" DiffuseWeight="1" SpecularWeight="0" />
+    <DiffuseMaterial Name="RedDiffuse" Color="0.8,0.0,0.0" DiffuseWeight="1" SpecularWeight="0" />
+    <DiffuseMaterial Name="BlueDiffuse" Color="0.0,0.0,0.8" DiffuseWeight="1" SpecularWeight="0" />
   </Materials>
 
   <Lights>
@@ -22,15 +24,15 @@
   <RootGeometry>
     <GeometryGroup>
       <Geometries>
-        <Plane MaterialName="StandardDiffuse" Normal="+1,+0,+0" Point="-20,0,0" /> <!-- Left -->
-        <Plane MaterialName="StandardDiffuse" Normal="-1,+0,+0" Point="20,0,0" /> <!-- Right -->
-        <Plane MaterialName="StandardDiffuse" Normal="+0,+0,-1" Point="0,0,0" /> <!-- Forward -->
-        <Plane MaterialName="StandardDiffuse" Normal="+0,+0,+1" Point="0,0,-20" /> <!-- Back -->
-        <Plane MaterialName="StandardDiffuse" Normal="+0,-1,+0" Point="0,20,0" /> <!-- Top -->
-        <Plane MaterialName="StandardDiffuse" Normal="+0,+1,+0" Point="0,0,0" /> <!-- Bottom -->
+        <Plane MaterialName="GrayDiffuse" Normal="+1,+0,+0" Point="-20,0,0" /> <!-- Left -->
+        <Plane MaterialName="GrayDiffuse" Normal="-1,+0,+0" Point="20,0,0" /> <!-- Right -->
+        <Plane MaterialName="GrayDiffuse" Normal="+0,+0,-1" Point="0,0,0" /> <!-- Forward -->
+        <Plane MaterialName="GrayDiffuse" Normal="+0,+0,+1" Point="0,0,-20" /> <!-- Back -->
+        <Plane MaterialName="GrayDiffuse" Normal="+0,-1,+0" Point="0,20,0" /> <!-- Top -->
+        <Plane MaterialName="GrayDiffuse" Normal="+0,+1,+0" Point="0,0,0" /> <!-- Bottom -->
         
-        <Sphere MaterialName="StandardDiffuse" Center="-2,+2,-2" Radius="2" />
-        <Sphere MaterialName="StandardDiffuse" Center="+2,+2,-2" Radius="2" />
+        <Sphere MaterialName="RedDiffuse" Center="-2,+3,-5" Radius="2" />
+        <Sphere MaterialName="BlueDiffuse" Center="+2,+3,-5" Radius="2" />
       </Geometries>
     </GeometryGroup>
   </RootGeometry>

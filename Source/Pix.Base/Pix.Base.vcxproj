@@ -87,6 +87,7 @@
     <ClInclude Include="Random.h" />
     <ClInclude Include="Ray.h" />
     <ClInclude Include="Sphere.h" />
+    <ClInclude Include="SseFunctions.h" />
     <ClInclude Include="Vector2.h" />
     <ClInclude Include="Vector2T.h" />
     <ClInclude Include="Vector3.h" />
@@ -98,6 +99,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="GeometryGroup.cpp" />
     <ClCompile Include="IntersectionData.cpp" />
+    <ClCompile Include="MonteCarlo.cpp" />
     <ClCompile Include="OrthographicCamera.cpp" />
     <ClCompile Include="PerspectiveCamera.cpp" />
     <ClCompile Include="Plane.cpp" />

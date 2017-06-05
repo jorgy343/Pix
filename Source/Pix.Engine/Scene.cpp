@@ -25,7 +25,7 @@ Color3 Scene::CalculateLightPower(const IntersectionData* intersectionData) cons
 
         if (lightType == LightType::Directional)
         {
-            Ray shadowRay(intersectionData->GetPoint() + intersectionData->GetNormal() * Epsilon, ((DirectionalLight*)light)->GetReversedDirection());
+            Ray shadowRay(intersectionData->Point + intersectionData->Normal * Epsilon, ((DirectionalLight*)light)->GetReversedDirection());
             float shadowDistance = _rootGeometry->IntersectRay(shadowRay, &dummyIntersectionData);
 
             if (shadowDistance != INFINITY)
@@ -34,17 +34,17 @@ Color3 Scene::CalculateLightPower(const IntersectionData* intersectionData) cons
         else if (lightType == LightType::Point)
         {
             auto pointLight = (PointLight*)light;
-            auto directionToLight = (pointLight->GetPosition() - intersectionData->GetPoint()).Normalize();
+            auto directionToLight = (pointLight->GetPosition() - intersectionData->Point).Normalize();
 
-            Ray shadowRay(intersectionData->GetPoint() + directionToLight * Epsilon, directionToLight);
+            Ray shadowRay(intersectionData->Point + directionToLight * Epsilon, directionToLight);
             float shadowDistance = _rootGeometry->IntersectRay(shadowRay, &dummyIntersectionData);
 
-            if (shadowDistance < (pointLight->GetPosition() - intersectionData->GetPoint()).GetLength())
+            if (shadowDistance < (pointLight->GetPosition() - intersectionData->Point).GetLength())
                 inShadow = true;
         }
 
         if (!inShadow)
-            lightPower += light->CalculateIntensity(intersectionData->GetPoint(), intersectionData->GetNormal());
+            lightPower += light->CalculateIntensity(intersectionData->Point, intersectionData->Normal);
     }
 
     return lightPower;
@@ -61,7 +61,7 @@ Color3 Scene::CastRay(const Ray& ray, int depth) const
     if (distance == INFINITY) // Ray missed all geometry.
         return _options->GetDefaultColor();
 
-    const Material* material = _materialManager->GetMaterialForGeometry(intersectionData.GetIntersectedGeometry());
+    const Material* material = _materialManager->GetMaterialForGeometry(intersectionData.IntersectedGeometry);
     if (material->Type == MaterialType::Diffuse)
     {
         const DiffuseMaterial* diffuseMaterial = (const DiffuseMaterial*)material;
@@ -69,28 +69,51 @@ Color3 Scene::CastRay(const Ray& ray, int depth) const
         Vector3 tangent;
         Vector3 bitangent;
 
-        MonteCarlo::CreateTangentCoordinateSystem(intersectionData.GetNormal(), &tangent, &bitangent);
-        Matrix33 tangentSpaceToWorldSpaceTransform(tangent, intersectionData.GetNormal(), bitangent);
+        MonteCarlo::CreateTangentCoordinateSystem(intersectionData.Normal, &tangent, &bitangent);
+        Matrix33 tangentSpaceToWorldSpaceTransform(tangent, intersectionData.Normal, bitangent);
 
         Color3 indirectLight(0);
-        const int sampleCount = 32 / depth;
+        const int sampleCount = (_options->GetMaxDepth() - depth + 1) * 2;
+        //const int sampleCount = 4;
 
         for (int i = 0; i < sampleCount; ++i)
         {
-            float random1 = (float)_generator() / 4294967295.0f;
-            float random2 = (float)_generator() / 4294967295.0f;
+            float random1[4];
+            float random2[4];
 
-            Vector3 tangentSpaceSample = MonteCarlo::CosineWeightedSampleHemisphere(random1, random2);
-            Vector3 worldSpaceSample = tangentSpaceSample * tangentSpaceToWorldSpaceTransform;
+            for (int i = 0; i < 4; ++i)
+            {
+                random1[i] = (float)_generator() / 4294967295.0f;
+                random2[i] = (float)_generator() / 4294967295.0f;
+            }
 
-            Ray ray(intersectionData.GetPoint() + intersectionData.GetNormal() * Epsilon, worldSpaceSample);
-            indirectLight += CastRay(ray, depth + 1);
+            Vector3 samples[4];
+            MonteCarlo::CosineWeightedSampleHemisphere4(samples, random1, random2);
+
+            for (int i = 0; i < 4; ++i)
+            {
+                Vector3 sample = samples[i] * tangentSpaceToWorldSpaceTransform;
+
+                Ray ray(intersectionData.Point + intersectionData.Normal * Epsilon, samples[i]);
+                indirectLight += CastRay(ray, depth + 1);
+            }
+
+
+            //float random1 = (float)_generator() / 4294967295.0f;
+            //float random2 = (float)_generator() / 4294967295.0f;
+
+            //Vector3 tangentSpaceSample = MonteCarlo::CosineWeightedSampleHemisphere(random1, random2);
+            //Vector3 worldSpaceSample = tangentSpaceSample * tangentSpaceToWorldSpaceTransform;
+
+            //Ray ray(intersectionData.Point + intersectionData.Normal * Epsilon, worldSpaceSample);
+            //indirectLight += CastRay(ray, depth + 1);
+
 
             //Ray ray = MonteCarlo::WeirdThingThatMightWork2(intersectionData.GetPoint(), intersectionData.GetNormal(), random1, random2);
             //indirectLight += CastRay(ray, depth + 1);
         }
 
-        indirectLight /= (float)sampleCount;
+        indirectLight /= (float)sampleCount * 4.0f;
         return (CalculateLightPower(&intersectionData) * OneOverPi<float> + indirectLight) * diffuseMaterial->Color;
     }
 

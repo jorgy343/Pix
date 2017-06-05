@@ -50,7 +50,11 @@ float Plane::IntersectRay(const Ray& ray, IntersectionData* intersectionData) co
     if (intersectionData != nullptr)
     {
         Vector3 point = ray.Position + distance * ray.Direction;
-        *intersectionData = IntersectionData{this, distance, point, Normal};
+
+        intersectionData->IntersectedGeometry = this;
+        intersectionData->Distance = distance;
+        intersectionData->Point = point;
+        intersectionData->Normal = Normal;
     }
 
     return distance;

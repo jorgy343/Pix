@@ -9,19 +9,13 @@ namespace Pix::Base
 {
     class IntersectionData
     {
-    private:
-        const Geometry* _intersectedGeometry;
-        float _distance;
-        Vector3 _point;
-        Vector3 _normal;
-
     public:
+        const Geometry* IntersectedGeometry;
+        float Distance;
+        Vector3 Point;
+        Vector3 Normal;
+
         IntersectionData() = default;
         IntersectionData(const Geometry* intersectedGeometry, float distance, const Vector3& point, const Vector3& normal);
-
-        const Geometry* GetIntersectedGeometry() const;
-        float GetDistance() const;
-        Vector3 GetPoint() const;
-        Vector3 GetNormal() const;
     };
 }

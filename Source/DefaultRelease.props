@@ -32,7 +32,7 @@
     <ClCompile>
       <WholeProgramOptimization>true</WholeProgramOptimization>
       <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
-      <AssemblerOutput>All</AssemblerOutput>
+      <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
       <UseUnicodeForAssemblerListing>
       </UseUnicodeForAssemblerListing>
       <AssemblerListingLocation>$(IntDir)Asm\</AssemblerListingLocation>

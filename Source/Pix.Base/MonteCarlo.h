@@ -1,6 +1,10 @@
 #pragma once
 
+#include <math.h>
+
 #include "Vector3.h"
+#include "Ray.h"
+#include "General.h"
 
 namespace Pix::Base
 {
@@ -24,20 +28,12 @@ namespace Pix::Base
 
             float x = sinTheta * cosf(phi);
             float z = sinTheta * sinf(phi);
-        
+            
             return Vector3(x, random1, z);
         }
 
-        static Vector3 CosineWeightedSampleHemisphere(float random1, float random2)
-        {
-            float r = std::sqrtf(random1);
-            float theta = 2.0f * Pi<float> * random2;
-
-            float x = r * std::cosf(theta);
-            float z = r * std::sinf(theta);
-
-            return Vector3(x, std::sqrtf(std::max<float>(0.0f, 1.0f - random1)), z).Normalize();
-        }
+        static __declspec(noinline) Vector3 CosineWeightedSampleHemisphere(float random1, float random2);
+        static __declspec(noinline) void CosineWeightedSampleHemisphere4(Vector3* samples, const float* random1, const float* random2);
 
         static Ray WeirdThingThatMightWork(const Vector3& position, const Vector3& normal, float random1, float random2)
         {
