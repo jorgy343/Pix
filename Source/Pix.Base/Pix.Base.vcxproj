@@ -85,6 +85,7 @@
     <ClInclude Include="Plane.h" />
     <ClInclude Include="Quadric.h" />
     <ClInclude Include="Random.h" />
+    <ClInclude Include="RandomSse.h" />
     <ClInclude Include="Ray.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="SseFunctions.h" />

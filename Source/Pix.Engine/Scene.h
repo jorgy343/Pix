@@ -17,6 +17,7 @@
 #include "Material.h"
 #include "DiffuseMaterial.h"
 #include "MaterialManager.h"
+#include "RandomSse.h"
 
 using namespace Pix::Base;
 using namespace Pix::Base::Geometries;
@@ -30,7 +31,7 @@ namespace Pix::Engine
     {
     private:
         mutable std::mt19937 _generator;
-        mutable std::uniform_real_distribution<float> _distribution;
+        mutable RandomSse _rng;
 
         const SceneOptions* _options;
         const Camera* _camera;

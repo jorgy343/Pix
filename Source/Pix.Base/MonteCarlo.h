@@ -32,8 +32,8 @@ namespace Pix::Base
             return Vector3(x, random1, z);
         }
 
-        static __declspec(noinline) Vector3 CosineWeightedSampleHemisphere(float random1, float random2);
-        static __declspec(noinline) void CosineWeightedSampleHemisphere4(Vector3* samples, const float* random1, const float* random2);
+        static Vector3 CosineWeightedSampleHemisphere(float random1, float random2);
+        static void CosineWeightedSampleHemisphere4(Vector3* samples, const float* random1, const float* random2);
 
         static Ray WeirdThingThatMightWork(const Vector3& position, const Vector3& normal, float random1, float random2)
         {

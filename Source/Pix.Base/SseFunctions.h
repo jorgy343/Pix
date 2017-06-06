@@ -217,7 +217,7 @@ _PS_CONST(coscof_p1, -1.388731625493765E-003);
 _PS_CONST(coscof_p2, 4.166664568298827E-002);
 _PS_CONST(cephes_4OVERPI, 1.27323954473516); // 4 / M_PI
 
-__declspec(noinline) __m128 sin_ps(__m128 x)
+__m128 sin_ps(__m128 x)
 {
     __m128 xmm1, xmm2 = _mm_setzero_ps(), xmm3, sign_bit, y;
 
@@ -305,7 +305,7 @@ __declspec(noinline) __m128 sin_ps(__m128 x)
 }
 
 /* almost the same as sin_ps */
-__declspec(noinline) __m128 cos_ps(__m128 x) { // any x
+__m128 cos_ps(__m128 x) { // any x
     __m128 xmm1, xmm2 = _mm_setzero_ps(), xmm3, y;
     __m128i emm0, emm2;
 
@@ -384,7 +384,7 @@ __declspec(noinline) __m128 cos_ps(__m128 x) { // any x
 
 /* since sin_ps and cos_ps are almost identical, sincos_ps could replace both of them..
 it is almost as fast, and gives you a free cosine with your sine */
-__declspec(noinline) void sincos_ps(__m128 x, __m128 *s, __m128 *c) {
+void sincos_ps(__m128 x, __m128 *s, __m128 *c) {
     __m128 xmm1, xmm2, xmm3 = _mm_setzero_ps(), sign_bit_sin, y;
     __m128i emm0, emm2, emm4;
 

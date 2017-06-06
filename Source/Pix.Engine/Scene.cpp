@@ -3,7 +3,16 @@
 using namespace Pix::Engine;
 
 Scene::Scene(const SceneOptions* options, const Camera* camera, const std::vector<const Light*>* lights, const Geometry* rootGeometry, const MaterialManager* materialManager)
-    : _generator{std::random_device{ }()}, _distribution(0.0f, 1.0f), _options(options), _camera(camera), _lights(lights), _rootGeometry(rootGeometry), _materialManager(materialManager)
+    : _generator{std::random_device{ }()}, _options(options), _camera(camera), _lights(lights), _rootGeometry(rootGeometry), _materialManager(materialManager),
+    _rng(
+        std::random_device{ }(),
+        std::random_device{ }(),
+        std::random_device{ }(),
+        std::random_device{ }(),
+        std::random_device{ }(),
+        std::random_device{ }(),
+        std::random_device{ }(),
+        std::random_device{ }())
 {
 
 }
@@ -73,7 +82,7 @@ Color3 Scene::CastRay(const Ray& ray, int depth) const
         Matrix33 tangentSpaceToWorldSpaceTransform(tangent, intersectionData.Normal, bitangent);
 
         Color3 indirectLight(0);
-        const int sampleCount = (_options->GetMaxDepth() - depth + 1) * 2;
+        const int sampleCount = (_options->GetMaxDepth() - depth + 1) * 1;
         //const int sampleCount = 4;
 
         for (int i = 0; i < sampleCount; ++i)
@@ -81,11 +90,8 @@ Color3 Scene::CastRay(const Ray& ray, int depth) const
             float random1[4];
             float random2[4];
 
-            for (int i = 0; i < 4; ++i)
-            {
-                random1[i] = (float)_generator() / 4294967295.0f;
-                random2[i] = (float)_generator() / 4294967295.0f;
-            }
+            _rng.GetNextFloat(random1);
+            _rng.GetNextFloat(random2);
 
             Vector3 samples[4];
             MonteCarlo::CosineWeightedSampleHemisphere4(samples, random1, random2);
