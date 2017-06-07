@@ -82,8 +82,8 @@ Color3 Scene::CastRay(const Ray& ray, int depth) const
         Matrix33 tangentSpaceToWorldSpaceTransform(tangent, intersectionData.Normal, bitangent);
 
         Color3 indirectLight(0);
-        const int sampleCount = (_options->GetMaxDepth() - depth + 1) * 1;
-        //const int sampleCount = 4;
+        //const int sampleCount = (_options->GetMaxDepth() - depth + 1) * 1;
+        const int sampleCount = 1;
 
         for (int i = 0; i < sampleCount; ++i)
         {

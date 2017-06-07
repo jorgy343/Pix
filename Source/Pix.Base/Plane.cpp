@@ -38,8 +38,10 @@ float Plane::IntersectRay(const Ray& ray, IntersectionData* intersectionData) co
     // plane, it is considered that no intersection occured.
 
     float nDotD = Vector3::Dot(Normal, ray.Direction);
-    if (nDotD == 0.0f)
-        return INFINITY;
+
+    // Assume this will never happen.
+    //if (nDotD == 0.0f)
+    //    return INFINITY;
 
     float nDotS = Vector3::Dot(Normal, ray.Position);
     float distance = -(D + nDotS) / nDotD;
