@@ -48,9 +48,6 @@
     <ClInclude Include="MaterialType.h">
       <Filter>Header Files\Materials</Filter>
     </ClInclude>
-    <ClInclude Include="DiffuseMaterial.h">
-      <Filter>Header Files\Materials</Filter>
-    </ClInclude>
     <ClInclude Include="Light.h">
       <Filter>Header Files\Lights</Filter>
     </ClInclude>
@@ -67,6 +64,9 @@
       <Filter>Header Files\Materials</Filter>
     </ClInclude>
     <ClInclude Include="MaterialManager.h">
+      <Filter>Header Files\Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="MonteCarloDiffuseMaterial.h">
       <Filter>Header Files\Materials</Filter>
     </ClInclude>
   </ItemGroup>
@@ -95,10 +95,10 @@
     <ClCompile Include="Material.cpp">
       <Filter>Source Files\Materials</Filter>
     </ClCompile>
-    <ClCompile Include="DiffuseMaterial.cpp">
+    <ClCompile Include="MaterialManager.cpp">
       <Filter>Source Files\Materials</Filter>
     </ClCompile>
-    <ClCompile Include="MaterialManager.cpp">
+    <ClCompile Include="MonteCarloDiffuseMaterial.cpp">
       <Filter>Source Files\Materials</Filter>
     </ClCompile>
   </ItemGroup>

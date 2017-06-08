@@ -12,9 +12,9 @@
   </Camera>
 
   <Materials>
-    <DiffuseMaterial Name="GrayDiffuse" Color="0.8,0.8,0.8" DiffuseWeight="1" SpecularWeight="0" />
-    <DiffuseMaterial Name="RedDiffuse" Color="0.8,0.0,0.0" DiffuseWeight="1" SpecularWeight="0" />
-    <DiffuseMaterial Name="BlueDiffuse" Color="0.0,0.0,0.8" DiffuseWeight="1" SpecularWeight="0" />
+    <MonteCarloDiffuseMaterial Name="GrayDiffuse" Color="0.8,0.8,0.8" />
+    <MonteCarloDiffuseMaterial Name="RedDiffuse" Color="0.8,0.0,0.0" />
+    <MonteCarloDiffuseMaterial Name="BlueDiffuse" Color="0.0,0.0,0.8" />
   </Materials>
 
   <Lights>

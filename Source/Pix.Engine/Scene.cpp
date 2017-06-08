@@ -71,9 +71,9 @@ Color3 Scene::CastRay(const Ray& ray, int depth) const
         return _options->GetDefaultColor();
 
     const Material* material = _materialManager->GetMaterialForGeometry(intersectionData.IntersectedGeometry);
-    if (material->Type == MaterialType::Diffuse)
+    if (material->Type == MaterialType::MonteCarloDiffuse)
     {
-        const DiffuseMaterial* diffuseMaterial = (const DiffuseMaterial*)material;
+        const MonteCarloDiffuseMaterial* monteCarloDiffuseMaterial = (const MonteCarloDiffuseMaterial*)material;
 
         Vector3 tangent;
         Vector3 bitangent;
@@ -82,8 +82,8 @@ Color3 Scene::CastRay(const Ray& ray, int depth) const
         Matrix33 tangentSpaceToWorldSpaceTransform(tangent, intersectionData.Normal, bitangent);
 
         Color3 indirectLight(0);
-        //const int sampleCount = (_options->GetMaxDepth() - depth + 1) * 1;
-        const int sampleCount = 1;
+        const int sampleCount = (_options->GetMaxDepth() - depth + 1) * 2;
+        //const int sampleCount = 1;
 
         for (int i = 0; i < sampleCount; ++i)
         {
@@ -115,12 +115,12 @@ Color3 Scene::CastRay(const Ray& ray, int depth) const
             //indirectLight += CastRay(ray, depth + 1);
 
 
-            //Ray ray = MonteCarlo::WeirdThingThatMightWork2(intersectionData.GetPoint(), intersectionData.GetNormal(), random1, random2);
+            //Ray ray = MonteCarlo::WeirdThingThatMightWork(intersectionData.GetPoint(), intersectionData.GetNormal(), random1, random2);
             //indirectLight += CastRay(ray, depth + 1);
         }
 
         indirectLight /= (float)sampleCount * 4.0f;
-        return (CalculateLightPower(&intersectionData) * OneOverPi<float> + indirectLight) * diffuseMaterial->Color;
+        return (CalculateLightPower(&intersectionData) * OneOverPi<float> + indirectLight) * monteCarloDiffuseMaterial->Color;
     }
 
     // Unknown material type.

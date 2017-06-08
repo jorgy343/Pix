@@ -193,13 +193,10 @@ MaterialNameMap* XmlSceneLoader::ParseMaterials() const
 Material* XmlSceneLoader::ParseMaterial(const pugi::xml_node& element) const
 {
     std::string elementName = element.name();
-    if (elementName == "DiffuseMaterial")
+    if (elementName == "MonteCarloDiffuseMaterial")
     {
         auto color = ParseColor3(element.attribute("Color").value());
-        auto diffuseWeight = element.attribute("DiffuseWeight").as_float();
-        auto specularWeight = element.attribute("SpecularWeight").as_float();
-
-        return new DiffuseMaterial(color, diffuseWeight, specularWeight);
+        return new MonteCarloDiffuseMaterial(color);
     }
 
     return nullptr;

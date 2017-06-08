@@ -88,29 +88,13 @@
 
   <xs:group name="GroupMaterials">
     <xs:choice>
-      <xs:element name="DiffuseMaterial" type="TypeDiffuseMaterial" />
+      <xs:element name="MonteCarloDiffuseMaterial" type="TypeMonteCarloDiffuseMaterial" />
     </xs:choice>
   </xs:group>
   
-  <xs:complexType name="TypeDiffuseMaterial">
+  <xs:complexType name="TypeMonteCarloDiffuseMaterial">
     <xs:attribute name="Name" type="TypeName" use="optional" />
     <xs:attribute name="Color" type="TypeColor3" use="required" />
-    <xs:attribute name="DiffuseWeight" use="required">
-      <xs:simpleType>
-        <xs:restriction base="xs:float">
-          <xs:minInclusive value="0" />
-          <xs:maxInclusive value="1" />
-        </xs:restriction>
-      </xs:simpleType>
-    </xs:attribute>
-    <xs:attribute name="SpecularWeight" use="required">
-      <xs:simpleType>
-        <xs:restriction base="xs:float">
-          <xs:minInclusive value="0" />
-          <xs:maxInclusive value="1" />
-        </xs:restriction>
-      </xs:simpleType>
-    </xs:attribute>
   </xs:complexType>
 
   <xs:complexType name="TypeOptions">

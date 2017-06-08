@@ -21,7 +21,7 @@
 #include "DirectionalLight.h"
 #include "Material.h"
 #include "MaterialType.h"
-#include "DiffuseMaterial.h"
+#include "MonteCarloDiffuseMaterial.h"
 #include "MaterialAliases.h"
 #include "MaterialManager.h"
 
