@@ -24,7 +24,7 @@ Color3 Scene::CastRay(const Ray& ray) const
 
 Color3 Scene::CalculateLightPower(const IntersectionData* intersectionData) const
 {
-    IntersectionData dummyIntersectionData;
+    const Geometry* dummyHitGeometry;
     Color3 lightPower(0.0f);
 
     for (const auto& light : *_lights)
@@ -35,7 +35,7 @@ Color3 Scene::CalculateLightPower(const IntersectionData* intersectionData) cons
         if (lightType == LightType::Directional)
         {
             Ray shadowRay(intersectionData->Point + intersectionData->Normal * Epsilon, ((DirectionalLight*)light)->GetReversedDirection());
-            float shadowDistance = _rootGeometry->IntersectRay(shadowRay, &dummyIntersectionData);
+            float shadowDistance = _rootGeometry->IntersectRay(shadowRay, &dummyHitGeometry);
 
             if (shadowDistance != INFINITY)
                 inShadow = true;
@@ -46,7 +46,7 @@ Color3 Scene::CalculateLightPower(const IntersectionData* intersectionData) cons
             auto directionToLight = (pointLight->GetPosition() - intersectionData->Point).Normalize();
 
             Ray shadowRay(intersectionData->Point + directionToLight * Epsilon, directionToLight);
-            float shadowDistance = _rootGeometry->IntersectRay(shadowRay, &dummyIntersectionData);
+            float shadowDistance = _rootGeometry->IntersectRay(shadowRay, &dummyHitGeometry);
 
             if (shadowDistance < (pointLight->GetPosition() - intersectionData->Point).GetLength())
                 inShadow = true;
@@ -65,10 +65,13 @@ Color3 Scene::CastRay(const Ray& ray, int depth) const
         return Color3(0);
 
     IntersectionData intersectionData;
-    float distance = _rootGeometry->IntersectRay(ray, &intersectionData);
+    const Geometry* hitGeometry;
 
+    float distance = _rootGeometry->IntersectRay(ray, &hitGeometry);
     if (distance == INFINITY) // Ray missed all geometry.
         return _options->GetDefaultColor();
+
+    hitGeometry->GetIntersectionData(ray, distance, &intersectionData);
 
     const Material* material = _materialManager->GetMaterialForGeometry(intersectionData.IntersectedGeometry);
     if (material->Type == MaterialType::MonteCarloDiffuse)

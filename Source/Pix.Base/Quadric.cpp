@@ -9,7 +9,7 @@ Quadric::Quadric(float a, float b, float c, float d, float e, float f, float g, 
 
 }
 
-float Quadric::IntersectRay(const Ray& ray, IntersectionData* intersectionData) const
+float Quadric::IntersectRay(const Ray& ray, const Geometry** hitGeometry) const
 {
     Matrix44 Q(
         A, B, C, D,
@@ -35,16 +35,26 @@ float Quadric::IntersectRay(const Ray& ray, IntersectionData* intersectionData) 
     if (distance < 0.0f)
         return INFINITY;
 
-    if (intersectionData != nullptr)
-    {
-        Vector3 point = ray.Position + distance * ray.Direction;
-        Vector4 point4(point.X, point.Y, point.Z, 1.0f);
-
-        Vector4 normal4 = point4 * Q;
-        Vector3 normal = Vector3(normal4.X, normal4.Y, normal4.Z).Normalize();
-
-        *intersectionData = IntersectionData{this, distance, point, normal};
-    }
-
+    *hitGeometry = this;
     return distance;
+}
+
+void Quadric::GetIntersectionData(const Ray& ray, float distance, IntersectionData* intersectionData) const
+{
+    Matrix44 Q(
+        A, B, C, D,
+        B, E, F, G,
+        C, F, H, I,
+        D, G, I, J);
+
+    Vector3 point = ray.Position + distance * ray.Direction;
+    Vector4 point4(point.X, point.Y, point.Z, 1.0f);
+
+    Vector4 normal4 = point4 * Q;
+    Vector3 normal = Vector3(normal4.X, normal4.Y, normal4.Z).Normalize();
+
+    intersectionData->IntersectedGeometry = this;
+    intersectionData->Distance = distance;
+    intersectionData->Point = point;
+    intersectionData->Normal = normal;
 }

@@ -19,6 +19,7 @@ namespace Pix::Base::Geometries
         Plane(Vector3 normal, float d);
         Plane(Vector3 normal, Vector3 point);
 
-        virtual float IntersectRay(const Ray& ray, IntersectionData* intersectionData) const override;
+        virtual float IntersectRay(const Ray& ray, const Geometry** hitGeometry) const override;
+        virtual void GetIntersectionData(const Ray& ray, float distance, IntersectionData* intersectionData) const override;
     };
 }

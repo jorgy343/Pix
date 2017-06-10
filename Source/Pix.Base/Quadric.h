@@ -15,6 +15,7 @@ namespace Pix::Base::Geometries
         Quadric() = default;
         Quadric(float a, float b, float c, float d, float e, float f, float g, float h, float i, float j);
 
-        virtual float IntersectRay(const Ray& ray, IntersectionData* intersectionData) const override;
+        virtual float IntersectRay(const Ray& ray, const Geometry** hitGeometry) const override;
+        virtual void GetIntersectionData(const Ray& ray, float distance, IntersectionData* intersectionData) const override;
     };
 }

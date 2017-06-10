@@ -9,7 +9,7 @@ Sphere::Sphere(Vector3 position, float radius)
     
 }
 
-float Sphere::IntersectRay(const Ray& ray, IntersectionData* intersectionData) const
+float Sphere::IntersectRay(const Ray& ray, const Geometry** hitGeometry) const
 {
     // ‖x − c‖² = r²                    Equation of sphere
     // x = s + td                       Equation of ray
@@ -54,17 +54,17 @@ float Sphere::IntersectRay(const Ray& ray, IntersectionData* intersectionData) c
     if (exitDistance < Epsilon)
         return INFINITY;
 
-    float entranceDistance = fmax((vDotdNegative - discriminantSquareRoot) / dSquared, 0.0f);
-    if (intersectionData != nullptr)
-    {
-        Vector3 point = ray.Position + entranceDistance * ray.Direction;
-        Vector3 normal = (point - Position).Normalize();
+    *hitGeometry = this;
+    return fmax((vDotdNegative - discriminantSquareRoot) / dSquared, 0.0f);
+}
 
-        intersectionData->IntersectedGeometry = this;
-        intersectionData->Distance = entranceDistance;
-        intersectionData->Point = point;
-        intersectionData->Normal = normal;
-    }
-    
-    return entranceDistance;
+void Sphere::GetIntersectionData(const Ray& ray, float distance, IntersectionData* intersectionData) const
+{
+    Vector3 point = ray.Position + distance * ray.Direction;
+    Vector3 normal = (point - Position).Normalize();
+
+    intersectionData->IntersectedGeometry = this;
+    intersectionData->Distance = distance;
+    intersectionData->Point = point;
+    intersectionData->Normal = normal;
 }

@@ -19,6 +19,7 @@ namespace Pix::Base::Geometries
         Sphere() = default;
         Sphere(Vector3 position, float radius);
 
-        virtual float IntersectRay(const Ray& ray, IntersectionData* intersectionData) const override;
+        virtual float IntersectRay(const Ray& ray, const Geometry** hitGeometry) const override;
+        virtual void GetIntersectionData(const Ray& ray, float distance, IntersectionData* intersectionData) const override;
     };
 }

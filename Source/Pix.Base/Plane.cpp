@@ -16,7 +16,7 @@ Plane::Plane(Vector3 normal, Vector3 point)
 
 }
 
-float Plane::IntersectRay(const Ray& ray, IntersectionData* intersectionData) const
+float Plane::IntersectRay(const Ray& ray, const Geometry** hitGeometry) const
 {
     // x₀ = s + td              Equation of ray
     // N + D = 0                Equation of plane
@@ -49,15 +49,17 @@ float Plane::IntersectRay(const Ray& ray, IntersectionData* intersectionData) co
     if (distance < 0.0f)
         return INFINITY;
 
-    if (intersectionData != nullptr)
-    {
-        Vector3 point = ray.Position + distance * ray.Direction;
-
-        intersectionData->IntersectedGeometry = this;
-        intersectionData->Distance = distance;
-        intersectionData->Point = point;
-        intersectionData->Normal = Normal;
-    }
-
+    *hitGeometry = this;
     return distance;
+}
+
+
+void Plane::GetIntersectionData(const Ray& ray, float distance, IntersectionData* intersectionData) const
+{
+    Vector3 point = ray.Position + distance * ray.Direction;
+
+    intersectionData->IntersectedGeometry = this;
+    intersectionData->Distance = distance;
+    intersectionData->Point = point;
+    intersectionData->Normal = Normal;
 }

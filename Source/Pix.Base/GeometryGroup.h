@@ -16,6 +16,7 @@ namespace Pix::Base::Geometries
     public:
         GeometryGroup(const std::vector<const Geometry*>* geometries);
 
-        virtual float IntersectRay(const Ray& ray, IntersectionData* intersectionData) const override;
+        virtual float IntersectRay(const Ray& ray, const Geometry** hitGeometry) const override;
+        virtual void GetIntersectionData(const Ray& ray, float distance, IntersectionData* intersectionData) const override;
     };
 }

@@ -23,6 +23,7 @@ misrepresented as being the original software.
 #pragma once
 
 #include <nmmintrin.h>
+#include <immintrin.h>
 
 #define _PS_CONST(Name, Val) \
     static const __declspec(align(16)) float _ps_##Name[4] = { Val, Val, Val, Val }
@@ -422,12 +423,10 @@ void sincos_ps(__m128 x, __m128 *s, __m128 *c) {
     xmm1 = *(__m128*)_ps_minus_cephes_DP1;
     xmm2 = *(__m128*)_ps_minus_cephes_DP2;
     xmm3 = *(__m128*)_ps_minus_cephes_DP3;
-    xmm1 = _mm_mul_ps(y, xmm1);
-    xmm2 = _mm_mul_ps(y, xmm2);
-    xmm3 = _mm_mul_ps(y, xmm3);
-    x = _mm_add_ps(x, xmm1);
-    x = _mm_add_ps(x, xmm2);
-    x = _mm_add_ps(x, xmm3);
+
+    x = _mm_fmadd_ps(y, xmm1, x);
+    x = _mm_fmadd_ps(y, xmm2, x);
+    x = _mm_fmadd_ps(y, xmm3, x);
 
     emm4 = _mm_sub_epi32(emm4, *(__m128i*)_pi32_2);
     emm4 = _mm_andnot_si128(emm4, *(__m128i*)_pi32_4);
@@ -451,7 +450,6 @@ void sincos_ps(__m128 x, __m128 *s, __m128 *c) {
     y = _mm_add_ps(y, *(__m128*)_ps_1);
 
     /* Evaluate the second polynom  (Pi/4 <= x <= 0) */
-
     __m128 y2 = *(__m128*)_ps_sincof_p0;
     y2 = _mm_mul_ps(y2, z);
     y2 = _mm_add_ps(y2, *(__m128*)_ps_sincof_p1);
