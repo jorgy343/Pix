@@ -4,35 +4,33 @@
   <Options>
     <MaxDepth>4</MaxDepth>
     <DefaultColor>0.0,0.0,0.0</DefaultColor>
-    <AntialiasingLevel>1</AntialiasingLevel>
+    <AntialiasingLevel>2</AntialiasingLevel>
   </Options>
   
   <Camera>
-    <PerspectiveCamera Position="0,3,-10" LookAt="0,2,1" Up="0,1,0" ScreenWidth="480" ScreenHeight="320" FieldOfView="1.57079633" />
+    <PerspectiveCamera Position="0,8,-30" LookAt="0,10,30" Up="0,1,0" ScreenWidth="640" ScreenHeight="480" FieldOfView="1.57079633" />
   </Camera>
 
   <Materials>
-    <MonteCarloDiffuseMaterial Name="GrayDiffuse" Color="0.8,0.8,0.8" />
-    <MonteCarloDiffuseMaterial Name="RedDiffuse" Color="0.8,0.0,0.0" />
-    <MonteCarloDiffuseMaterial Name="BlueDiffuse" Color="0.0,0.0,0.8" />
+    <MonteCarloDiffuseMaterial Name="WhiteDiffuse" Color="1.0,1.0,1.0" />
+    <MonteCarloDiffuseMaterial Name="RedDiffuse" Color="1.0,0.0,0.0" />
+    <MonteCarloDiffuseMaterial Name="GreenDiffuse" Color="0.0,1.0,0.0" />
+    <MonteCarloDiffuseMaterial Name="BlueDiffuse" Color="0.0,0.0,1.0" />
   </Materials>
 
   <Lights>
-    <PointLight Color="1,1,1" Position="0,8,-10" />
+    <PointLight Color="1.5,1.5,1.5" Position="-20,25,-20" />
   </Lights>
   
   <RootGeometry>
     <GeometryGroup>
       <Geometries>
-        <Plane MaterialName="GrayDiffuse" Normal="+1,+0,+0" Point="-20,0,0" /> <!-- Left -->
-        <Plane MaterialName="GrayDiffuse" Normal="-1,+0,+0" Point="20,0,0" /> <!-- Right -->
-        <Plane MaterialName="GrayDiffuse" Normal="+0,+0,-1" Point="0,0,0" /> <!-- Forward -->
-        <Plane MaterialName="GrayDiffuse" Normal="+0,+0,+1" Point="0,0,-20" /> <!-- Back -->
-        <Plane MaterialName="GrayDiffuse" Normal="+0,-1,+0" Point="0,20,0" /> <!-- Top -->
-        <Plane MaterialName="GrayDiffuse" Normal="+0,+1,+0" Point="0,0,0" /> <!-- Bottom -->
+        <Plane MaterialName="WhiteDiffuse" Point="0,0,0" Normal="0,1,0" />
+        <Plane MaterialName="WhiteDiffuse" Point="0,0,100" Normal="0,0,-1" />
         
-        <Sphere MaterialName="RedDiffuse" Center="-2,+3,-5" Radius="2" />
-        <Sphere MaterialName="BlueDiffuse" Center="+2,+3,-5" Radius="2" />
+        <Sphere MaterialName="RedDiffuse" Center="-20,4,0" Radius="4" />
+        <Sphere MaterialName="GreenDiffuse" Center="0,4,0" Radius="4" />
+        <Sphere MaterialName="BlueDiffuse" Center="20,4,0" Radius="4" />
       </Geometries>
     </GeometryGroup>
   </RootGeometry>

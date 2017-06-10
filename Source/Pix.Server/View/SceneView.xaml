@@ -5,14 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         d:DesignWidth="800" d:DesignHeight="600">
-    <Grid SnapsToDevicePixels="True">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
 
         <ScrollViewer Grid.Row="0" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible">
-            <Image SnapsToDevicePixels="True" Source="{Binding Path=Bitmap}" Width="{Binding Path=Scene.Width}" Height="{Binding Path=Scene.Height}" />
+            <Border SnapsToDevicePixels="True" BorderThickness="1" BorderBrush="Black">
+                <Image Source="{Binding Path=Bitmap}" Width="{Binding Path=Scene.Width}" Height="{Binding Path=Scene.Height}" />
+            </Border>
         </ScrollViewer>
         <Button Grid.Row="1" Command="{Binding Path=CreateSceneCommand}">Save</Button>
     </Grid>

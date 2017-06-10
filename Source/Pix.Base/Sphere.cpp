@@ -60,7 +60,10 @@ float Sphere::IntersectRay(const Ray& ray, IntersectionData* intersectionData) c
         Vector3 point = ray.Position + entranceDistance * ray.Direction;
         Vector3 normal = (point - Position).Normalize();
 
-        *intersectionData = IntersectionData{this, entranceDistance, point, normal};
+        intersectionData->IntersectedGeometry = this;
+        intersectionData->Distance = entranceDistance;
+        intersectionData->Point = point;
+        intersectionData->Normal = normal;
     }
     
     return entranceDistance;
