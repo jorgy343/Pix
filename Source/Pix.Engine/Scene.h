@@ -1,7 +1,6 @@
 #pragma once
 
 #include <vector>
-#include <random>
 
 #include "General.h"
 #include "Color3.h"
@@ -30,7 +29,6 @@ namespace Pix::Engine
     class Scene
     {
     private:
-        mutable std::mt19937 _generator;
         mutable RandomSse _rng;
 
         const SceneOptions* _options;

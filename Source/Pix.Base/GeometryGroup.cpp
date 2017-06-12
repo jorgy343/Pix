@@ -11,23 +11,23 @@ GeometryGroup::GeometryGroup(const std::vector<const Geometry*>* geometries)
 
 float GeometryGroup::IntersectRay(const Ray& ray, const Geometry** hitGeometry) const
 {
-    auto closestDistance = FLT_MAX;
+    auto closestDistance = INFINITY;
     const Geometry* closestGeometry = nullptr;
 
     for (const auto& geometry : *_geometries)
     {
-        const Geometry* tempGeometry;
-        auto foundDistance = geometry->IntersectRay(ray, &tempGeometry);
+        const Geometry* foundGeometry;
+        auto foundDistance = geometry->IntersectRay(ray, &foundGeometry);
 
-        if (foundDistance != INFINITY && foundDistance < closestDistance)
+        if (foundDistance < closestDistance)
         {
             closestDistance = foundDistance;
-            closestGeometry = tempGeometry;
+            closestGeometry = foundGeometry;
         }
     }
 
     *hitGeometry = closestGeometry;
-    return closestDistance == FLT_MAX ? INFINITY : closestDistance;
+    return closestDistance;
 }
 
 void GeometryGroup::GetIntersectionData(const Ray& ray, float distance, IntersectionData* intersectionData) const
