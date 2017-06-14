@@ -88,13 +88,29 @@
 
   <xs:group name="GroupMaterials">
     <xs:choice>
+      <xs:element name="PhongDiffuseMaterial" type="TypePhongDiffuseMaterial" />
       <xs:element name="MonteCarloDiffuseMaterial" type="TypeMonteCarloDiffuseMaterial" />
     </xs:choice>
   </xs:group>
+
+  <xs:complexType name="TypePhongDiffuseMaterial">
+    <xs:attribute name="Name" type="TypeName" use="optional" />
+    <xs:attribute name="AmbientColor" type="TypeColor3" use="required" />
+    <xs:attribute name="DiffuseColor" type="TypeColor3" use="required" />
+    <xs:attribute name="DiffuseCoefficient" use="required">
+      <xs:simpleType>
+        <xs:restriction base="xs:float">
+          <xs:minInclusive value="0.0" />
+          <xs:maxInclusive value="1.0" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:complexType>
   
   <xs:complexType name="TypeMonteCarloDiffuseMaterial">
     <xs:attribute name="Name" type="TypeName" use="optional" />
     <xs:attribute name="Color" type="TypeColor3" use="required" />
+    <xs:attribute name="EmissiveColor" type="TypeColor3" use="required" />
   </xs:complexType>
 
   <xs:complexType name="TypeOptions">

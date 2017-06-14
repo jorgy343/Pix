@@ -65,7 +65,12 @@ Color3 Scene::CastRay(const Ray& ray, int depth) const
     hitGeometry->GetIntersectionData(ray, distance, &intersectionData);
 
     const Material* material = _materialManager->GetMaterialForGeometry(intersectionData.IntersectedGeometry);
-    if (material->Type == MaterialType::MonteCarloDiffuse)
+    if (material->Type == MaterialType::PhongDiffuse)
+    {
+        const PhongDiffuseMaterial* monteCarloDiffuseMaterial = (const PhongDiffuseMaterial*)material;
+        return CalculateLightPower(&intersectionData) * monteCarloDiffuseMaterial->DiffuseColor * monteCarloDiffuseMaterial->DiffuseCoefficient;
+    }
+    else if (material->Type == MaterialType::MonteCarloDiffuse)
     {
         const MonteCarloDiffuseMaterial* monteCarloDiffuseMaterial = (const MonteCarloDiffuseMaterial*)material;
         Color3 indirectLight(0.0f);
@@ -78,7 +83,7 @@ Color3 Scene::CastRay(const Ray& ray, int depth) const
             MonteCarlo::CreateTangentCoordinateSystem(intersectionData.Normal, &tangent, &bitangent);
             Matrix33 tangentSpaceToWorldSpaceTransform(tangent, intersectionData.Normal, bitangent);
 
-            const int sampleCount = (_options->GetMaxDepth() - depth + 1) * 3;
+            const int sampleCount = (_options->GetMaxDepth() - depth + 1) * 1;
             //const int sampleCount = 8;
 
             for (int i = 0; i < sampleCount; ++i)

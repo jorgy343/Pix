@@ -4,20 +4,22 @@
   <Options>
     <MaxDepth>4</MaxDepth>
     <DefaultColor>0.0,0.0,0.0</DefaultColor>
-    <AntialiasingLevel>2</AntialiasingLevel>
+    <AntialiasingLevel>4</AntialiasingLevel>
   </Options>
   
   <Camera>
     <PerspectiveCamera Position="0,8,-30" LookAt="0,10,30" Up="0,1,0" ScreenWidth="640" ScreenHeight="480" FieldOfView="1.57079633" />
   </Camera>
-
+  
   <Materials>
-    <MonteCarloDiffuseMaterial Name="WhiteDiffuse" Color="1.0,1.0,1.0" />
-    <MonteCarloDiffuseMaterial Name="RedDiffuse" Color="1.0,0.0,0.0" />
-    <MonteCarloDiffuseMaterial Name="GreenDiffuse" Color="0.0,1.0,0.0" />
-    <MonteCarloDiffuseMaterial Name="BlueDiffuse" Color="0.0,0.0,1.0" />
+    <PhongDiffuseMaterial Name="PhongBlue" AmbientColor="0.1,0.1,0.1" DiffuseColor="0.0,0.0,1.0" DiffuseCoefficient="0.5" />
+    
+    <MonteCarloDiffuseMaterial Name="WhiteDiffuse" Color="1.0,1.0,1.0" EmissiveColor="0,0,0" />
+    <MonteCarloDiffuseMaterial Name="RedDiffuse" Color="1.0,0.0,0.0" EmissiveColor="0,0,0" />
+    <MonteCarloDiffuseMaterial Name="GreenDiffuse" Color="0.0,1.0,0.0" EmissiveColor="0,0,0" />
+    <MonteCarloDiffuseMaterial Name="BlueDiffuse" Color="0.0,0.0,1.0" EmissiveColor="0,0,0" />
   </Materials>
-
+  
   <Lights>
     <PointLight Color="1.5,1.5,1.5" Position="-20,25,-20" />
   </Lights>
@@ -30,7 +32,7 @@
         
         <Sphere MaterialName="RedDiffuse" Center="-20,4,0" Radius="4" />
         <Sphere MaterialName="GreenDiffuse" Center="0,4,0" Radius="4" />
-        <Sphere MaterialName="BlueDiffuse" Center="20,4,0" Radius="4" />
+        <Sphere MaterialName="PhongBlue" Center="20,4,0" Radius="4" />
       </Geometries>
     </GeometryGroup>
   </RootGeometry>

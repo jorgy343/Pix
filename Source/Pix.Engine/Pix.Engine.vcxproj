@@ -79,6 +79,7 @@
     <ClInclude Include="MaterialAliases.h" />
     <ClInclude Include="MaterialManager.h" />
     <ClInclude Include="MaterialType.h" />
+    <ClInclude Include="PhongDiffuseMaterial.h" />
     <ClInclude Include="PointLight.h" />
     <ClInclude Include="pugiconfig.h" />
     <ClInclude Include="pugixml.h" />
@@ -92,6 +93,7 @@
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="MaterialManager.cpp" />
+    <ClCompile Include="PhongDiffuseMaterial.cpp" />
     <ClCompile Include="PointLight.cpp" />
     <ClCompile Include="pugixml.cpp" />
     <ClCompile Include="Scene.cpp" />

@@ -33,18 +33,26 @@ Color3 XmlSceneLoader::ParseColor3(const char* string) const
     stream >> result.Red;
 
     ConsumeWhitespace(stream);
-    stream.read(&dummy, 1); // Read the comma.
+    if (stream.peek() != ',')
+    {
+        result.Green = result.Red;
+        result.Blue = result.Red;
+    }
+    else
+    {
+        stream.read(&dummy, 1); // Read the comma.
 
-    ConsumeWhitespace(stream);
-    stream >> result.Green;
+        ConsumeWhitespace(stream);
+        stream >> result.Green;
 
-    ConsumeWhitespace(stream);
-    stream.read(&dummy, 1); // Read the comma.
+        ConsumeWhitespace(stream);
+        stream.read(&dummy, 1); // Read the comma.
 
-    ConsumeWhitespace(stream);
-    stream >> result.Blue;
+        ConsumeWhitespace(stream);
+        stream >> result.Blue;
 
-    return result;
+        return result;
+    }
 }
 
 Color4 XmlSceneLoader::ParseColor4(const char* string) const
@@ -193,10 +201,20 @@ MaterialNameMap* XmlSceneLoader::ParseMaterials() const
 Material* XmlSceneLoader::ParseMaterial(const pugi::xml_node& element) const
 {
     std::string elementName = element.name();
-    if (elementName == "MonteCarloDiffuseMaterial")
+    if (elementName == "PhongDiffuseMaterial")
+    {
+        auto ambientColor = ParseColor3(element.attribute("AmbientColor").value());
+        auto diffuseColor = ParseColor3(element.attribute("DiffuseColor").value());
+        auto diffuseCoefficient = element.attribute("DiffuseCoefficient").as_float();
+
+        return new PhongDiffuseMaterial(ambientColor, diffuseColor, diffuseCoefficient);
+    }
+    else if (elementName == "MonteCarloDiffuseMaterial")
     {
         auto color = ParseColor3(element.attribute("Color").value());
-        return new MonteCarloDiffuseMaterial(color);
+        auto emissiveColor = ParseColor3(element.attribute("EmissiveColor").value());
+
+        return new MonteCarloDiffuseMaterial(color, emissiveColor);
     }
 
     return nullptr;

@@ -11,7 +11,8 @@ namespace Pix::Engine::Materials
     {
     public:
         Color3 Color;
+        Color3 EmissiveColor;
 
-        MonteCarloDiffuseMaterial(const Color3& color);
+        MonteCarloDiffuseMaterial(const Color3& color, const Color3& emissiveColor);
     };
 }

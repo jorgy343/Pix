@@ -14,6 +14,7 @@
 #include "PointLight.h"
 #include "IntersectionData.h"
 #include "Material.h"
+#include "PhongDiffuseMaterial.h"
 #include "MonteCarloDiffuseMaterial.h"
 #include "MaterialManager.h"
 #include "RandomSse.h"
