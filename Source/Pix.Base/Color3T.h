@@ -199,7 +199,7 @@ namespace Pix::Base
 
         static bool NotEquals(const Color3T& left, const Color3T& right)
         {
-            return R != value.R || G != value.G || B != value.B;
+            return left.R != right.R || left.G != right.G || left.B != right.B;
         }
 
         static Color3T Posit(const Color3T& color)

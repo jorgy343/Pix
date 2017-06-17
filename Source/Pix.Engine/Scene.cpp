@@ -75,6 +75,18 @@ Color3 Scene::CastRay(const Ray& ray, int depth) const
         const MonteCarloDiffuseMaterial* monteCarloDiffuseMaterial = (const MonteCarloDiffuseMaterial*)material;
         Color3 indirectLight(0.0f);
 
+        float random[4];
+        _rng.GetNextFloat(random);
+
+        float russianRouletteFactor = 1.0f;
+        if (depth >= _options->GetRussianRouletteDepthStart())
+        {
+            if (random[0] <= _options->GetRussianRouletteStopFactor())
+                return Color3(0.0f);
+
+            russianRouletteFactor = 1.0f / (1.0f - _options->GetRussianRouletteStopFactor());
+        }
+
         if (depth < _options->GetMaxDepth()) // Don't even compute monte carlo rays if the call is simply going to return Color3(0).
         {
             Vector3 tangent;
@@ -83,51 +95,25 @@ Color3 Scene::CastRay(const Ray& ray, int depth) const
             MonteCarlo::CreateTangentCoordinateSystem(intersectionData.Normal, &tangent, &bitangent);
             Matrix33 tangentSpaceToWorldSpaceTransform(tangent, intersectionData.Normal, bitangent);
 
-            const int sampleCount = (_options->GetMaxDepth() - depth + 1) * 1;
-            //const int sampleCount = 8;
+            Vector3 tangentSpaceSample = MonteCarlo::CosineWeightedSampleHemisphere(random[1], random[2]);
+            Vector3 worldSpaceSample = tangentSpaceSample * tangentSpaceToWorldSpaceTransform;
 
-            for (int i = 0; i < sampleCount; ++i)
-            {
-                float random1[4];
-                float random2[4];
-
-                _rng.GetNextFloat(random1);
-                _rng.GetNextFloat(random2);
-
-                Vector3 samples[4];
-                MonteCarlo::CosineWeightedSampleHemisphere4(samples, random1, random2);
-
-                for (int i = 0; i < 4; ++i)
-                {
-                    Vector3 sample = samples[i] * tangentSpaceToWorldSpaceTransform;
-
-                    Ray ray(intersectionData.Point + intersectionData.Normal * Epsilon, samples[i]);
-                    indirectLight += CastRay(ray, depth + 1);
-                }
-
-
-                //float random1 = (float)_generator() / 4294967295.0f;
-                //float random2 = (float)_generator() / 4294967295.0f;
-
-                //Vector3 tangentSpaceSample = MonteCarlo::CosineWeightedSampleHemisphere(random1, random2);
-                //Vector3 worldSpaceSample = tangentSpaceSample * tangentSpaceToWorldSpaceTransform;
-
-                //Ray ray(intersectionData.Point + intersectionData.Normal * Epsilon, worldSpaceSample);
-                //indirectLight += CastRay(ray, depth + 1);
-
-
-                //Ray ray = MonteCarlo::WeirdThingThatMightWork(intersectionData.GetPoint(), intersectionData.GetNormal(), random1, random2);
-                //indirectLight += CastRay(ray, depth + 1);
-            }
-
-            indirectLight /= (float)sampleCount * 4.0f;
+            Ray ray(intersectionData.Point + intersectionData.Normal * Epsilon, worldSpaceSample);
+            indirectLight = CastRay(ray, depth + 1);
         }
 
-        return (CalculateLightPower(&intersectionData) * OneOverPi<float> + indirectLight) * monteCarloDiffuseMaterial->Color;
+        return monteCarloDiffuseMaterial->EmissiveColor * russianRouletteFactor + (CalculateLightPower(&intersectionData) * OneOverPi<float> + indirectLight) * monteCarloDiffuseMaterial->Color * russianRouletteFactor;
+    }
+    else if (material->Type == MaterialType::Specular)
+    {
+        Vector3 reflectionDirection = Vector3::Reflect(ray.Direction, intersectionData.Normal);
+        Ray ray(intersectionData.Point + intersectionData.Normal * Epsilon, reflectionDirection);
+
+        return CastRay(ray, depth + 1);
     }
 
     // Unknown material type.
-    return _options->GetDefaultColor();
+    return Color3(0.0f);
 }
 
 const SceneOptions* Scene::GetOptions() const

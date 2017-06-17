@@ -50,9 +50,9 @@ Color3 XmlSceneLoader::ParseColor3(const char* string) const
 
         ConsumeWhitespace(stream);
         stream >> result.Blue;
-
-        return result;
     }
+
+    return result;
 }
 
 Color4 XmlSceneLoader::ParseColor4(const char* string) const
@@ -216,6 +216,10 @@ Material* XmlSceneLoader::ParseMaterial(const pugi::xml_node& element) const
 
         return new MonteCarloDiffuseMaterial(color, emissiveColor);
     }
+    else if (elementName == "SpecularMaterial")
+    {
+        return new SpecularMaterial();
+    }
 
     return nullptr;
 }
@@ -304,6 +308,8 @@ Geometry* XmlSceneLoader::ParseGeometry(const pugi::xml_node& element, const Mat
         geometry = ParseSphere(element);
     else if (elementName == "Plane")
         geometry = ParsePlane(element);
+    else if (elementName == "PlaneD")
+        geometry = ParsePlaneD(element);
 
     if (geometry != nullptr)
     {
@@ -356,6 +362,14 @@ Plane* XmlSceneLoader::ParsePlane(const pugi::xml_node& element) const
     return new Plane(normal, point);
 }
 
+Plane* XmlSceneLoader::ParsePlaneD(const pugi::xml_node& element) const
+{
+    auto normal = ParseVector3(element.attribute("Normal").value());
+    auto d = element.attribute("D").as_float();
+
+    return new Plane(normal, d);
+}
+
 XmlSceneLoader::XmlSceneLoader(const char* xmlContent)
 {
     _document.load_string(xmlContent);
@@ -367,8 +381,10 @@ SceneOptions* XmlSceneLoader::CreateSceneOptions() const
     auto maxDepth = optionsElement.select_single_node("MaxDepth").node().text().as_int();
     auto defaultColor = ParseColor3(optionsElement.select_single_node("DefaultColor").node().first_child().value());
     auto antialiasingLevel = optionsElement.select_single_node("AntialiasingLevel").node().text().as_int();
+    auto russianRouletteDepthStart = optionsElement.select_single_node("RussianRouletteDepthStart").node().text().as_int();
+    auto russianRouletteStopProbability = optionsElement.select_single_node("RussianRouletteStopProbability").node().text().as_float();
 
-    return new SceneOptions(maxDepth, defaultColor, antialiasingLevel);
+    return new SceneOptions(maxDepth, defaultColor, antialiasingLevel, russianRouletteDepthStart, russianRouletteStopProbability);
 }
 
 Camera* XmlSceneLoader::CreateCamera() const

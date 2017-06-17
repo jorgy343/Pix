@@ -2,37 +2,58 @@
 <Scene xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="PixScene.xsd">
   
   <Options>
-    <MaxDepth>4</MaxDepth>
-    <DefaultColor>0.0,0.0,0.0</DefaultColor>
-    <AntialiasingLevel>4</AntialiasingLevel>
+    <MaxDepth>20</MaxDepth>
+    <DefaultColor>0</DefaultColor>
+    <AntialiasingLevel>22</AntialiasingLevel>
+    <RussianRouletteDepthStart>5</RussianRouletteDepthStart>
+    <RussianRouletteStopProbability>0.01</RussianRouletteStopProbability>
   </Options>
   
   <Camera>
-    <PerspectiveCamera Position="0,8,-30" LookAt="0,10,30" Up="0,1,0" ScreenWidth="640" ScreenHeight="480" FieldOfView="1.57079633" />
+    <PerspectiveCamera Position="0,0,0" LookAt="0,-1.5,-5" Up="0,1,0" ScreenWidth="640" ScreenHeight="480" FieldOfView="1.57079633" />
   </Camera>
   
   <Materials>
-    <PhongDiffuseMaterial Name="PhongBlue" AmbientColor="0.1,0.1,0.1" DiffuseColor="0.0,0.0,1.0" DiffuseCoefficient="0.5" />
-    
-    <MonteCarloDiffuseMaterial Name="WhiteDiffuse" Color="1.0,1.0,1.0" EmissiveColor="0,0,0" />
-    <MonteCarloDiffuseMaterial Name="RedDiffuse" Color="1.0,0.0,0.0" EmissiveColor="0,0,0" />
-    <MonteCarloDiffuseMaterial Name="GreenDiffuse" Color="0.0,1.0,0.0" EmissiveColor="0,0,0" />
-    <MonteCarloDiffuseMaterial Name="BlueDiffuse" Color="0.0,0.0,1.0" EmissiveColor="0,0,0" />
+    <MonteCarloDiffuseMaterial Name="WhiteDiffuse" Color="1" EmissiveColor="0" />
+    <MonteCarloDiffuseMaterial Name="RedDiffuse" Color="1,0,0" EmissiveColor="0" />
+    <MonteCarloDiffuseMaterial Name="GreenDiffuse" Color="0,1,0" EmissiveColor="0" />
+    <MonteCarloDiffuseMaterial Name="BlueDiffuse" Color="0,0,1" EmissiveColor="0" />
+    <SpecularMaterial Name="Mirror" />
   </Materials>
   
   <Lights>
-    <PointLight Color="1.5,1.5,1.5" Position="-20,25,-20" />
+    <PointLight Color="0.5" Position="0,1.9,-3" />
   </Lights>
   
   <RootGeometry>
     <GeometryGroup>
       <Geometries>
-        <Plane MaterialName="WhiteDiffuse" Point="0,0,0" Normal="0,1,0" />
-        <Plane MaterialName="WhiteDiffuse" Point="0,0,100" Normal="0,0,-1" />
+        <Sphere MaterialName="GreenDiffuse" Center="-0.75,-1.45,-4.4" Radius="1.05">
+          <Material>
+            <MonteCarloDiffuseMaterial Color="0.5,1,0.5" EmissiveColor="0" />
+          </Material>
+        </Sphere>
+
+        <Sphere MaterialName="RedDiffuse" Center="2.0,-2.05,-3.7" Radius="0.5">
+          <Material>
+            <MonteCarloDiffuseMaterial Color="1,1,0.1" EmissiveColor="0" />
+          </Material>
+        </Sphere>
+
+        <Sphere MaterialName="BlueDiffuse" Center="-1.75,-1.95,-3.1" Radius="0.6">
+          <Material>
+            <MonteCarloDiffuseMaterial Color="0.33,0.33,1" EmissiveColor="0" />
+          </Material>
+        </Sphere>
         
-        <Sphere MaterialName="RedDiffuse" Center="-20,4,0" Radius="4" />
-        <Sphere MaterialName="GreenDiffuse" Center="0,4,0" Radius="4" />
-        <Sphere MaterialName="PhongBlue" Center="20,4,0" Radius="4" />
+        <PlaneD MaterialName="WhiteDiffuse" Normal="0,1,0" D="2.5" />
+        <PlaneD MaterialName="WhiteDiffuse" Normal="0,-1,0" D="3" />
+
+        <PlaneD MaterialName="RedDiffuse" Normal="1,0,0" D="2.75" />
+        <PlaneD MaterialName="GreenDiffuse" Normal="-1,0,0" D="2.75" />
+
+        <PlaneD MaterialName="WhiteDiffuse" Normal="0,0,-1" D="0.5" />
+        <PlaneD MaterialName="WhiteDiffuse" Normal="0,0,1" D="5.5" />
       </Geometries>
     </GeometryGroup>
   </RootGeometry>

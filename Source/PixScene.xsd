@@ -43,7 +43,7 @@
   
   <xs:simpleType name="TypeColor3">
     <xs:restriction base="xs:string">
-      <xs:pattern value="\s*([+-]?[0-9]+\.?[0-9]*)\s*,\s*([+-]?[0-9]+\.?[0-9]*)\s*,\s*([+-]?[0-9]+\.?[0-9]*)\s*" />
+      <xs:pattern value="\s*(([+-]?[0-9]+\.?[0-9]*)|([+-]?[0-9]+\.?[0-9]*)\s*,\s*([+-]?[0-9]+\.?[0-9]*)\s*,\s*([+-]?[0-9]+\.?[0-9]*))\s*" />
     </xs:restriction>
   </xs:simpleType>
 
@@ -86,10 +86,28 @@
     </xs:choice>
   </xs:complexType>
 
+  <xs:complexType name="TypeOptions">
+    <xs:all>
+      <xs:element name="MaxDepth" type="xs:positiveInteger" minOccurs="1" maxOccurs="1" />
+      <xs:element name="DefaultColor" type="TypeColor3" minOccurs="1" maxOccurs="1" />
+      <xs:element name="AntialiasingLevel" type="xs:positiveInteger" minOccurs="1" maxOccurs="1" />
+      <xs:element name="RussianRouletteDepthStart" type="xs:positiveInteger" minOccurs="1" maxOccurs="1" />
+      <xs:element name="RussianRouletteStopProbability" minOccurs="1" maxOccurs="1">
+        <xs:simpleType>
+          <xs:restriction base="xs:float">
+            <xs:minExclusive value="0" />
+            <xs:maxExclusive value="1" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+
   <xs:group name="GroupMaterials">
     <xs:choice>
       <xs:element name="PhongDiffuseMaterial" type="TypePhongDiffuseMaterial" />
       <xs:element name="MonteCarloDiffuseMaterial" type="TypeMonteCarloDiffuseMaterial" />
+      <xs:element name="SpecularMaterial" type="TypeSpecularMaterial" />
     </xs:choice>
   </xs:group>
 
@@ -113,12 +131,8 @@
     <xs:attribute name="EmissiveColor" type="TypeColor3" use="required" />
   </xs:complexType>
 
-  <xs:complexType name="TypeOptions">
-    <xs:all>
-      <xs:element name="MaxDepth" type="xs:positiveInteger" minOccurs="1" maxOccurs="1" />
-      <xs:element name="DefaultColor" type="TypeColor3" minOccurs="1" maxOccurs="1" />
-      <xs:element name="AntialiasingLevel" type="xs:positiveInteger" minOccurs="1" maxOccurs="1" />
-    </xs:all>
+  <xs:complexType name="TypeSpecularMaterial">
+    <xs:attribute name="Name" type="TypeName" use="optional" />
   </xs:complexType>
 
   <xs:group name="GroupCameras">
@@ -169,6 +183,7 @@
       <xs:element name="GeometryGroup" type="TypeGeometryGroup" />
       <xs:element name="Sphere" type="TypeSphere" />
       <xs:element name="Plane" type="TypePlane" />
+      <xs:element name="PlaneD" type="TypePlaneD" />
     </xs:choice>
   </xs:group>
 
@@ -206,5 +221,18 @@
     <xs:attribute name="MaterialName" type="TypeName" use="optional" />
     <xs:attribute name="Normal" type="TypeVector3" use="required" />
     <xs:attribute name="Point" type="TypeVector3" use="required" />
+  </xs:complexType>
+
+  <xs:complexType name="TypePlaneD">
+    <xs:all>
+      <xs:element name="Material" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:group ref="GroupMaterials" minOccurs="1" maxOccurs="1" />
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+    <xs:attribute name="MaterialName" type="TypeName" use="optional" />
+    <xs:attribute name="Normal" type="TypeVector3" use="required" />
+    <xs:attribute name="D" type="xs:float" use="required" />
   </xs:complexType>
 </xs:schema>

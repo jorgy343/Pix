@@ -22,6 +22,7 @@
 #include "Material.h"
 #include "MaterialType.h"
 #include "MonteCarloDiffuseMaterial.h"
+#include "SpecularMaterial.h"
 #include "MaterialAliases.h"
 #include "MaterialManager.h"
 
@@ -65,6 +66,7 @@ namespace Pix::Engine
         GeometryGroup* ParseGeometryGroup(const pugi::xml_node& element, const MaterialNameMap* materialNameMap, MaterialGeometryMap* materialGeometryMap) const;
         Sphere* ParseSphere(const pugi::xml_node& element) const;
         Plane* ParsePlane(const pugi::xml_node& element) const;
+        Plane* ParsePlaneD(const pugi::xml_node& element) const;
 
         SceneOptions* CreateSceneOptions() const;
         Camera* CreateCamera() const;

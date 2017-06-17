@@ -61,7 +61,7 @@ float Sphere::IntersectRay(const Ray& ray, const Geometry** hitGeometry) const
 void Sphere::GetIntersectionData(const Ray& ray, float distance, IntersectionData* intersectionData) const
 {
     Vector3 point = ray.Position + distance * ray.Direction;
-    Vector3 normal = (point - Position).Normalize();
+    Vector3 normal = (point - Position) / Radius;
 
     intersectionData->IntersectedGeometry = this;
     intersectionData->Distance = distance;
