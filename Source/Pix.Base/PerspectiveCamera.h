@@ -1,5 +1,6 @@
 #pragma once
 
+#include "RandomSse.h"
 #include "Camera.h"
 #include "Vector3.h"
 #include "Ray.h"
@@ -10,6 +11,9 @@ namespace Pix::Base::Cameras
     {
     private:
         float _fieldOfView;
+
+    protected:
+        mutable RandomSse _random;
 
     public:
         PerspectiveCamera(const Vector3& position, const Vector3& lookAt, const Vector3& up, int screenWidth, int screenHeight, float fieldOfView);

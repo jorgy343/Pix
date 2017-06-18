@@ -18,13 +18,8 @@
 #include "Plane.h"
 #include "Scene.h"
 #include "Light.h"
-#include "DirectionalLight.h"
 #include "Material.h"
-#include "MaterialType.h"
-#include "MonteCarloDiffuseMaterial.h"
-#include "SpecularMaterial.h"
 #include "MaterialAliases.h"
-#include "MaterialManager.h"
 
 using namespace Pix::Base;
 using namespace Pix::Base::Cameras;

@@ -3,8 +3,7 @@
 using namespace Pix::Base::Cameras;
 
 OrthographicCamera::OrthographicCamera(const Vector3& position, const Vector3& lookAt, const Vector3& up, int screenWidth, int screenHeight, float orthoWidth, float orthoHeight)
-    : Camera(position, lookAt, up, screenWidth, screenHeight),
-    _orthoWidth(orthoWidth), _orthoHeight(orthoHeight)
+    : Camera(position, lookAt, up, screenWidth, screenHeight), _orthoWidth(orthoWidth), _orthoHeight(orthoHeight), _random(Random())
 {
 
 }
@@ -28,6 +27,7 @@ void OrthographicCamera::CalculateRays(int x, int y, int level, Ray* rays) const
         for (int j = 0; j < level; ++j)
         {
             int index = i * level + j;
+
             rays[index].Position = corner + (deltaX + subDeltaX * j + subDeltaX * _random.GetNormalizedFloat()) * u + (deltaY + subDeltaY * i + subDeltaY * _random.GetNormalizedFloat()) * v;
             rays[index].Direction = direction;
         }

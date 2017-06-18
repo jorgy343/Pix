@@ -2,20 +2,12 @@
 
 #include <vector>
 
-#include "General.h"
 #include "Color3.h"
-#include "Matrix33.h"
-#include "MonteCarlo.h"
 #include "Geometry.h"
 #include "Camera.h"
 #include "SceneOptions.h"
 #include "Light.h"
-#include "DirectionalLight.h"
-#include "PointLight.h"
 #include "IntersectionData.h"
-#include "Material.h"
-#include "PhongDiffuseMaterial.h"
-#include "MonteCarloDiffuseMaterial.h"
 #include "MaterialManager.h"
 #include "RandomSse.h"
 
@@ -39,7 +31,6 @@ namespace Pix::Engine
         const MaterialManager* _materialManager;
 
         Color3 CastRay(const Ray& ray, int depth) const;
-
         Color3 CalculateLightPower(const IntersectionData* intersectionData) const;
 
     public:

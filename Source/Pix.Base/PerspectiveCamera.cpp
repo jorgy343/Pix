@@ -3,7 +3,7 @@
 using namespace Pix::Base::Cameras;
 
 PerspectiveCamera::PerspectiveCamera(const Vector3& position, const Vector3& lookAt, const Vector3& up, int screenWidth, int screenHeight, float fieldOfView)
-    : Camera(position, lookAt, up, screenWidth, screenHeight), _fieldOfView(fieldOfView)
+    : Camera(position, lookAt, up, screenWidth, screenHeight), _fieldOfView(fieldOfView), _random(RandomSse())
 {
 
 }
@@ -30,10 +30,13 @@ void PerspectiveCamera::CalculateRays(int x, int y, int level, Ray* rays) const
 
             int index = i * level + j;
 
+            float random[4];
+            _random.GetNextFloat(random);
+
             // Takes the upper left coordinates of the pixel and add an offset which will give us the coordinates somewhere inside
             // of the pixel. Multiply that by the delta direction to get the actual direction for the pixel.
-            Vector3 u = (pixelIndexY + ((float)i + _random.GetNormalizedFloat()) / (float)level) * du;
-            Vector3 v = (pixelIndexX + ((float)j + _random.GetNormalizedFloat()) / (float)level) * dv;
+            Vector3 u = (pixelIndexY + ((float)i + random[0]) / (float)level) * du;
+            Vector3 v = (pixelIndexX + ((float)j + random[1]) / (float)level) * dv;
 
             rays[index].Position = GetPosition();
             rays[index].Direction = (direction + u + v).Normalize();

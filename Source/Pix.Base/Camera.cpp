@@ -3,9 +3,7 @@
 using namespace Pix::Base::Cameras;
 
 Camera::Camera(const Vector3& position, const Vector3& lookAt, const Vector3& up, int screenWidth, int screenHeight)
-    : _position(position), _lookAt(lookAt), _up(up),
-    _screenWidth(screenWidth), _screenHeight(screenHeight),
-    _random(Random())
+    : _position(position), _lookAt(lookAt), _up(up), _screenWidth(screenWidth), _screenHeight(screenHeight)
 {
 
 }

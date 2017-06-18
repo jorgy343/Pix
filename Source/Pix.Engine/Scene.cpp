@@ -1,4 +1,12 @@
 #include "Scene.h"
+#include "General.h"
+#include "Matrix33.h"
+#include "MonteCarlo.h"
+#include "DirectionalLight.h"
+#include "PointLight.h"
+#include "Material.h"
+#include "PhongDiffuseMaterial.h"
+#include "MonteCarloDiffuseMaterial.h"
 
 using namespace Pix::Engine;
 

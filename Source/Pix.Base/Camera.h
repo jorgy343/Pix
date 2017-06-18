@@ -2,7 +2,6 @@
 
 #include "Vector3.h"
 #include "Ray.h"
-#include "Random.h"
 
 using namespace Pix::Base;
 
@@ -19,7 +18,6 @@ namespace Pix::Base::Cameras
         int _screenHeight;
 
     protected:
-        mutable Random _random;
         Camera(const Vector3& position, const Vector3& lookAt, const Vector3& up, int screenWidth, int screenHeight);
 
     public:

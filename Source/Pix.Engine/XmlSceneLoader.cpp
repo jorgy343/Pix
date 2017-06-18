@@ -1,4 +1,11 @@
 #include "XmlSceneLoader.h"
+#include "PointLight.h"
+#include "DirectionalLight.h"
+#include "MaterialType.h"
+#include "MonteCarloDiffuseMaterial.h"
+#include "PhongDiffuseMaterial.h"
+#include "SpecularMaterial.h"
+#include "MaterialManager.h"
 
 using namespace Pix::Engine;
 
