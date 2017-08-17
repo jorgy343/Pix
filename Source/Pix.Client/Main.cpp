@@ -18,7 +18,7 @@ int _tmain(int argc, _TCHAR* argv[])
     SetPriorityClass(GetCurrentProcess(), BELOW_NORMAL_PRIORITY_CLASS);
 
     unsigned int totalThreads = max(std::thread::hardware_concurrency(), 1);
-    totalThreads = 1;
+    //totalThreads = 1;
 
     WindowsConsole* console = new WindowsConsole(totalThreads);
 
