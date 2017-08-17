@@ -30,7 +30,7 @@ int _tmain(int argc, _TCHAR* argv[])
             console->AddHistory(i, "Worker thread ", i, " started.");
             console->UpdateStatus(i, "Connecting to server...");
 
-            INetwork* network = new WindowsNetwork("127.0.0.1", "54000");
+            INetwork* network = new WindowsNetwork("104.159.168.10", "54000");
             while (true)
             {
                 console->UpdateStatusAndAddHistory(i, "Requesting chunk...");
@@ -47,8 +47,19 @@ int _tmain(int argc, _TCHAR* argv[])
                 int chunkHeight = *(int*)(messageData + 16);
                 int startY = *(int*)(messageData + 20);
 
-                const char* sceneXml = messageData + 24;
+                int maxSubPixelX = *(int*)(messageData + 24);
+                int maxSubPixelY = *(int*)(messageData + 28);
+
+                int subPixelStartX = *(int*)(messageData + 32);
+                int subPixelStartY = *(int*)(messageData + 36);
+                int subPixelEndX = *(int*)(messageData + 40);
+                int subPixelEndY = *(int*)(messageData + 44);
+
+                const char* sceneXml = messageData + 48;
                 console->UpdateStatusAndAddHistory(i, "Received chunk. Scene ID: ", sceneId, " Chunk ID: ", chunkId, ". Processing...");
+
+                int subPixelWidth = subPixelEndX - subPixelStartX + 1;
+                int subPixelHeight = subPixelEndY - subPixelStartY + 1;
 
                 XmlSceneLoader sceneLoader(sceneXml);
 
@@ -56,10 +67,9 @@ int _tmain(int argc, _TCHAR* argv[])
                 auto scene = sceneLoader.CreateScene(materialGeometryMap);
 
                 // Render the scene.
-                int antiAliasingLevel = scene->GetOptions()->GetAntialiasingLevel();
-                int* sendBuffer = new int[width * chunkHeight + 4];
+                uint32_t* sendBuffer = new uint32_t[width * chunkHeight * 3 + 4]; // 3: three floats per pixel; 4: four integers for the header
 
-                Ray* rays = new Ray[antiAliasingLevel * antiAliasingLevel];
+                Ray* rays = new Ray[subPixelWidth * subPixelHeight];
                 for (int y = startY; y < startY + chunkHeight; ++y)
                 {
                     for (int x = 0; x < width; ++x)
@@ -67,31 +77,27 @@ int _tmain(int argc, _TCHAR* argv[])
                         //if (x != 221 || y != 73)
                         //    continue;
 
-                        scene->GetCamera()->CalculateRays(x, y, antiAliasingLevel, rays);
+                        scene->GetCamera()->CalculateRays(IntVector2(x, y), IntVector2(maxSubPixelX, maxSubPixelY), IntVector2(subPixelStartX, subPixelStartY), IntVector2(subPixelEndX, subPixelEndY), rays);
 
                         Color3 color(0.0f);
-                        for (int i = 0; i < antiAliasingLevel * antiAliasingLevel; ++i)
+                        for (int i = 0; i < subPixelWidth * subPixelHeight; ++i)
                             color += scene->CastRay(rays[i]);
 
-                        color = color / (float)(antiAliasingLevel * antiAliasingLevel);
-                        color.Clamp(Color3(0.0f), Color3(1.0f));
+                        float* floatBuffer = (float*)sendBuffer;
 
-                        sendBuffer[(y - startY) * width + x + 4] = (int)(color.Blue * 255.0f) | ((int)(color.Green * 255.0f) << 8) | ((int)(color.Red * 255.0f) << 16);
+                        floatBuffer[(y - startY) * width * 3 + x * 3 + 4 + 0] = color.Red;
+                        floatBuffer[(y - startY) * width * 3 + x * 3 + 4 + 1] = color.Green;
+                        floatBuffer[(y - startY) * width * 3 + x * 3 + 4 + 2] = color.Blue;
                     }
-
-                    //int percentComplete = (double)(y - workerThreadState->Chunk.StartY) / workerThreadState->Chunk.ChunkHeight * 100.0;
-                    //console.UpdateStatus(threadIndex + 1, "Thread ", threadIndex, ": Chunk received. Processing: ", percentComplete, "%");
                 }
-
-                //console.UpdateStatus(threadIndex + 1, "Thread ", threadIndex, ": Chunk received. Processing: 100%");
 
                 // Send the result.
                 sendBuffer[0] = 3;
-                sendBuffer[1] = (width * chunkHeight + 4) * 4 - 8;
+                sendBuffer[1] = (width * chunkHeight * 3 + 2) * 4;
                 sendBuffer[2] = sceneId;
                 sendBuffer[3] = chunkId;
 
-                auto result = network->Send((char*)sendBuffer, (width * chunkHeight + 4) * 4);
+                auto result = network->Send((char*)sendBuffer, (width * chunkHeight * 3 + 4) * 4);
                 console->AddHistory(i, "Sent completed chunk to server: ", result, " : ", WSAGetLastError());
 
                 delete[] sendBuffer;

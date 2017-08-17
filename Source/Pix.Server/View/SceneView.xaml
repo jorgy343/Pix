@@ -12,9 +12,7 @@
         </Grid.RowDefinitions>
 
         <ScrollViewer Grid.Row="0" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible">
-            <Border SnapsToDevicePixels="True" BorderThickness="1" BorderBrush="Black">
-                <Image Source="{Binding Path=Bitmap}" Width="{Binding Path=Scene.Width}" Height="{Binding Path=Scene.Height}" />
-            </Border>
+            <Image Source="{Binding Path=Bitmap}" Width="{Binding Path=Scene.Width}" Height="{Binding Path=Scene.Height}" />
         </ScrollViewer>
         <Button Grid.Row="1" Command="{Binding Path=CreateSceneCommand}">Save</Button>
     </Grid>

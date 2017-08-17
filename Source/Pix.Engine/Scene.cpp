@@ -110,7 +110,7 @@ Color3 Scene::CastRay(const Ray& ray, int depth) const
             indirectLight = CastRay(ray, depth + 1);
         }
 
-        return monteCarloDiffuseMaterial->EmissiveColor * russianRouletteFactor + (CalculateLightPower(&intersectionData) * OneOverPi<float> + indirectLight) * monteCarloDiffuseMaterial->Color * russianRouletteFactor;
+        return monteCarloDiffuseMaterial->EmissiveColor * russianRouletteFactor + (CalculateLightPower(&intersectionData) * OneOverPi<float> + indirectLight * OneOverPi<float>) * monteCarloDiffuseMaterial->Color * russianRouletteFactor;
     }
     else if (material->Type == MaterialType::Specular)
     {

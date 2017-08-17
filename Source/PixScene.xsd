@@ -95,7 +95,7 @@
       <xs:element name="RussianRouletteStopProbability" minOccurs="1" maxOccurs="1">
         <xs:simpleType>
           <xs:restriction base="xs:float">
-            <xs:minExclusive value="0" />
+            <xs:minInclusive value="0" />
             <xs:maxExclusive value="1" />
           </xs:restriction>
         </xs:simpleType>

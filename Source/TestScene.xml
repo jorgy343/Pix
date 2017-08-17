@@ -4,7 +4,7 @@
   <Options>
     <MaxDepth>20</MaxDepth>
     <DefaultColor>0</DefaultColor>
-    <AntialiasingLevel>40</AntialiasingLevel>
+    <AntialiasingLevel>3</AntialiasingLevel>
     <RussianRouletteDepthStart>5</RussianRouletteDepthStart>
     <RussianRouletteStopProbability>0.1</RussianRouletteStopProbability>
   </Options>
@@ -22,7 +22,7 @@
   </Materials>
   
   <Lights>
-    <!--<PointLight Color="0.5" Position="0,1.9,-3" />-->
+    <!--<PointLight Color="1.0" Position="0,1.9,-3" />-->
   </Lights>
   
   <RootGeometry>
@@ -30,13 +30,14 @@
       <Geometries>
         <Sphere Center="0,1.9,-3" Radius="0.5">
           <Material>
-            <MonteCarloDiffuseMaterial Color="0" EmissiveColor="10" />
+            <MonteCarloDiffuseMaterial Color="0" EmissiveColor="75" />
           </Material>
         </Sphere>
         
         <Sphere Center="-0.75,-1.45,-4.4" Radius="1.05">
           <Material>
-            <MonteCarloDiffuseMaterial Color="0.5,1,0.5" EmissiveColor="0" />
+            <SpecularMaterial />
+            <!--<MonteCarloDiffuseMaterial Color="0.5,1,0.5" EmissiveColor="0" />-->
           </Material>
         </Sphere>
 

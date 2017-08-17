@@ -10,6 +10,7 @@ namespace Pix.Server.Messages
         {
             SceneId = BitConverter.ToInt32(messageData, 0);
             ChunkId = BitConverter.ToInt32(messageData, 4);
+
             ColorData = messageData.Skip(8).ToArray();
         }
 

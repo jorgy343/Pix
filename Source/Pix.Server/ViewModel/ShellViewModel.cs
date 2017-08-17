@@ -1,4 +1,5 @@
 ﻿using Pix.Server.Messages;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -24,13 +25,14 @@ namespace Pix.Server.ViewModel
             var sceneViewModel = new SceneViewModel(@"C:\Repos\Pix\Source\TestScene.xml", 640, 480, 480 / 2);
             SceneViewModels.Add(sceneViewModel);
 
-            foreach (var chunk in sceneViewModel.Scene.Chunks)
+            var random = new Random();
+            foreach (var chunk in sceneViewModel.Scene.Chunks.OrderBy(_ => random))
                 ChunksToProcess.Add(chunk);
         }
 
         public async void StartServer()
         {
-            var listener = new TcpListener(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 54000));
+            var listener = new TcpListener(new IPEndPoint(IPAddress.Parse("192.168.1.153"), 54000));
             listener.Start();
 
             while (true)
@@ -90,7 +92,7 @@ namespace Pix.Server.ViewModel
                             var sceneAsBytes = Encoding.ASCII.GetBytes(chunkToProcess.Scene.SceneXml);
 
                             writer.Write((int)SendMessageType.ChunkSentForProcessing);
-                            writer.Write(sizeof(int) * 6 + sceneAsBytes.Length + 1);
+                            writer.Write(sizeof(int) * 12 + sceneAsBytes.Length + 1);
 
                             writer.Write(chunkToProcess.Scene.SceneId);
                             writer.Write(chunkToProcess.ChunkId);
@@ -100,16 +102,22 @@ namespace Pix.Server.ViewModel
                             writer.Write(chunkToProcess.Height);
                             writer.Write(chunkToProcess.StartY);
 
+                            writer.Write(chunkToProcess.MaxSubPixelX);
+                            writer.Write(chunkToProcess.MaxSubPixelY);
+
+                            writer.Write(chunkToProcess.SubPixelStartX);
+                            writer.Write(chunkToProcess.SubPixelStartY);
+                            writer.Write(chunkToProcess.SubPixelEndX);
+                            writer.Write(chunkToProcess.SubPixelEndY);
+
                             writer.Write(sceneAsBytes);
                             writer.Write((byte)0);
 
                             writer.Flush();
                         }
                     }
-                    else if (message is ChunkCompletedMessage)
+                    else if (message is ChunkCompletedMessage chunkCompletedMessage)
                     {
-                        var chunkCompletedMessage = (ChunkCompletedMessage)message;
-
                         var sceneViewModel = SceneViewModels.SingleOrDefault(x => x.Scene.SceneId == chunkCompletedMessage.SceneId);
                         var chunk = sceneViewModel?.Scene.Chunks.SingleOrDefault(x => x.ChunkId == chunkCompletedMessage.ChunkId);
 
@@ -120,7 +128,8 @@ namespace Pix.Server.ViewModel
                             chunk.IsBeingWorkedOn = false;
                             chunk.IsCompleted = true;
 
-                            sceneViewModel.UpdateChunk(chunk, chunkCompletedMessage.ColorData);
+                            sceneViewModel.Scene.UpdateChunk(chunk, chunkCompletedMessage.ColorData);
+                            sceneViewModel.UpdateChunk(chunk);
                         }
                     }
                 }

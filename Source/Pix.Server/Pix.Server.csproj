@@ -59,6 +59,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Chunk.cs" />
+    <Compile Include="Color3.cs" />
+    <Compile Include="ColorBgr32.cs" />
     <Compile Include="Messages\ChunkCompletedMessage.cs" />
     <Compile Include="Messages\ChunkRequestedMessage.cs" />
     <Compile Include="Messages\MessageReader.cs" />

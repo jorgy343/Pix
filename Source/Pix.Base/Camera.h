@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Vector3.h"
+#include "IntVector2.h"
 #include "Ray.h"
 
 using namespace Pix::Base;
@@ -21,7 +22,7 @@ namespace Pix::Base::Cameras
         Camera(const Vector3& position, const Vector3& lookAt, const Vector3& up, int screenWidth, int screenHeight);
 
     public:
-        virtual void CalculateRays(int x, int y, int level, Ray* rays) const = 0;
+        virtual void CalculateRays(IntVector2 pixel, IntVector2 subPixelMax, IntVector2 subPixelStart, IntVector2 subPixelEnd, Ray* rays) const = 0;
 
         Vector3 GetPosition() const;
         void SetPosition(const Vector3& position);

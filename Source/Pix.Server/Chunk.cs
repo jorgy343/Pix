@@ -9,7 +9,7 @@ namespace Pix.Server
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public Chunk(Scene scene, int startY, int width, int height)
+        public Chunk(Scene scene, int width, int height, int startY, int maxSubPixelX, int maxSubPixelY, int subPixelStartX, int subPixelStartY, int subPixelEndX, int subPixelEndY)
         {
             ChunkId = Interlocked.Increment(ref NextChunkId);
 
@@ -17,6 +17,14 @@ namespace Pix.Server
             StartY = startY;
             Width = width;
             Height = height;
+
+            MaxSubPixelX = maxSubPixelX;
+            MaxSubPixelY = maxSubPixelY;
+
+            SubPixelStartX = subPixelStartX;
+            SubPixelStartY = subPixelStartY;
+            SubPixelEndX = subPixelEndX;
+            SubPixelEndY = subPixelEndY;
         }
 
         protected virtual void OnPropertyChanged(string propertyName)
@@ -32,5 +40,13 @@ namespace Pix.Server
         public int StartY { get; }
         public int Width { get; }
         public int Height { get; }
+
+        public int MaxSubPixelX { get; }
+        public int MaxSubPixelY { get; }
+
+        public int SubPixelStartX { get; }
+        public int SubPixelStartY { get; }
+        public int SubPixelEndX { get; }
+        public int SubPixelEndY { get; }
     }
 }

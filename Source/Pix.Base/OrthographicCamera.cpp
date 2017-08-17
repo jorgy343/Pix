@@ -8,8 +8,8 @@ OrthographicCamera::OrthographicCamera(const Vector3& position, const Vector3& l
 
 }
 
-void OrthographicCamera::CalculateRays(int x, int y, int level, Ray* rays) const
-{
+void OrthographicCamera::CalculateRays(IntVector2 pixel, IntVector2 subPixelMax, IntVector2 subPixelStart, IntVector2 subPixelEnd, Ray* rays) const
+{/*
     Vector3 direction = (GetPosition() - GetLookAt()).Normalize();
 
     Vector3 u = Vector3::CrossProduct(GetUp(), direction).Normalize() * _orthoWidth;
@@ -31,7 +31,7 @@ void OrthographicCamera::CalculateRays(int x, int y, int level, Ray* rays) const
             rays[index].Position = corner + (deltaX + subDeltaX * j + subDeltaX * _random.GetNormalizedFloat()) * u + (deltaY + subDeltaY * i + subDeltaY * _random.GetNormalizedFloat()) * v;
             rays[index].Direction = direction;
         }
-    }
+    }*/
 }
 
 float OrthographicCamera::GetOrthoWidth() const
