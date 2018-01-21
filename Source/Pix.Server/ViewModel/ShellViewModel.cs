@@ -1,4 +1,5 @@
-﻿using Pix.Server.Messages;
+﻿using Pix.Managed.Common;
+using Pix.Managed.Common.NetworkMessages;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -26,13 +27,16 @@ namespace Pix.Server.ViewModel
             SceneViewModels.Add(sceneViewModel);
 
             var random = new Random();
+
             foreach (var chunk in sceneViewModel.Scene.Chunks.OrderBy(_ => random))
+            {
                 ChunksToProcess.Add(chunk);
+            }
         }
 
         public async void StartServer()
         {
-            var listener = new TcpListener(new IPEndPoint(IPAddress.Parse("192.168.1.153"), 54000));
+            var listener = new TcpListener(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 54000));
             listener.Start();
 
             while (true)
@@ -46,7 +50,6 @@ namespace Pix.Server.ViewModel
                 }
                 catch
                 {
-
                 }
             }
         }
@@ -56,13 +59,14 @@ namespace Pix.Server.ViewModel
             try
             {
                 foreach (var client in Clients)
+                {
                     client.Close();
+                }
 
                 Listener.Stop();
             }
             catch
             {
-
             }
         }
 
@@ -76,73 +80,75 @@ namespace Pix.Server.ViewModel
                 while (true)
                 {
                     var message = await messageReader.GetMessage();
+
                     if (message == null)
+                    {
                         break; // Client disconnected; remove client from the list of active clients.
-
-                    if (message is ChunkRequestedMessage)
-                    {
-                        var chunkToProcess = ChunksToProcess.Take();
-                        chunksBeingProcessed.Add(chunkToProcess);
-
-                        chunkToProcess.IsBeingWorkedOn = true;
-
-                        var networkStream = client.GetStream();
-                        using (var writer = new BinaryWriter(networkStream, Encoding.Default, true))
-                        {
-                            var sceneAsBytes = Encoding.ASCII.GetBytes(chunkToProcess.Scene.SceneXml);
-
-                            writer.Write((int)SendMessageType.ChunkSentForProcessing);
-                            writer.Write(sizeof(int) * 12 + sceneAsBytes.Length + 1);
-
-                            writer.Write(chunkToProcess.Scene.SceneId);
-                            writer.Write(chunkToProcess.ChunkId);
-
-                            writer.Write(chunkToProcess.Width);
-                            writer.Write(chunkToProcess.Scene.Height);
-                            writer.Write(chunkToProcess.Height);
-                            writer.Write(chunkToProcess.StartY);
-
-                            writer.Write(chunkToProcess.MaxSubPixelX);
-                            writer.Write(chunkToProcess.MaxSubPixelY);
-
-                            writer.Write(chunkToProcess.SubPixelStartX);
-                            writer.Write(chunkToProcess.SubPixelStartY);
-                            writer.Write(chunkToProcess.SubPixelEndX);
-                            writer.Write(chunkToProcess.SubPixelEndY);
-
-                            writer.Write(sceneAsBytes);
-                            writer.Write((byte)0);
-
-                            writer.Flush();
-                        }
                     }
-                    else if (message is ChunkCompletedMessage chunkCompletedMessage)
+
+                    switch (message)
                     {
-                        var sceneViewModel = SceneViewModels.SingleOrDefault(x => x.Scene.SceneId == chunkCompletedMessage.SceneId);
-                        var chunk = sceneViewModel?.Scene.Chunks.SingleOrDefault(x => x.ChunkId == chunkCompletedMessage.ChunkId);
+                        case RequestChunkMessage _:
+                            var chunkToProcess = ChunksToProcess.Take();
+                            chunksBeingProcessed.Add(chunkToProcess);
 
-                        if (chunk != null)
-                        {
-                            chunksBeingProcessed.Remove(chunk);
+                            chunkToProcess.IsBeingWorkedOn = true;
 
-                            chunk.IsBeingWorkedOn = false;
-                            chunk.IsCompleted = true;
+                            var networkStream = client.GetStream();
 
-                            sceneViewModel.Scene.UpdateChunk(chunk, chunkCompletedMessage.ColorData);
-                            sceneViewModel.UpdateChunk(chunk);
-                        }
+                            var chunkToProcessMessage = new ChunkToProcessMessage(
+                                chunkToProcess.Scene.SceneId,
+                                chunkToProcess.ChunkId,
+                                chunkToProcess.Width,
+                                chunkToProcess.Scene.Height,
+                                chunkToProcess.Height,
+                                chunkToProcess.StartY,
+                                chunkToProcess.MaxSubPixelX,
+                                chunkToProcess.MaxSubPixelY,
+                                chunkToProcess.SubPixelStartX,
+                                chunkToProcess.SubPixelStartY,
+                                chunkToProcess.SubPixelEndX,
+                                chunkToProcess.SubPixelEndY,
+                                chunkToProcess.Scene.SceneXml);
+
+                            var messageBytes = chunkToProcessMessage.ToBytes();
+                            await networkStream.WriteAsync(messageBytes, 0, messageBytes.Length);
+
+                            break;
+
+                        case ChunkCompletedMessage chunkCompletedMessage:
+                            var sceneViewModel = SceneViewModels.SingleOrDefault(x => x.Scene.SceneId == chunkCompletedMessage.SceneId);
+                            var chunk = sceneViewModel?.Scene.Chunks.SingleOrDefault(x => x.ChunkId == chunkCompletedMessage.ChunkId);
+
+                            if (chunk != null)
+                            {
+                                chunksBeingProcessed.Remove(chunk);
+
+                                chunk.IsBeingWorkedOn = false;
+                                chunk.IsCompleted = true;
+
+                                sceneViewModel.Scene.UpdateChunk(chunk, chunkCompletedMessage.ColorData);
+                                sceneViewModel.UpdateChunk(chunk);
+                            }
+
+                            break;
                     }
                 }
             }
             catch
             {
-
             }
             finally
             {
-                Clients.Remove(client);
+                if (Clients.Contains(client))
+                {
+                    Clients.Remove(client);
+                }
+
                 foreach (var chunk in chunksBeingProcessed) // Add any unfinished chunks back into the work queue.
+                {
                     ChunksToProcess.Add(chunk);
+                }
             }
         }
 

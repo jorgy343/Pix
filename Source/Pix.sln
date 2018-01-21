@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.13
+VisualStudioVersion = 15.0.27004.2002
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Pix.Base", "Pix.Base\Pix.Base.vcxproj", "{DF31EA45-10E1-4D13-8A9F-48B020B7CDE5}"
 EndProject
@@ -29,38 +29,87 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Pix.Base.Tests", "Pix.Base.
 		{DF31EA45-10E1-4D13-8A9F-48B020B7CDE5} = {DF31EA45-10E1-4D13-8A9F-48B020B7CDE5}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Pix.Client.Windows", "Pix.Client.Windows\Pix.Client.Windows.vcxproj", "{7546250C-A867-4E37-B74C-6BF740E69B5C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{DF31EA45-10E1-4D13-8A9F-48B020B7CDE5} = {DF31EA45-10E1-4D13-8A9F-48B020B7CDE5}
+		{9D43CFC3-0FF4-41B5-B9D5-EBD3DD47D045} = {9D43CFC3-0FF4-41B5-B9D5-EBD3DD47D045}
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pix.Client.Wrapper", "Pix.Client.Wrapper\Pix.Client.Wrapper.csproj", "{4E2952DD-17BB-4436-9D57-5044EF823FCB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pix.Managed.Common", "Pix.Managed.Common\Pix.Managed.Common.csproj", "{39C74B6B-6ACA-4F36-8B92-E677DACD30B0}"
+EndProject
 Global
-	GlobalSection(Performance) = preSolution
-		HasPerformanceSessions = true
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
 		Debug|x64 = Debug|x64
+		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DF31EA45-10E1-4D13-8A9F-48B020B7CDE5}.Debug|Any CPU.ActiveCfg = Debug|x64
 		{DF31EA45-10E1-4D13-8A9F-48B020B7CDE5}.Debug|x64.ActiveCfg = Debug|x64
 		{DF31EA45-10E1-4D13-8A9F-48B020B7CDE5}.Debug|x64.Build.0 = Debug|x64
+		{DF31EA45-10E1-4D13-8A9F-48B020B7CDE5}.Release|Any CPU.ActiveCfg = Release|x64
 		{DF31EA45-10E1-4D13-8A9F-48B020B7CDE5}.Release|x64.ActiveCfg = Release|x64
 		{DF31EA45-10E1-4D13-8A9F-48B020B7CDE5}.Release|x64.Build.0 = Release|x64
+		{9D43CFC3-0FF4-41B5-B9D5-EBD3DD47D045}.Debug|Any CPU.ActiveCfg = Debug|x64
 		{9D43CFC3-0FF4-41B5-B9D5-EBD3DD47D045}.Debug|x64.ActiveCfg = Debug|x64
 		{9D43CFC3-0FF4-41B5-B9D5-EBD3DD47D045}.Debug|x64.Build.0 = Debug|x64
+		{9D43CFC3-0FF4-41B5-B9D5-EBD3DD47D045}.Release|Any CPU.ActiveCfg = Release|x64
 		{9D43CFC3-0FF4-41B5-B9D5-EBD3DD47D045}.Release|x64.ActiveCfg = Release|x64
 		{9D43CFC3-0FF4-41B5-B9D5-EBD3DD47D045}.Release|x64.Build.0 = Release|x64
+		{D2667215-2098-4CA7-ABAD-4EABD01A948C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2667215-2098-4CA7-ABAD-4EABD01A948C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D2667215-2098-4CA7-ABAD-4EABD01A948C}.Debug|x64.ActiveCfg = Debug|Any CPU
 		{D2667215-2098-4CA7-ABAD-4EABD01A948C}.Debug|x64.Build.0 = Debug|Any CPU
+		{D2667215-2098-4CA7-ABAD-4EABD01A948C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2667215-2098-4CA7-ABAD-4EABD01A948C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D2667215-2098-4CA7-ABAD-4EABD01A948C}.Release|x64.ActiveCfg = Release|Any CPU
 		{D2667215-2098-4CA7-ABAD-4EABD01A948C}.Release|x64.Build.0 = Release|Any CPU
+		{7D30F589-4043-49FA-8692-A5FF294DA8AD}.Debug|Any CPU.ActiveCfg = Debug|x64
 		{7D30F589-4043-49FA-8692-A5FF294DA8AD}.Debug|x64.ActiveCfg = Debug|x64
 		{7D30F589-4043-49FA-8692-A5FF294DA8AD}.Debug|x64.Build.0 = Debug|x64
+		{7D30F589-4043-49FA-8692-A5FF294DA8AD}.Release|Any CPU.ActiveCfg = Release|x64
 		{7D30F589-4043-49FA-8692-A5FF294DA8AD}.Release|x64.ActiveCfg = Release|x64
 		{7D30F589-4043-49FA-8692-A5FF294DA8AD}.Release|x64.Build.0 = Release|x64
+		{73F4B0DF-E897-4DEF-9079-6E26E0511C5C}.Debug|Any CPU.ActiveCfg = Debug|x64
 		{73F4B0DF-E897-4DEF-9079-6E26E0511C5C}.Debug|x64.ActiveCfg = Debug|x64
 		{73F4B0DF-E897-4DEF-9079-6E26E0511C5C}.Debug|x64.Build.0 = Debug|x64
+		{73F4B0DF-E897-4DEF-9079-6E26E0511C5C}.Release|Any CPU.ActiveCfg = Release|x64
 		{73F4B0DF-E897-4DEF-9079-6E26E0511C5C}.Release|x64.ActiveCfg = Release|x64
 		{73F4B0DF-E897-4DEF-9079-6E26E0511C5C}.Release|x64.Build.0 = Release|x64
+		{7546250C-A867-4E37-B74C-6BF740E69B5C}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{7546250C-A867-4E37-B74C-6BF740E69B5C}.Debug|x64.ActiveCfg = Debug|x64
+		{7546250C-A867-4E37-B74C-6BF740E69B5C}.Debug|x64.Build.0 = Debug|x64
+		{7546250C-A867-4E37-B74C-6BF740E69B5C}.Release|Any CPU.ActiveCfg = Release|x64
+		{7546250C-A867-4E37-B74C-6BF740E69B5C}.Release|x64.ActiveCfg = Release|x64
+		{7546250C-A867-4E37-B74C-6BF740E69B5C}.Release|x64.Build.0 = Release|x64
+		{4E2952DD-17BB-4436-9D57-5044EF823FCB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E2952DD-17BB-4436-9D57-5044EF823FCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E2952DD-17BB-4436-9D57-5044EF823FCB}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{4E2952DD-17BB-4436-9D57-5044EF823FCB}.Debug|x64.Build.0 = Debug|Any CPU
+		{4E2952DD-17BB-4436-9D57-5044EF823FCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E2952DD-17BB-4436-9D57-5044EF823FCB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E2952DD-17BB-4436-9D57-5044EF823FCB}.Release|x64.ActiveCfg = Release|Any CPU
+		{4E2952DD-17BB-4436-9D57-5044EF823FCB}.Release|x64.Build.0 = Release|Any CPU
+		{39C74B6B-6ACA-4F36-8B92-E677DACD30B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39C74B6B-6ACA-4F36-8B92-E677DACD30B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39C74B6B-6ACA-4F36-8B92-E677DACD30B0}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{39C74B6B-6ACA-4F36-8B92-E677DACD30B0}.Debug|x64.Build.0 = Debug|Any CPU
+		{39C74B6B-6ACA-4F36-8B92-E677DACD30B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39C74B6B-6ACA-4F36-8B92-E677DACD30B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39C74B6B-6ACA-4F36-8B92-E677DACD30B0}.Release|x64.ActiveCfg = Release|Any CPU
+		{39C74B6B-6ACA-4F36-8B92-E677DACD30B0}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D834EEEE-2482-4EE5-824E-F6555D40959C}
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
 	EndGlobalSection
 	GlobalSection(Performance) = preSolution
 		HasPerformanceSessions = true

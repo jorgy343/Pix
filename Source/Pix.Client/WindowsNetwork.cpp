@@ -126,7 +126,7 @@ void WindowsNetwork::SendChunkRequestedMessage() const
 {
     int buffer[2];
 
-    buffer[0] = 1; // Message Type
+    buffer[0] = 2; // Message Type
     buffer[1] = 0; // Message Size
 
     send(_connectedSocket, (const char*)buffer, 8, 0);

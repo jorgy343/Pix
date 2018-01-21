@@ -6,7 +6,7 @@
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace Pix::Base::Tests
-{		
+{
     TEST_CLASS(Matrix44TTests)
     {
     public:

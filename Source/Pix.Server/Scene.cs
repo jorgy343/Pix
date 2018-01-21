@@ -32,7 +32,9 @@ namespace Pix.Server
             for (var sampleY = 0; sampleY < _sampleCountPerPixelY; ++sampleY)
             {
                 for (var sampleX = 0; sampleX < _sampleCountPerPixelX; ++sampleX)
+                {
                     Chunks.Add(new Chunk(this, width, ChunkHeight, 0, _sampleCountPerPixelX, _sampleCountPerPixelY, sampleX, sampleY, sampleX, sampleY));
+                }
             }
         }
 
@@ -51,9 +53,9 @@ namespace Pix.Server
                             {
                                 SampleCount[x, y] += (chunk.SubPixelEndX - chunk.SubPixelStartX + 1) * (chunk.SubPixelEndY - chunk.SubPixelStartY + 1);
 
-                                float red = binaryReader.ReadSingle();
-                                float green = binaryReader.ReadSingle();
-                                float blue = binaryReader.ReadSingle();
+                                var red = binaryReader.ReadSingle();
+                                var green = binaryReader.ReadSingle();
+                                var blue = binaryReader.ReadSingle();
 
                                 ColorData[x, y].Red += red;
                                 ColorData[x, y].Green += green;

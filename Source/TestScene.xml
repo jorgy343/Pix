@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Scene xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="PixScene.xsd">
-  
+
   <Options>
     <MaxDepth>20</MaxDepth>
     <DefaultColor>0</DefaultColor>
@@ -8,11 +8,11 @@
     <RussianRouletteDepthStart>5</RussianRouletteDepthStart>
     <RussianRouletteStopProbability>0.1</RussianRouletteStopProbability>
   </Options>
-  
+
   <Camera>
     <PerspectiveCamera Position="0,0,0" LookAt="0,-1.5,-5" Up="0,1,0" ScreenWidth="640" ScreenHeight="480" FieldOfView="1.57079633" />
   </Camera>
-  
+
   <Materials>
     <MonteCarloDiffuseMaterial Name="WhiteDiffuse" Color="1" EmissiveColor="0" />
     <MonteCarloDiffuseMaterial Name="RedDiffuse" Color="1,0,0" EmissiveColor="0" />
@@ -20,11 +20,11 @@
     <MonteCarloDiffuseMaterial Name="BlueDiffuse" Color="0,0,1" EmissiveColor="0" />
     <SpecularMaterial Name="Mirror" />
   </Materials>
-  
+
   <Lights>
     <!--<PointLight Color="1.0" Position="0,1.9,-3" />-->
   </Lights>
-  
+
   <RootGeometry>
     <GeometryGroup>
       <Geometries>
@@ -33,7 +33,7 @@
             <MonteCarloDiffuseMaterial Color="0" EmissiveColor="75" />
           </Material>
         </Sphere>
-        
+
         <Sphere Center="-0.75,-1.45,-4.4" Radius="1.05">
           <Material>
             <SpecularMaterial />
@@ -52,7 +52,7 @@
             <MonteCarloDiffuseMaterial Color="0.33,0.33,1" EmissiveColor="0" />
           </Material>
         </Sphere>
-        
+
         <PlaneD MaterialName="WhiteDiffuse" Normal="0,1,0" D="2.5" />
         <PlaneD MaterialName="WhiteDiffuse" Normal="0,-1,0" D="3" />
 
@@ -64,5 +64,5 @@
       </Geometries>
     </GeometryGroup>
   </RootGeometry>
-  
+
 </Scene>

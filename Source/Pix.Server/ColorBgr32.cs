@@ -3,7 +3,7 @@
 namespace Pix.Server
 {
     [StructLayout(LayoutKind.Explicit, Pack = 1)]
-    struct ColorBgr32
+    public struct ColorBgr32
     {
         [FieldOffset(0)]
         public byte Blue;

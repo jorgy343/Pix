@@ -18,7 +18,7 @@ int _tmain(int argc, _TCHAR* argv[])
     SetPriorityClass(GetCurrentProcess(), BELOW_NORMAL_PRIORITY_CLASS);
 
     unsigned int totalThreads = max(std::thread::hardware_concurrency(), 1);
-    //totalThreads = 1;
+    totalThreads = 1;
 
     WindowsConsole* console = new WindowsConsole(totalThreads);
 
@@ -30,7 +30,7 @@ int _tmain(int argc, _TCHAR* argv[])
             console->AddHistory(i, "Worker thread ", i, " started.");
             console->UpdateStatus(i, "Connecting to server...");
 
-            INetwork* network = new WindowsNetwork("104.159.168.10", "54000");
+            INetwork* network = new WindowsNetwork("127.0.0.1", "54000");
             while (true)
             {
                 console->UpdateStatusAndAddHistory(i, "Requesting chunk...");
@@ -92,7 +92,7 @@ int _tmain(int argc, _TCHAR* argv[])
                 }
 
                 // Send the result.
-                sendBuffer[0] = 3;
+                sendBuffer[0] = 1;
                 sendBuffer[1] = (width * chunkHeight * 3 + 2) * 4;
                 sendBuffer[2] = sceneId;
                 sendBuffer[3] = chunkId;
